@@ -193,6 +193,14 @@ class HeteroCoarsener(ABC):
         
         return  total 
   
+    def _create_mapping(self, a, b):
+        assert len(a) == len(b), "mapping needs be one to one "
+        mapping = torch.stack((a, b), dim=1) 
+                    
+        sorted_indices = torch.argsort(mapping[:, 0])
+        return mapping[sorted_indices]
+                    
+                        
     
     def _merge_nodes(self, g_before):
             """
@@ -268,20 +276,15 @@ class HeteroCoarsener(ABC):
                     suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
                     g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
                     
-                    mapping_u = torch.stack((nodes_u, super_nodes), dim=1) 
-                    mapping_v = torch.stack((nodes_v, super_nodes), dim=1)
                     
-                    sorted_indices_u = torch.argsort(mapping_u[:, 0])
-                    sorted_mapping_u = mapping_u[sorted_indices_u]
+                    sorted_mapping_u = self._create_mapping (nodes_u, super_nodes) #mapping_u[sorted_indices_u]
                     
-                    sorted_indices_v = torch.argsort(mapping_v[:, 0])
-                    sorted_mapping_v = mapping_v[sorted_indices_v]
+                    sorted_mapping_v = self._create_mapping (nodes_v, super_nodes)
                     
                     src, dst, eid = g_new.out_edges(nodes_u, form="all", etype=etype)
                     indices = torch.searchsorted(sorted_mapping_u[:, 0], src)
                     result = sorted_mapping_u[indices, 1]
                     adj = g_new.edges[etype].data["adj"][eid]
-                    t = torch.stack((src,dst), dim=1)
                     edges_from_u_super = torch.stack((result,dst), dim=1)
                     g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
                     
@@ -320,21 +323,22 @@ class HeteroCoarsener(ABC):
                     
                     edges = g_new.edges(etype=etype)
                     edge_pairs = torch.stack((edges[0], edges[1]), dim=1)
-                    mask = torch.logical_and(self.vectorwise_isin(edge_pairs, mapping_u) == False , self.vectorwise_isin(edge_pairs, mapping_v) == False)
+                    mask = torch.logical_and(self.vectorwise_isin(edge_pairs, sorted_mapping_u) == False , self.vectorwise_isin(edge_pairs, sorted_mapping_v) == False)
                     mask = mask == False
                     ids = g_new.edge_ids(edges[0][mask], edges[1][mask], etype=etype)
                     g_new.remove_edges(ids, etype=etype)
-                   
-                    edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
-                    
-                    
-                    
-                    
+
+
+
+
+
                     def msg_minus_neigh_s(edges):
                         return {'min':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1)  } #
 
                     def reduce_minus_neigh_s(nodes):
                         return {f's_new': torch.sum(nodes.mailbox['min']  , dim=1)}
+                   
+                    edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
                     rev_sub_g = dgl.reverse(g_new,
                         copy_edata=True,      # duplicates every edge feature tensor
                         share_ndata=True)     # node features remain shared views
@@ -343,12 +347,39 @@ class HeteroCoarsener(ABC):
                     
                     
                     edges_src, edges_dst = g_new.in_edges(super_nodes,  etype=etype)
-
                     rev_sub_g = dgl.reverse(g_new,
                         copy_edata=True,      # duplicates every edge feature tensor
                         share_ndata=True)     # node features remain shared views
                     rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                     g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
+                    
+                    
+                    # H neighbors                    
+                    
+                    # def msg_supernodes_h(edges):
+                    #     return {'min':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1)  } #
+
+                    # def reduce_supernodes_h(nodes):
+                    #     return {f'h_new': torch.sum(nodes.mailbox['min']  , dim=1)}
+                    
+                    # # H Supernodes
+                    # edges_src, edges_dst = g_new.in_edges( super_nodes,  etype=etype)
+
+                    # rev_sub_g = dgl.reverse(g_new,
+                    #     copy_edata=True,      # duplicates every edge feature tensor
+                    #     share_ndata=True)     # node features remain shared views
+                   
+                    # edges_src, edges_dst = g_new.in_edges( torch.cat([nodes_u, nodes_v]),  etype=etype)
+
+                    # rev_sub_g = dgl.reverse(g_new,
+                    #     copy_edata=True,      # duplicates every edge feature tensor
+                    #     share_ndata=True)     # node features remain shared views
+                    # rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
+                    #g_new.nodes[src_type].data[f"h{etype}"] += rev_sub_g.nodes[src_type].data["h_new"]
+
+                    
+                    
+                    
                     
                     
                     
@@ -385,7 +416,11 @@ class HeteroCoarsener(ABC):
                     if src_type == dst_type:
                         g_new = dgl.remove_self_loop(g_new, etype=etype)
                     
-                    
+                    c = g_new.nodes[src_type].data[f"node_size"] 
+                    d = g_new.nodes[src_type].data[f"deg_{etype}"] 
+                    f = g_new.nodes[src_type].data[f"feat"]
+                    s = g_new.nodes[src_type].data[f"s{etype}"]
+                    g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     
                             
                     
