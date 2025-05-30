@@ -3,6 +3,7 @@ import torch
 import dgl
 from Coarsener.HeteroCoarsener import HeteroCoarsener
 import time
+import dgl.backend as F         # this is the backend (torch, TF, etc.)
 
 
 class HeteroRGCNCoarsener(HeteroCoarsener):
@@ -24,8 +25,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             # Precompute normalized degrees
             deg_out = self.summarized_graph.out_degrees(etype= etype)
             n_src =  self.summarized_graph.num_nodes(src_type)
-            c = torch.ones((n_src), device=self.device)
-            self.summarized_graph.nodes[src_type].data['node_size']  = c
+            c = self.summarized_graph.nodes[src_type].data['node_size']
             
             inv_sqrt_out = torch.rsqrt(deg_out + self.summarized_graph.nodes[src_type].data['node_size'])
             
@@ -61,14 +61,99 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             # Compute H = D_out^{-1/2} * S
             H_tensor = inv_sqrt_out.unsqueeze(-1) * S_tensor
 
-            # Store in coarsened_graph
+            # Store in summarized_graph
             self.summarized_graph.nodes[src_type].data[f'i{etype}'] = infl
             
             self.summarized_graph.nodes[src_type].data[f's{etype}'] = S_tensor
            
             self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor + ((feats / (deg_out + c).unsqueeze(1) ))
-            
+           
 
         print("_create_h_spatial_rgcn", time.time() - start_time)
 
+    
+    def _create_h_merged(self,  node1s, node2s,ntype, etype):
+        cache = self.summarized_graph.nodes[ntype].data[f's{etype}']
+        
+        # 1) Flatten your table into two 1-D lists of equal length L:
+        node1s = torch.tensor(node1s, dtype=torch.long, device=self.device)
+        node2s = torch.tensor(node2s, dtype=torch.long, device=self.device)
+
+        # 2) Grab degrees and caches in one go:
+        
+        deg =  self.summarized_graph.nodes[ntype].data[f"deg_{etype}"]
+       
+        deg1 = deg[node1s]  # shape (L,)
+        deg2 = deg[node2s]            # shape (L,)
+
+        
+        su = cache[node1s]            # shape (L, D)
+        sv = cache[node2s]
+        
+                
+        adj1 = self._get_adj(node1s, node2s, etype)
+        adj2 = self._get_adj(node2s, node1s, etype)
+        
+        feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1s]
+        feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2s]
+        
+        
+        cu = self.summarized_graph.nodes[ntype].data["node_size"][node1s].unsqueeze(1)
+        cv = self.summarized_graph.nodes[ntype].data["node_size"][node2s].unsqueeze(1)
+        minus = torch.mul((adj2 / torch.sqrt(deg1 + cu.squeeze() )).unsqueeze(1), feat_u) + torch.mul((adj1 / torch.sqrt(deg2 + cv.squeeze() )).unsqueeze(1), feat_v) # + torch.matmul( (adj / torch.sqrt(deg2 + cv.squeeze() )), feat_v)
+        
+
+        # 3) Cluster‐size term (make sure cluster_sizes is a tensor):
+      
+        cuv = cu + cv  # shape (L,)
+
+        # 4) Single vectorized compute of h for all L pairs:
+        #    (we broadcast / unsqueeze cuv into the right D-dimensional form)
+        feat = (feat_u*cu + feat_v*cv) / (cu + cv)
+        h_all = ((su + sv) - minus )/ torch.sqrt((deg1 + deg2 + cuv.squeeze())).unsqueeze(1 ) + feat * ( cuv.squeeze() / ((deg1 + deg2 + cuv.squeeze()))).unsqueeze(1)  #+   #)  # (L, D)
+
+        return h_all
+    
+        
+    def _h_costs(self,type_pairs):
+        costs_dict = {}
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            # ensure nested dict
+            costs_dict.setdefault(src_type, {})[etype] = {}
+            # compute all merged h representations in one go
+            self.summarized_graph.edges[etype].data["adj"] = torch.ones(self.summarized_graph.num_edges(etype=etype), device=self.device)
+
+            H_merged = self._create_h_merged( type_pairs[src_type][:,0],type_pairs[src_type][:,1], src_type, etype)
+            
+            
+            # flatten all (u,v) pairs same as above
+            
+
+            node1_ids = type_pairs[src_type][:,0]  # [P]
+            node2_ids = type_pairs[src_type][:,1]    # [P]
+
+            # gather representations
+            h1 = self.summarized_graph.nodes[src_type].data[f"h{etype}"][node1_ids]  # [P, H]
+            h2 = self.summarized_graph.nodes[src_type].data[f"h{etype}"][node2_ids]  # [P, H]
+            # build a dense [num_src, hidden] tensor
+            #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
+            merged = H_merged                               # [P, H]
+            
+            
+            
+            
+            # L1 costs
+            cost = torch.norm(merged - h1, p=1, dim=1) + torch.norm(merged - h2, p=1, dim=1)
+            self.merge_graphs[src_type] = dgl.graph(([], []), num_nodes=self.summarized_graph.number_of_nodes(ntype=src_type), device=self.device)
+            self.merge_graphs[src_type].add_edges(type_pairs[src_type][:,0],type_pairs[src_type][:,1])
+            self.merge_graphs[src_type].edata["costs"] = cost 
+            
+                
+            
+        return costs_dict
+    def _init_merge_graphs(self, type_pairs):
+        self.merge_graphs = dict()
+        self.init_costs_dict_etype = self._h_costs( type_pairs)
+      
+         
 
