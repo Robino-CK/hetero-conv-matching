@@ -236,21 +236,14 @@ class HeteroCoarsener(ABC):
                 feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
                 feat_uv = (feat_u * cu + feat_v * cv) / (cu + cv)
                 new_graph_size = g_new.num_nodes(ntype=node_type)
-                g_new.nodes[node_type].data["feat_u"] = torch.zeros((new_graph_size,1), device=self.device)
-                g_new.nodes[node_type].data["feat_u"][super_nodes] = feat_u
-                g_new.nodes[node_type].data["feat_v"] = torch.zeros((new_graph_size,1), device=self.device)
-                g_new.nodes[node_type].data["feat_v"][super_nodes] = feat_v
+     
                 g_new.nodes[node_type].data["feat"][super_nodes] = feat_uv
                 
                 
                 cu = g_new.nodes[node_type].data["node_size"][nodes_u]
                 cv = g_new.nodes[node_type].data["node_size"][nodes_v]
                 
-                g_new.nodes[node_type].data["node_size_u"] = torch.zeros(new_graph_size, device=self.device)
-                g_new.nodes[node_type].data["node_size_u"][super_nodes] = cu
-                g_new.nodes[node_type].data["node_size_v"] = torch.zeros(new_graph_size, device=self.device)
-                
-                g_new.nodes[node_type].data["node_size_v"][super_nodes] = cv
+             
                 cuv = cu + cv
                 
                 g_new.nodes[node_type].data["node_size"][super_nodes] = cuv
@@ -263,17 +256,9 @@ class HeteroCoarsener(ABC):
                     dv = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
                     duv = du + dv
                     g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = duv
-                    g_new.nodes[node_type].data[f"deg_{etype}_u"] = torch.zeros(new_graph_size, device=self.device)
-                    g_new.nodes[node_type].data[f"deg_{etype}_u"][super_nodes] = du
-                    g_new.nodes[node_type].data[f"deg_{etype}_v"] = torch.zeros(new_graph_size, device=self.device)
-                    g_new.nodes[node_type].data[f"deg_{etype}_v"][super_nodes] = dv
                     su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
                     sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
                     
-                    g_new.nodes[node_type].data[f's{etype}_u'] = torch.zeros((new_graph_size,1), device=self.device)
-                    g_new.nodes[node_type].data[f's{etype}_u'][super_nodes] = su
-                    g_new.nodes[node_type].data[f's{etype}_v'] = torch.zeros((new_graph_size,1), device=self.device)
-                    g_new.nodes[node_type].data[f's{etype}_v'][super_nodes] = sv
                     
                     adj_uv = self._get_adj(nodes_u, nodes_v, etype)
                     adj_vu = self._get_adj(nodes_v, nodes_u, etype)
@@ -333,12 +318,12 @@ class HeteroCoarsener(ABC):
                     
                     nodes_uv = torch.cat([nodes_u, nodes_v])
                     
-                    edges = g_new.edges()
+                    edges = g_new.edges(etype=etype)
                     edge_pairs = torch.stack((edges[0], edges[1]), dim=1)
                     mask = torch.logical_and(self.vectorwise_isin(edge_pairs, mapping_u) == False , self.vectorwise_isin(edge_pairs, mapping_v) == False)
                     mask = mask == False
-                    ids = g_new.edge_ids(edges[0][mask], edges[1][mask])
-                    g_new.remove_edges(ids)
+                    ids = g_new.edge_ids(edges[0][mask], edges[1][mask], etype=etype)
+                    g_new.remove_edges(ids, etype=etype)
                    
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
                     
@@ -426,7 +411,7 @@ class HeteroCoarsener(ABC):
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)
         self._init_merge_graphs(type_pairs)
-        self.candidates = {"user": [(1,3),(2,4)]} #self._find_lowest_costs()
+        self.candidates = self._find_lowest_costs()
        
     def coarsen_step(self):
         

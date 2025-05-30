@@ -12,8 +12,8 @@ if __name__ == "__main__":
     coarsener.coarsen_step()
     cit = Citeseer()
     cit.load_graph()
-   # num_nearest_init_neighbors_per_type = {"paper": 10, "cites": 10, "cited-by":10}
-   # coarsener = HeteroRGCNCoarsener(cit.load_graph(), 0.4, num_nearest_init_neighbors_per_type)
+    num_nearest_init_neighbors_per_type = {"paper": 10, "cites": 10, "cited-by":10}
+    coarsener = HeteroRGCNCoarsener(cit.load_graph(), 0.4, num_nearest_init_neighbors_per_type)
     
-   # coarsener.init()
-   # coarsener.coarsen_step()
+    coarsener.init()
+    coarsener.coarsen_step()
