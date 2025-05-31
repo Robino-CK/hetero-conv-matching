@@ -5,9 +5,10 @@ from abc import ABC, abstractmethod
 import time
 import dgl.function as fn
 import numpy as np
+from collections import Counter
 class HeteroCoarsener(ABC):
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10, device="cpu"):
-        self.original_graph = graph
+        self.original_graph = graph.to(device)
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
         
@@ -44,7 +45,13 @@ class HeteroCoarsener(ABC):
         pass    
     
     def _get_adj(self, nodes_u, nodes_v, etype):
-        exists = self.summarized_graph.has_edges_between(nodes_u, nodes_v, etype=etype)
+        if len(nodes_u) == 0:
+            return torch.zeros(0)
+        try:
+            exists = self.summarized_graph.has_edges_between(nodes_u, nodes_v, etype=etype)
+        except:
+           print(nodes_u, nodes_v) 
+           print( self.candidates)
         adj = torch.zeros(len(nodes_u), device=self.device)
         
                        # Get indices where the edge exists
@@ -146,7 +153,7 @@ class HeteroCoarsener(ABC):
                 continue
             costs = self.merge_graphs[ntype].edata["costs"]
             edges = self.merge_graphs[ntype].edges()
-            k = min(self.num_nearest_init_neighbors_per_type[ntype] * self.pairs_per_level, costs.shape[0])
+            k = min(self.num_nearest_init_neighbors_per_type[ntype] * self.pairs_per_level * 20, costs.shape[0])
             lowest_costs = torch.topk(costs, k, largest=False, sorted=True)
             
             # Vectorizing the loop
@@ -165,7 +172,9 @@ class HeteroCoarsener(ABC):
                 dst_node = dst_nodes[i]
                 if src_node in nodes or dst_node in nodes:
                     continue
-
+                if src_node == dst_node:
+                    continue
+                
                 topk_non_overlapping.append((src_node, dst_node))
                 nodes.add(src_node)
                 nodes.add(dst_node)
@@ -236,8 +245,9 @@ class HeteroCoarsener(ABC):
                 mapping[nodes_v] = g_new.nodes(ntype=node_type)[num_nodes_before:]
                 counts_u = (mapping.unsqueeze(1) > nodes_u).sum(dim=1) 
                 counts_v = (mapping.unsqueeze(1) > nodes_v).sum(dim=1) 
-                
+                assert all( mapping - counts_u - counts_v > -1), f"mapping wrong '{mapping}, {counts_u}, {counts_v}"
                 mapping = mapping - counts_u - counts_v
+                assert all(mapping > -1) , f"mapping wrong '{mapping}, {counts_u}, {counts_v}"
                 mappings[node_type] = mapping
                 
                 feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
@@ -352,34 +362,7 @@ class HeteroCoarsener(ABC):
                         share_ndata=True)     # node features remain shared views
                     rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                     g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
-                    
-                    
-                    # H neighbors                    
-                    
-                    # def msg_supernodes_h(edges):
-                    #     return {'min':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1)  } #
 
-                    # def reduce_supernodes_h(nodes):
-                    #     return {f'h_new': torch.sum(nodes.mailbox['min']  , dim=1)}
-                    
-                    # # H Supernodes
-                    # edges_src, edges_dst = g_new.in_edges( super_nodes,  etype=etype)
-
-                    # rev_sub_g = dgl.reverse(g_new,
-                    #     copy_edata=True,      # duplicates every edge feature tensor
-                    #     share_ndata=True)     # node features remain shared views
-                   
-                    # edges_src, edges_dst = g_new.in_edges( torch.cat([nodes_u, nodes_v]),  etype=etype)
-
-                    # rev_sub_g = dgl.reverse(g_new,
-                    #     copy_edata=True,      # duplicates every edge feature tensor
-                    #     share_ndata=True)     # node features remain shared views
-                    # rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
-                    #g_new.nodes[src_type].data[f"h{etype}"] += rev_sub_g.nodes[src_type].data["h_new"]
-
-                    
-                    
-                    
                     
                     
                     
@@ -427,24 +410,70 @@ class HeteroCoarsener(ABC):
             print("_merge_nodes", time.time() - start_time)
             return g_new, mappings
 
-                
-    def _update_s(self, g_before, g_after, mappings):
-        for src_type, etype,dst_type in g_before.canonical_etypes:
-            mapping_src = mappings[src_type]
-            mapping_dst = mappings[dst_type]
 
             
-
-
-    def _calc_costs(self):
-        pass
     
    # @abstractmethod
-    def reduce_merge_graph():
-        pass
+    def reduce_merge_graph(self, mappings):
+        for node_type, node_pairs in self.candidates.items():
+            
+            mapping = mappings[node_type]
+           
+            merge_graph_copy = deepcopy(self.merge_graphs[node_type])
+            all_eids = merge_graph_copy.edges(form='eid')
+            
+            self.merge_graphs[node_type].remove_edges(all_eids)
+            edges_original = merge_graph_copy.edges()
+            
+            
+            new_edges = torch.stack((mapping[edges_original[0]], mapping[edges_original[1]]))
+            pairs = torch.stack((new_edges[0], new_edges[1]), dim=1)
+            
+            
+            uniq_pairs = torch.unique( pairs, dim=0)
+           
+            
+            self.merge_graphs[node_type].add_edges(uniq_pairs[:,0], uniq_pairs[:,1])
+            self.merge_graphs[node_type] = self.merge_graphs[node_type].remove_self_loop()
+
+
+    
+                    
+    def get_labels(self, mapping, ntype):
+        
+        labels_dict = dict()
+        inverse_mapping = dict()
+        for ori_node, coar_node in mapping.items():
+            if coar_node in inverse_mapping:
+                inverse_mapping[coar_node].append(ori_node)
+            else:
+                inverse_mapping[coar_node] = [ori_node]
+        for coar_node, ori_list in inverse_mapping.items():
+            label_list = []
+            for ori_node in ori_list:
+                label_list.append(self.original_graph.nodes[ntype].data["label"][ori_node].item())
+            counter = Counter(label_list)
+            
+            labels_dict[coar_node],_ = counter.most_common()[0]
+        
+        return labels_dict
+
+    
+    def get_mapping(self, ntype):
+        master_mapping = dict()
+        nodes_orig = self.original_graph.nodes(ntype)
+        nodes = self.original_graph.nodes(ntype)
+        for mapping in self.mappings:
+            nodes = mapping[ntype][nodes]
+        for i in range(len(nodes)):
+            master_mapping[nodes_orig[i].item()] = nodes[i].item()
+        
+        return master_mapping 
     
     
     def init(self):
+        self.mappings = [] 
+        
         self._create_gnn_layer()
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)
@@ -452,8 +481,11 @@ class HeteroCoarsener(ABC):
         self.candidates = self._find_lowest_costs()
        
     def coarsen_step(self):
+        self.summarized_graph, mappings = self._merge_nodes(self.summarized_graph)
+        self.mappings.append(mappings)
+        self.reduce_merge_graph(mappings)
+        self._h_costs()
+        self._create_neighbor_costs()
+        self.candidates = self._find_lowest_costs()
         
-        new_g, mappings = self._merge_nodes(self.summarized_graph)
-        
-        t = 2
     
