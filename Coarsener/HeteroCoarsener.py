@@ -349,19 +349,25 @@ class HeteroCoarsener(ABC):
                         return {f's_new': torch.sum(nodes.mailbox['min']  , dim=1)}
                    
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
-                    rev_sub_g = dgl.reverse(g_new,
+                    if len(edges_dst) > 0:
+                    
+                        rev_sub_g = dgl.reverse(g_new,
                         copy_edata=True,      # duplicates every edge feature tensor
                         share_ndata=True)     # node features remain shared views
-                    rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
-                    g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
                     
+                        rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
+                        g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
                     
+ 
                     edges_src, edges_dst = g_new.in_edges(super_nodes,  etype=etype)
-                    rev_sub_g = dgl.reverse(g_new,
-                        copy_edata=True,      # duplicates every edge feature tensor
-                        share_ndata=True)     # node features remain shared views
-                    rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
-                    g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
+                    if len(edges_dst) > 0:
+                    
+                    
+                        rev_sub_g = dgl.reverse(g_new,
+                            copy_edata=True,      # duplicates every edge feature tensor
+                            share_ndata=True)     # node features remain shared views
+                        rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
+                        g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
 
                     
                     

@@ -9,7 +9,7 @@ from torch_scatter import scatter_add
 class HeteroRGCNCoarsener(HeteroCoarsener):
     
     
-    def _create_gnn_layer(self):
+    def _create_gnn_layer(self, k = 1):
         
         """
         Vectorized GPU implementation of spatial RGCN coarsening.
