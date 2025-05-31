@@ -5,7 +5,7 @@ from Data.Citeseer import Citeseer
 import dgl.function as fn
 if __name__ == "__main__":
     test = TestHomo()
-    num_nearest_init_neighbors_per_type = {"follows": 10, "user": 10}
+    num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
     coarsener = HeteroRGCNCoarsener(test.g, 0.4, num_nearest_init_neighbors_per_type)
     
     coarsener.init()

@@ -114,16 +114,78 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
 
         return h_all
     
+    def _create_neighbor_costs(self):
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            
+            merge_graph = self.merge_graphs[src_type] 
+            merge_node_u, merge_node_v, merge_graph_eid = merge_graph.edges(form="all")
+            
+            
+            
+            
+            sum_graph_src_from_merge_graph, merge_pairs_dst, neigbors_ei = self.summarized_graph.in_edges(merge_node_u,form = "all",etype=etype)
+            
+            
+            h = self.summarized_graph.nodes[src_type].data[f"h{etype}"][merge_pairs_dst]
+            ci = self.summarized_graph.nodes[src_type].data["node_size"][merge_pairs_dst]
+            di = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][merge_pairs_dst]
+            fi = self.summarized_graph.nodes[src_type].data[f"feat"][merge_pairs_dst]
+            fi = self.summarized_graph.nodes[src_type].data[f"s{etype}"][merge_pairs_dst]
+            h_prim = (ci / (ci + di)).unsqueeze(1) * fi + (1 / torch.sqrt(di + ci)).unsqueeze(1) * fi
+            
+            
+            
+            
+            mapping_merge_src_dst = self._create_mapping(merge_node_u, merge_node_v)
+            cu = self.summarized_graph.nodes[src_type].data["node_size"][sum_graph_src_from_merge_graph]
+            du = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][sum_graph_src_from_merge_graph]
+            fu = self.summarized_graph.nodes[src_type].data[f"feat"][sum_graph_src_from_merge_graph]
+            a_ui = self._get_adj(sum_graph_src_from_merge_graph, merge_pairs_dst, etype=etype)
+            #a_u_i = 
+            
+            indices = torch.searchsorted(mapping_merge_src_dst[:,0], merge_pairs_dst)
+            result = mapping_merge_src_dst[indices, 1]
+            self.summarized_graph.nodes[src_type].data["node_size"][result]
+           #
+            cv = self.summarized_graph.nodes[src_type].data["node_size"][result]
+            dv = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][result]
+            fv = self.summarized_graph.nodes[src_type].data[f"feat"][result]
+            
+            f_uv = (cu.unsqueeze(1) * fu + fv * cv.unsqueeze(1) ) / (cu + cv).unsqueeze(1)
+            a_vi = self._get_adj(merge_pairs_dst, result, etype=etype)
+            
+             
+            h_prim += (a_ui + a_vi).unsqueeze(1) / torch.sqrt( (di + ci) * (du + dv + cu + cv)).unsqueeze(1)  * f_uv
+            h_prim -= (a_ui).unsqueeze(1) / torch.sqrt( (di + ci) * (du +cu )).unsqueeze(1)  * fu
+            h_prim -= (a_vi).unsqueeze(1) / torch.sqrt( (di + ci) * (dv +cv )).unsqueeze(1)  * fv
+            
+          
+            costs = torch.norm(h - h_prim, p = 1, dim = 1)
+            mapping_merge_node_merge_eid = self._create_mapping(merge_node_u, merge_graph_eid)
+            
+            mapping_sumg_mg_src_to_sum_eid = self._create_mapping(sum_graph_src_from_merge_graph, neigbors_ei)
+            indices = torch.searchsorted(mapping_merge_node_merge_eid[:,0], sum_graph_src_from_merge_graph) 
+            result = mapping_merge_node_merge_eid[indices, 1]
+               
+            merge_graph.edata["costs"][merge_graph_eid][result] += costs
+            
+        pass
+    
         
-    def _h_costs(self,type_pairs):
-        costs_dict = {}
+    def _h_costs(self,type_pairs=None):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             # ensure nested dict
-            costs_dict.setdefault(src_type, {})[etype] = {}
+            if type_pairs:
+                self.merge_graphs[src_type] = dgl.graph(([], []), num_nodes=self.summarized_graph.number_of_nodes(ntype=src_type), device=self.device)
+              # self.merge_graphs[src_type] = dgl.to_bidirected(self.merge_graphs[src_type])
+                self.merge_graphs[src_type].add_edges(type_pairs[src_type][:,0],type_pairs[src_type][:,1])
+            
+            
+            src, dst = self.merge_graphs[src_type].edges()
+            
+             
             # compute all merged h representations in one go
-            self.summarized_graph.edges[etype].data["adj"] = torch.ones(self.summarized_graph.num_edges(etype=etype), device=self.device)
-
-            H_merged = self._create_h_merged( type_pairs[src_type][:,0],type_pairs[src_type][:,1], src_type, etype)
+            H_merged = self._create_h_merged(src,dst, src_type, etype)
             
             
             # flatten all (u,v) pairs same as above
@@ -144,16 +206,22 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             # L1 costs
             cost = torch.norm(merged - h1, p=1, dim=1) + torch.norm(merged - h2, p=1, dim=1)
-            self.merge_graphs[src_type] = dgl.graph(([], []), num_nodes=self.summarized_graph.number_of_nodes(ntype=src_type), device=self.device)
-            self.merge_graphs[src_type].add_edges(type_pairs[src_type][:,0],type_pairs[src_type][:,1])
+            
             self.merge_graphs[src_type].edata["costs"] = cost 
-            
+            #
                 
-            
-        return costs_dict
     def _init_merge_graphs(self, type_pairs):
         self.merge_graphs = dict()
-        self.init_costs_dict_etype = self._h_costs( type_pairs)
+        self._h_costs( type_pairs)
+        self._create_neighbor_costs()
+            
+        
+        
+    def _update_merge_graph(self, type_pairs):
+        self._update_h_costs( type_pairs)
+        
+    
+        
       
          
 

@@ -439,7 +439,10 @@ class HeteroCoarsener(ABC):
     def _calc_costs(self):
         pass
     
-
+   # @abstractmethod
+    def reduce_merge_graph():
+        pass
+    
     
     def init(self):
         self._create_gnn_layer()
