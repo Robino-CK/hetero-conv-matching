@@ -81,7 +81,7 @@ class HeteroCoarsener(ABC):
             if use_feat and 'feat' in self.summarized_graph.nodes[node_type].data:
                 H = self.summarized_graph.nodes[node_type].data['feat'].float()
             elif etype is not None and f'h{etype}' in self.summarized_graph.nodes[node_type].data:
-                H = self.summarized_graph.nodes[node_type].data[f'h{etype}'].float()
+                H = self.summarized_graph.nodes[node_type].data[f'SGC{etype}'].float()
       
 
             H = H.to(self.device)
@@ -402,8 +402,8 @@ class HeteroCoarsener(ABC):
                     g_new.edges[etype].data["adj"][eids] = sums
 
             
-                    if src_type == dst_type:
-                        g_new = dgl.remove_self_loop(g_new, etype=etype)
+                    # if src_type == dst_type:
+                    #     g_new = dgl.remove_self_loop(g_new, etype=etype)
                     
                     c = g_new.nodes[src_type].data[f"node_size"] 
                     d = g_new.nodes[src_type].data[f"deg_{etype}"] 
@@ -479,7 +479,7 @@ class HeteroCoarsener(ABC):
     
     def init(self):
         self.mappings = [] 
-        
+        self._create_sgn_layer()
         self._create_gnn_layer()
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)

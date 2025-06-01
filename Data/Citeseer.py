@@ -25,13 +25,13 @@ class Citeseer():
 
 
         # Reduce to 50 dimensions (you can adjust this)
-        reduced_feat = self.reduce_features(data, n_components=5)
+        reduced_feat = self.reduce_features(data, n_components=100)
 
         # Build heterogeneous graph with 'cites' and 'cited-by' relations
         src, dst = g.edges()
         data_dict = {
             ('paper', 'cites', 'paper'): (src, dst),
-         #   ('paper', 'cited-by', 'paper'): (dst, src)
+   #         ('paper', 'cited-by', 'paper'): (dst, src)
         }
         hetero_g = dgl.heterograph(data_dict)
 
