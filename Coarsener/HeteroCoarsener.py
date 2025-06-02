@@ -7,11 +7,11 @@ import dgl.function as fn
 import numpy as np
 from collections import Counter
 class HeteroCoarsener(ABC):
-    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10, device="cpu"):
+    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= True, device="cpu"):
         self.original_graph = graph.to(device)
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
-        
+        self.approx_neigh = approx_neigh
         self.r = r
         self.device = device
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
@@ -341,13 +341,17 @@ class HeteroCoarsener(ABC):
 
 
 
-
+                    g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
                     def msg_minus_neigh_s(edges):
-                        return {'min':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1)  } #
+                        return {'s':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1) ,
+                                'i':edges.data['adj']/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']) ,
+                                
+                                
+                                } #
 
                     def reduce_minus_neigh_s(nodes):
-                        return {f's_new': torch.sum(nodes.mailbox['min']  , dim=1)}
-                   
+                        return {f's_new': torch.sum(nodes.mailbox['s']  , dim=1), f'i_new': torch.sum(nodes.mailbox['i']  , dim=1)}
+                    # update Neigbors
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
                     if len(edges_dst) > 0:
                     
@@ -357,8 +361,9 @@ class HeteroCoarsener(ABC):
                     
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
+                        g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
                     
- 
+                    # update U,V
                     edges_src, edges_dst = g_new.in_edges(super_nodes,  etype=etype)
                     if len(edges_dst) > 0:
                     
@@ -368,6 +373,8 @@ class HeteroCoarsener(ABC):
                             share_ndata=True)     # node features remain shared views
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
+                        g_new.nodes[node_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
+                    
 
                     
                     
@@ -486,12 +493,12 @@ class HeteroCoarsener(ABC):
         self._init_merge_graphs(type_pairs)
         self.candidates = self._find_lowest_costs()
        
+    @abstractmethod
+    def _update_merge_graph(self, mappings):
+        pass
     def coarsen_step(self):
         self.summarized_graph, mappings = self._merge_nodes(self.summarized_graph)
         self.mappings.append(mappings)
-        self.reduce_merge_graph(mappings)
-        self._h_costs()
-        self._create_neighbor_costs()
-        self.candidates = self._find_lowest_costs()
+        self._update_merge_graph(mappings)
         
     

@@ -126,7 +126,28 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
 
         return h_all
     
-    def pair_neighbour_difference(self,g, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype):
+    def neigbor_approx_difference_per_pair(self,g, pairs,  d_node, c_node, infl_node, feat_node, etype):
+        u, v = pairs[:,0], pairs[:,1]
+        cu = c_node[u]
+        cv = c_node[v]
+        
+        du = d_node[u]
+        dv = d_node[v]
+        
+        iu = infl_node[u]
+        iv = infl_node[v]
+        
+        feat_u = feat_node[u]
+        feat_v = feat_node[v]
+        
+        feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
+        
+        
+        neigh_cost_u = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_u / torch.sqrt(du + cu).unsqueeze(1))) , dim=1, p=1)   * iu
+        neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=1)   * iv
+        return neigh_cost_u + neigh_cost_v
+    
+    def neigbor_difference_per_pair(self,g, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype):
         """
         For every pair (u,v) and every neighbour n of u or v compute
 
@@ -253,7 +274,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
 
         return pair_d_sum
 
-  
+    
     
     def _create_neighbor_costs(self):
         start_time = time.time()
@@ -267,9 +288,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             c_node = cv = self.summarized_graph.nodes[src_type].data["node_size"]
             s_node =  self.summarized_graph.nodes[src_type].data[f"s{etype}"]
             feat_node = self.summarized_graph.nodes[src_type].data[f"feat"]
+            infl_node = self.summarized_graph.nodes[src_type].data[f"i{etype}"]
           
             a_edge = self.summarized_graph.edges[etype].data[f"adj"]
-            neighbors_cost  = self.pair_neighbour_difference(self.summarized_graph, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype)
+            if self.approx_neigh:
+                neighbors_cost  = self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs,d_node, c_node, infl_node, feat_node, etype)
+            else:            
+                neighbors_cost  = self.neigbor_difference_per_pair(self.summarized_graph, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype)
             merge_graph.edata["costs"] += neighbors_cost
         print("_create_neighbor_costs", time.time() - start_time)
     
@@ -325,8 +350,11 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
         
         
-    def _update_merge_graph(self, type_pairs):
-        self._update_h_costs( type_pairs)
+    def _update_merge_graph(self, mappings):
+        self.reduce_merge_graph(mappings)
+        self._h_costs()
+        self._create_neighbor_costs()
+        self.candidates = self._find_lowest_costs()
         
         
     
