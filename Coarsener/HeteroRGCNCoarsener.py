@@ -11,7 +11,11 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
     def _create_sgn_layer(self, k =1):
         for src_type, etype, _ in self.summarized_graph.canonical_etypes:
             g = dgl.add_self_loop(self.summarized_graph, etype=etype)
-            A = g.adj_external(etype=etype).to_dense()
+            if self.device == "cpu":
+                A = g.adj_external(etype=etype).to_dense()
+            else:
+                A = g.adj(etype=etype).to_dense()
+                
             D = torch.diag(torch.rsqrt(torch.sum(A, dim=1)))
             feat =  self.summarized_graph.nodes[src_type].data['feat']
             H =  torch.pow((D @A @  D), k ) @ feat
