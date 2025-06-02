@@ -37,7 +37,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             c = self.summarized_graph.nodes[src_type].data['node_size']
             
             inv_sqrt_out = torch.rsqrt(deg_out + self.summarized_graph.nodes[src_type].data['node_size'])
-            
+            inv_sqrt_in = torch.rsqrt(self.summarized_graph.in_degrees(etype= etype) + self.summarized_graph.nodes[dst_type].data['node_size'])
 
             # Load features or use scalar 1
             if has_feat:
@@ -66,7 +66,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             S_tensor = torch.zeros((n_src, feat_dim), device=self.device)
             S_tensor = S_tensor.index_add(0, u, s_e)
             infl = torch.zeros(n_src, device=self.device)
-            infl = infl.index_add(0, u, inv_sqrt_out[v])
+            infl = infl.index_add(0, v, inv_sqrt_in[u])
 
             # Compute H = D_out^{-1/2} * S
             H_tensor = inv_sqrt_out.unsqueeze(-1) * S_tensor
@@ -127,15 +127,22 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         return h_all
     
     def neigbor_approx_difference_per_pair(self,g, pairs,  d_node, c_node, infl_node, feat_node, etype):
+        src, dst = g.edges(etype=etype)
+        edges = torch.stack((src, dst), dim=1)  # (E, 2)
         u, v = pairs[:,0], pairs[:,1]
+        mask = True#self.vectorwise_isin(pairs, edges) == False
+        
+        adj = self._get_adj(u,v , etype=etype) + self._get_adj(v,u , etype=etype)
+   #     adj_vu = self._get_adj(v,u , etype=etype)
+        
         cu = c_node[u]
         cv = c_node[v]
         
         du = d_node[u]
         dv = d_node[v]
         
-        iu = infl_node[u]
-        iv = infl_node[v]
+        iu = infl_node[u] - (adj / torch.sqrt(dv + cv)) 
+        iv = infl_node[v]  - (adj / torch.sqrt(du + cu))
         
         feat_u = feat_node[u]
         feat_v = feat_node[v]
@@ -145,6 +152,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         neigh_cost_u = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_u / torch.sqrt(du + cu).unsqueeze(1))) , dim=1, p=1)   * iu
         neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=1)   * iv
+        #res = torch.where(mask,  neigh_cost_u + neigh_cost_v, torch.tensor(0.0, device=self.device))
         return neigh_cost_u + neigh_cost_v
     
     def neighbor_difference_per_pair(self,g, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype):
