@@ -11,7 +11,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
     def _create_sgn_layer(self, k =1):
         for src_type, etype, _ in self.summarized_graph.canonical_etypes:
             g = dgl.add_self_loop(self.summarized_graph, etype=etype)
-            A = g.adj(etype=etype).to_dense()
+            A = g.adj_external(etype=etype).to_dense()
             D = torch.diag(torch.rsqrt(torch.sum(A, dim=1)))
             feat =  self.summarized_graph.nodes[src_type].data['feat']
             H =  torch.pow((D @A @  D), k ) @ feat
@@ -147,7 +147,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=1)   * iv
         return neigh_cost_u + neigh_cost_v
     
-    def neigbor_difference_per_pair(self,g, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype):
+    def neighbor_difference_per_pair(self,g, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype):
         """
         For every pair (u,v) and every neighbour n of u or v compute
 
@@ -294,8 +294,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             if self.approx_neigh:
                 neighbors_cost  = self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs,d_node, c_node, infl_node, feat_node, etype)
             else:            
-                neighbors_cost  = self.neigbor_difference_per_pair(self.summarized_graph, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype)
-            merge_graph.edata["costs"] += neighbors_cost
+                neighbors_cost  = self.neighbor_difference_per_pair(self.summarized_graph, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype)
+            merge_graph.edata["costs_neig"] = neighbors_cost
         print("_create_neighbor_costs", time.time() - start_time)
     
     
@@ -340,13 +340,15 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             # L1 costs
             cost = torch.norm(merged - h1, p=1, dim=1) + torch.norm(merged - h2, p=1, dim=1)
             
-            self.merge_graphs[src_type].edata["costs"] = cost 
+            self.merge_graphs[src_type].edata["costs_h"] = cost 
         print("_h_costs", time.time() - start_time)
                 
     def _init_merge_graphs(self, type_pairs):
         self.merge_graphs = dict()
         self._h_costs( type_pairs)
         self._create_neighbor_costs()
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
             
         
         
@@ -354,6 +356,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         self.reduce_merge_graph(mappings)
         self._h_costs()
         self._create_neighbor_costs()
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
         self.candidates = self._find_lowest_costs()
         
         
