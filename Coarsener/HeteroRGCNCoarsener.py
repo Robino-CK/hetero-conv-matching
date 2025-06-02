@@ -141,8 +141,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         du = d_node[u]
         dv = d_node[v]
         
-        iu = infl_node[u] - (adj / torch.sqrt(dv + cv)) 
-        iv = infl_node[v]  - (adj / torch.sqrt(du + cu))
+        iu = infl_node[u] 
+        iv = infl_node[v]
         
         feat_u = feat_node[u]
         feat_v = feat_node[v]
