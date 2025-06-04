@@ -31,7 +31,7 @@ class Citeseer():
         src, dst = g.edges()
         data_dict = {
             ('paper', 'cites', 'paper'): (src, dst),
-   #         ('paper', 'cited-by', 'paper'): (dst, src)
+    #        ('paper', 'cited-by', 'paper'): (dst, src)
         }
         hetero_g = dgl.heterograph(data_dict)
 
