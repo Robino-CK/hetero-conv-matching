@@ -76,8 +76,8 @@ class MultiGraphTest(unittest.TestCase):
             [[5.1378 / torch.sqrt(torch.tensor(6))]], device=self.device)
         
         
-        # g, mapping = self.coarsener._merge_nodes(self.coarsener.summarized_graph)
-        # torch.testing.assert_close(g.nodes["circle"].data[f"hcircle_to_triangle"], merged_h_real, rtol=0, atol=0.1)
+        g, mapping = self.coarsener._merge_nodes(self.coarsener.summarized_graph)
+        torch.testing.assert_close(g.nodes["circle"].data[f"hcircle_to_triangle"], merged_h_real, rtol=0, atol=0.1)
     
         self.coarsener.candidates = {"square": [],   "triangle" : torch.tensor([[0,2]], dtype=torch.int64), "circle": torch.tensor([[0, 1] ], dtype=torch.int64), } #"triangle" : []
         
@@ -88,3 +88,4 @@ class MultiGraphTest(unittest.TestCase):
         
         g, mapping = self.coarsener._merge_nodes(self.coarsener.summarized_graph)
         torch.testing.assert_close(g.nodes["circle"].data[f"hcircle_to_triangle"], merged_h_real, rtol=0, atol=0.1)
+        pass
