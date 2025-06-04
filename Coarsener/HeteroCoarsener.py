@@ -7,17 +7,20 @@ import dgl.function as fn
 import numpy as np
 from collections import Counter
 class HeteroCoarsener(ABC):
-    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= True, device="cpu"):
+    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= True, add_feat=True, device="cpu"):
         self.original_graph = graph.to(device)
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
+        self.add_feat = add_feat
         self.device = device
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
+        for ntype in self.summarized_graph.ntypes:
+            self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
+            
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            self.summarized_graph.nodes[src_type].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(src_type), device=self.device)
             self.summarized_graph.edges[etype].data["adj"] = torch.ones(self.summarized_graph.num_edges(etype=etype), device=self.device)
         
         self._update_deg()
@@ -39,6 +42,11 @@ class HeteroCoarsener(ABC):
             
             rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
             self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
+            
+            g = deepcopy(self.summarized_graph)
+            g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
+            
+            self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = g.nodes[dst_type].data[f"deg_{etype}"]
     
     @abstractmethod
     def _create_gnn_layer(self):
@@ -210,7 +218,183 @@ class HeteroCoarsener(ABC):
         return mapping[sorted_indices]
                     
                         
+               
+                
+            
+    def _create_full_nodes(self, g_before, g_new, mappings):
+        self.mappings_temp_v = dict()
+        self.mappings_temp_u = dict()
+        
+        
+        for node_type, node_pairs in self.candidates.items():
+            mappings[node_type] = torch.arange(0, g_new.num_nodes(ntype=node_type), dtype=torch.int64,device=self.device )
+                
+            if len(node_pairs) == 0:
+                continue
+            
+            
+            
+            nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+            
+            nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+            
+            
+            num_pairs = len(node_pairs)
+            num_nodes_before = g_new.num_nodes(ntype= node_type)
+            if "feat" in  g_new.nodes[node_type].data:
+                old_feats = g_new.nodes[node_type].data["feat"]
+                feat_u = old_feats[nodes_u]
+                feat_v = old_feats[nodes_v]
+            cu = g_new.nodes[node_type].data["node_size"][nodes_u].unsqueeze(1)
+            cv = g_new.nodes[node_type].data["node_size"][nodes_v].unsqueeze(1)
+            
+            g_new.add_nodes(num_pairs, ntype=node_type)
+            
+            g_new.nodes[node_type].data["node_size"][num_nodes_before:] = (cu + cv).squeeze()
+            if "feat" in  g_new.nodes[node_type].data:
+                g_new.nodes[node_type].data["feat"][num_nodes_before:] = (feat_u * cu  + feat_v * cv ) / (cu + cv)
+            super_nodes = g_new.nodes(ntype= node_type)[num_nodes_before:]
+            
+            
+            self.mappings_temp_u[node_type] = self._create_mapping(nodes_u, super_nodes)
+            self.mappings_temp_v[node_type] = self._create_mapping(nodes_v, super_nodes)
+            
+            
+            
+            mappings[node_type][nodes_u] = g_new.nodes(ntype=node_type)[num_nodes_before:]
+            mappings[node_type][nodes_v] = g_new.nodes(ntype=node_type)[num_nodes_before:]
+            counts_u = (mappings[node_type].unsqueeze(1) > nodes_u).sum(dim=1) 
+            counts_v = (mappings[node_type].unsqueeze(1) > nodes_v).sum(dim=1) 
+            assert all( mappings[node_type] - counts_u - counts_v > -1), f"mapping wrong '{mappings[node_type]}, {counts_u}, {counts_v}"
+            mappings[node_type] = mappings[node_type] - counts_u - counts_v
+            assert all(mappings[node_type] > -1) , f"mapping wrong '{mappings[node_type]}, {counts_u}, {counts_v}"
+            
+            
+            feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
+            feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
+            feat_uv = (feat_u * cu + feat_v * cv) / (cu + cv)
+            new_graph_size = g_new.num_nodes(ntype=node_type)
     
+            g_new.nodes[node_type].data["feat"][super_nodes] = feat_uv
+            
+            
+            cu = g_new.nodes[node_type].data["node_size"][nodes_u]
+            cv = g_new.nodes[node_type].data["node_size"][nodes_v]
+            
+            
+            cuv = cu + cv
+            
+            g_new.nodes[node_type].data["node_size"][super_nodes] = cuv
+        
+            
+    def _create_full_edges(self, g_before,g_new, mappings):
+        for node_type, node_pairs in self.candidates.items():
+            if len(node_pairs) == 0:
+                    continue
+            for src_type, etype,dst_type in g_new.canonical_etypes:
+                if node_type == src_type:
+                    node_type = src_type
+                else:
+                    continue
+                
+        
+                nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+                
+                nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+                
+                super_nodes = g_new.nodes(ntype=node_type)[g_before.num_nodes(ntype=node_type):]
+                
+                du = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u]
+                dv = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
+                duv = du + dv
+                g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = duv
+                su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
+                sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
+                
+                
+                adj_uv = self._get_adj(nodes_u, nodes_v, etype)
+                adj_vu = self._get_adj(nodes_v, nodes_u, etype)
+                
+                feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
+                feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
+                cu = g_new.nodes[node_type].data["node_size"][nodes_u]
+                cv = g_new.nodes[node_type].data["node_size"][nodes_v]
+            
+                if self.add_feat:
+                    suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
+                else:
+                    suv = su + sv
+                g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
+                
+                
+                
+                ## Create out edges of relations
+                sorted_mapping_u = self._create_mapping (nodes_u, super_nodes) #mapping_u[sorted_indices_u]
+                
+                sorted_mapping_v = self._create_mapping (nodes_v, super_nodes)
+                
+                src, dst, eid = g_before.out_edges(nodes_u, form="all", etype=etype)
+                indices = torch.searchsorted(sorted_mapping_u[:, 0], src)
+                result_2 = sorted_mapping_u[indices, 1]
+                adj = g_new.edges[etype].data["adj"][eid]
+                edges_from_u_super = torch.stack((result_2,dst), dim=1)
+                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+                
+                
+              
+                
+                mask = torch.isin(dst, self.mappings_temp_u[dst_type])
+                dst_2= dst[mask]
+                indices = torch.searchsorted(self.mappings_temp_u[dst_type][:, 0], dst_2)
+                result = self.mappings_temp_u[dst_type][indices, 1]
+                edges_from_u_super = torch.stack((src[mask],result), dim=1)
+                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+                
+                
+                mask = torch.isin(dst, self.mappings_temp_u[dst_type])
+                dst_2 = dst[mask]
+                indices = torch.searchsorted(self.mappings_temp_u[dst_type][:, 0], dst_2)
+                result = self.mappings_temp_u[dst_type][indices, 1]
+                edges_from_u_super = torch.stack((result_2[mask],result), dim=1)
+                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+                
+                
+                src, dst , eid = g_before.out_edges(nodes_v, form="all", etype=etype)
+                indices = torch.searchsorted(sorted_mapping_v[:, 0], src)
+                result_2 = sorted_mapping_v[indices, 1]
+                adj = g_new.edges[etype].data["adj"][eid]
+                edges_from_u_super = torch.stack((result_2,dst), dim=1)
+                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+                
+                mask = torch.isin(dst, self.mappings_temp_v[dst_type])
+                dst_2= dst[mask]
+                indices = torch.searchsorted(self.mappings_temp_v[dst_type][:, 0], dst_2)
+                result = self.mappings_temp_v[dst_type][indices, 1]
+                edges_from_u_super = torch.stack((src[mask],result), dim=1)
+                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+                
+                
+                mask = torch.isin(dst, self.mappings_temp_v[dst_type])
+                dst_2 = dst[mask]
+                indices = torch.searchsorted(self.mappings_temp_v[dst_type][:, 0], dst_2)
+                result = self.mappings_temp_v[dst_type][indices, 1]
+                edges_from_u_super = torch.stack((result_2[mask],result), dim=1)
+                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+        
+        for src_type, etype,dst_type in g_new.canonical_etypes:
+            if node_type == dst_type:
+                    self.mappings_temp_u
+            else:
+                continue
+                
+        
+            nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+            
+            nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+            
+            super_nodes = g_new.nodes(ntype=node_type)[g_before.num_nodes(ntype=node_type):]
+            g_before.out_edges(nodes_v, form="all", etype=etype)            
+
     def _merge_nodes(self, g_before):
             """
       
@@ -218,128 +402,26 @@ class HeteroCoarsener(ABC):
             start_time = time.time()
             g_new = deepcopy(g_before)
             mappings = dict()
+            self._create_full_nodes(g_before, g_new, mappings)
+            self._create_full_edges(g_before, g_new, mappings)
             for node_type, node_pairs in self.candidates.items():
-                
+                if len(node_pairs)== 0:
+                    continue
                 nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
                 nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
  
                 mapping = torch.arange(0, g_new.num_nodes(ntype=node_type), device=self.device )
                 num_pairs = len(node_pairs)
-                num_nodes_before = g_new.num_nodes(ntype= node_type)
-                if "feat" in  g_new.nodes[node_type].data:
-                    old_feats = g_new.nodes[node_type].data["feat"]
-                    feat_u = old_feats[nodes_u]
-                    feat_v = old_feats[nodes_v]
-                cu = g_new.nodes[node_type].data["node_size"][nodes_u].unsqueeze(1)
-                cv = g_new.nodes[node_type].data["node_size"][nodes_v].unsqueeze(1)
-                
-                g_new.add_nodes(num_pairs, ntype=node_type)
-                
-                g_new.nodes[node_type].data["node_size"][num_nodes_before:] = (cu + cv).squeeze()
-                if "feat" in  g_new.nodes[node_type].data:
-                    g_new.nodes[node_type].data["feat"][num_nodes_before:] = (feat_u * cu  + feat_v * cv ) / (cu + cv)
+                num_nodes_before = g_before.num_nodes(ntype= node_type)
                 super_nodes = g_new.nodes(ntype= node_type)[num_nodes_before:]
                 
-                
-                mapping[nodes_u] = g_new.nodes(ntype=node_type)[num_nodes_before:]
-                mapping[nodes_v] = g_new.nodes(ntype=node_type)[num_nodes_before:]
-                counts_u = (mapping.unsqueeze(1) > nodes_u).sum(dim=1) 
-                counts_v = (mapping.unsqueeze(1) > nodes_v).sum(dim=1) 
-                assert all( mapping - counts_u - counts_v > -1), f"mapping wrong '{mapping}, {counts_u}, {counts_v}"
-                mapping = mapping - counts_u - counts_v
-                assert all(mapping > -1) , f"mapping wrong '{mapping}, {counts_u}, {counts_v}"
-                mappings[node_type] = mapping
-                
-                feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
-                feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
-                feat_uv = (feat_u * cu + feat_v * cv) / (cu + cv)
-                new_graph_size = g_new.num_nodes(ntype=node_type)
-     
-                g_new.nodes[node_type].data["feat"][super_nodes] = feat_uv
-                
-                
-                cu = g_new.nodes[node_type].data["node_size"][nodes_u]
-                cv = g_new.nodes[node_type].data["node_size"][nodes_v]
-                
-             
-                cuv = cu + cv
-                
-                g_new.nodes[node_type].data["node_size"][super_nodes] = cuv
-                    
                 for src_type, etype,dst_type in g_new.canonical_etypes:
                     if src_type != node_type:
                         continue
                     
-                    du = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u]
-                    dv = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
-                    duv = du + dv
-                    g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = duv
-                    su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
-                    sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
-                    
-                    
-                    adj_uv = self._get_adj(nodes_u, nodes_v, etype)
-                    adj_vu = self._get_adj(nodes_v, nodes_u, etype)
-                    
-                    
-                    
-                    suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
-                    g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
-                    
-                    
-                    sorted_mapping_u = self._create_mapping (nodes_u, super_nodes) #mapping_u[sorted_indices_u]
-                    
-                    sorted_mapping_v = self._create_mapping (nodes_v, super_nodes)
-                    
-                    src, dst, eid = g_new.out_edges(nodes_u, form="all", etype=etype)
-                    indices = torch.searchsorted(sorted_mapping_u[:, 0], src)
-                    result = sorted_mapping_u[indices, 1]
-                    adj = g_new.edges[etype].data["adj"][eid]
-                    edges_from_u_super = torch.stack((result,dst), dim=1)
-                    g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                    
-                    
-                    
-                    src, dst , eid = g_new.out_edges(nodes_v, form="all", etype=etype)
-                    indices = torch.searchsorted(sorted_mapping_v[:, 0], src)
-                    result = sorted_mapping_v[indices, 1]
-                    adj = g_new.edges[etype].data["adj"][eid]
-                    edges_from_u_super = torch.stack((result,dst), dim=1)
-                    g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                     
-                    
-                    src, dst, eid = g_new.in_edges(nodes_u, form="all", etype=etype)
-                   
-                    # Now use searchsorted on the sorted mapping
-                    indices = torch.searchsorted(sorted_mapping_u[:, 0], dst)
-                    result = sorted_mapping_u[indices, 1]
-                    adj = g_new.edges[etype].data["adj"][eid]
-                    edges_from_u_super = torch.stack((src,result), dim=1)
-                    g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                    
-                    
-                    src, dst, eid = g_new.in_edges(nodes_v, form="all", etype=etype)
-                    
-                    indices = torch.searchsorted(sorted_mapping_v[:, 0], dst)
-                    result = sorted_mapping_v[indices, 1]
-                    adj = g_new.edges[etype].data["adj"][eid]
-                    edges_from_u_super = torch.stack((src,result), dim=1)
-                    
-                   # edges_from_u_super = edges_from_u_super[mask]
-                    g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                    
-                    
+                 
+               
                     nodes_uv = torch.cat([nodes_u, nodes_v])
-                    
-                    edges = g_new.edges(etype=etype)
-                    edge_pairs = torch.stack((edges[0], edges[1]), dim=1)
-                    mask = torch.logical_and(self.vectorwise_isin(edge_pairs, sorted_mapping_u) == False , self.vectorwise_isin(edge_pairs, sorted_mapping_v) == False)
-                    mask = mask == False
-                    ids = g_new.edge_ids(edges[0][mask], edges[1][mask], etype=etype)
-                    g_new.remove_edges(ids, etype=etype)
-
-
-
 
                     g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
                     def msg_minus_neigh_s(edges):
@@ -416,7 +498,12 @@ class HeteroCoarsener(ABC):
                     d = g_new.nodes[src_type].data[f"deg_{etype}"] 
                     f = g_new.nodes[src_type].data[f"feat"]
                     s = g_new.nodes[src_type].data[f"s{etype}"]
-                    g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
+                    if self.add_feat:
+                        g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
+                    else:
+                        g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s
+                    
+                        
                     
                             
                     

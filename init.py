@@ -1,20 +1,22 @@
 
 from Coarsener.HeteroRGCNCoarsener import HeteroRGCNCoarsener
-from Data.test_graphs import TestHetero, TestHomo
+
 from Data.Citeseer import Citeseer
 import dgl.function as fn
-from Tests.RGCNTest import RGCNTest
+from Tests.TestSingle import RGCNTest
+from Tests.TestMulti import MultiGraphTest
 import unittest
 
 if __name__ == "__main__":
-    test = TestHomo()
-    num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
-    coarsener = HeteroRGCNCoarsener(test.g, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh=True)
-  
-    coarsener.init()
-    
-    suite = unittest.TestLoader().loadTestsFromTestCase(RGCNTest)
+    multi_tester = MultiGraphTest()
+    multi_tester.setUp()
+    multi_tester.test_merge_step()
+    suite = unittest.TestLoader().loadTestsFromTestCase(MultiGraphTest)
     unittest.TextTestRunner().run(suite)
+    
+    
+    # suite = unittest.TestLoader().loadTestsFromTestCase(RGCNTest)
+    # unittest.TextTestRunner().run(suite)
     
     # coarsener.coarsen_step()
     # cit = Citeseer()

@@ -22,7 +22,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.summarized_graph.nodes[src_type].data[f"SGC{etype}"] = H
        
         
-    def _create_gnn_layer(self, k = 1):
+    def _create_gnn_layer(self):
         
         """
         Vectorized GPU implementation of spatial RGCN coarsening.
@@ -63,26 +63,30 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             else:
                 feat_v = torch.ones((v.shape[0], 1), device=self.device)
                 
-            
-            s_e = feat_v * inv_sqrt_out[v].unsqueeze(-1)       # [E, D]
+            if self.add_feat:
+                s_e = feat_v * inv_sqrt_out[v].unsqueeze(-1)       # [E, D]
+            else:
+                s_e = feat_v * inv_sqrt_in[v].unsqueeze(-1)
             # Scatter-add to compute S at source nodes
            
             S_tensor = torch.zeros((n_src, feat_dim), device=self.device)
             S_tensor = S_tensor.index_add(0, u, s_e)
             infl = torch.zeros(n_src, device=self.device)
-            infl = infl.index_add(0, v, inv_sqrt_in[u])
-
+            if self.add_feat:
+                infl = infl.index_add(0, v, inv_sqrt_in[u])
+                self.summarized_graph.nodes[src_type].data[f'i{etype}'] = infl
+    
             # Compute H = D_out^{-1/2} * S
             H_tensor = inv_sqrt_out.unsqueeze(-1) * S_tensor
 
             # Store in summarized_graph
-            self.summarized_graph.nodes[src_type].data[f'i{etype}'] = infl
             
             self.summarized_graph.nodes[src_type].data[f's{etype}'] = S_tensor
+            if self.add_feat:
+                self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor + ((feats / (deg_out + c).unsqueeze(1) ))
+            else:
+                self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor
            
-            self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor + ((feats / (deg_out + c).unsqueeze(1) ))
-           
-
         print("_create_h_spatial_rgcn", time.time() - start_time)
 
     
@@ -114,14 +118,18 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         cu = self.summarized_graph.nodes[ntype].data["node_size"][node1s].unsqueeze(1)
         cv = self.summarized_graph.nodes[ntype].data["node_size"][node2s].unsqueeze(1)
+        cuv = cu + cv  # shape (L,)
+
+        if not self.add_feat:
+            return (su + sv) /  torch.sqrt(deg1 + deg2 + cuv.squeeze()).unsqueeze(1 ) 
+            
         minus = torch.mul((adj2 / torch.sqrt(deg1 + cu.squeeze() )).unsqueeze(1), feat_u) + torch.mul((adj1 / torch.sqrt(deg2 + cv.squeeze() )).unsqueeze(1), feat_v) # + torch.matmul( (adj / torch.sqrt(deg2 + cv.squeeze() )), feat_v)
         
         
 
         # 3) Cluster‐size term (make sure cluster_sizes is a tensor):
       
-        cuv = cu + cv  # shape (L,)
-
+        
         # 4) Single vectorized compute of h for all L pairs:
         #    (we broadcast / unsqueeze cuv into the right D-dimensional form)
         feat = (feat_u*cu + feat_v*cv) / (cu + cv)
