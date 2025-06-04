@@ -221,7 +221,7 @@ class HeteroCoarsener(ABC):
                
                 
             
-    def _create_full_nodes(self, g_before, g_new, mappings):
+    def _create_super_nodes(self, g_before, g_new, mappings):
         self.mappings_temp_v = dict()
         self.mappings_temp_u = dict()
         
@@ -286,8 +286,78 @@ class HeteroCoarsener(ABC):
             
             g_new.nodes[node_type].data["node_size"][super_nodes] = cuv
         
+
+    def _create_super_nodes_s(self, g_new, node_type, etype, nodes_u, nodes_v, super_nodes):
             
-    def _create_full_edges(self, g_before,g_new, mappings):
+    
+            
+        du = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u]
+        dv = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
+        g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = du + dv
+               
+        su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
+        sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
+        
+        
+        adj_uv = self._get_adj(nodes_u, nodes_v, etype)
+        adj_vu = self._get_adj(nodes_v, nodes_u, etype)
+        
+        feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
+        feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
+        cu = g_new.nodes[node_type].data["node_size"][nodes_u]
+        cv = g_new.nodes[node_type].data["node_size"][nodes_v]
+        if self.add_feat:
+            suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
+        else:
+            suv = su + sv
+        g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
+    
+    def _get_supernode_indices(self, base_nodes, query_nodes, super_nodes):
+        
+        sorted_mapping = self._create_mapping(base_nodes, super_nodes)
+        indices = torch.searchsorted(sorted_mapping[:, 0], query_nodes)
+        return sorted_mapping[indices, 1]
+        
+        
+    
+        
+        
+    def _connect_super_nodes_to_out_edges(self, g_before, g_new, nodes, super_nodes, etype):
+        # connect super nodes out edges to nodes
+        src, dst, eid = g_before.out_edges(nodes, form="all", etype=etype)
+        adj = g_new.edges[etype].data["adj"][eid]
+        super_nodes_src = self._get_supernode_indices(nodes, src, super_nodes)
+        
+        g_new.add_edges( super_nodes_src, dst,data={"adj": adj}, etype=etype)
+    
+    def _connect_super_nodes_to_in_edges(self, g_before, g_new, nodes, super_nodes, etype): 
+         
+        # connect super nodes in edges to nodes
+        src, dst, eid = g_before.in_edges(nodes, form="all", etype=etype)
+        adj = g_new.edges[etype].data["adj"][eid]
+        super_nodes_dst = self._get_supernode_indices(nodes, dst, super_nodes)
+        
+        g_new.add_edges( src, super_nodes_dst,data={"adj": adj}, etype=etype)
+
+    def _connect_super_nodes_to_supernodes(self, g_before, g_new, nodes_src, nodes_dst,  super_nodes_src, super_nodes_dst, etype):
+        src, dst, eid = g_before.in_edges(nodes_dst, form="all", etype=etype)
+        adj = g_new.edges[etype].data["adj"][eid]
+        mask = torch.isin(src, nodes_src)
+        src = src[mask]
+        super_nodes_src = self._get_supernode_indices(nodes_src, src, super_nodes_src)
+        
+        adj = g_new.edges[etype].data["adj"][eid]
+        dst = dst[mask]
+        super_nodes_dst = self._get_supernode_indices(nodes_dst, dst, super_nodes_dst)
+        
+        
+        g_new.add_edges( super_nodes_src, super_nodes_dst,data={"adj": adj}, etype=etype)
+    
+        
+    
+    def _create_full_g(self, g_before,g_new, mappings):
+        self._create_super_nodes(g_before, g_new, mappings)
+            
         for node_type, node_pairs in self.candidates.items():
             if len(node_pairs) == 0:
                     continue
@@ -296,105 +366,55 @@ class HeteroCoarsener(ABC):
                     node_type = src_type
                 else:
                     continue
-                
-        
                 nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
                 
                 nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
                 
                 super_nodes = g_new.nodes(ntype=node_type)[g_before.num_nodes(ntype=node_type):]
+                self._create_super_nodes_s(g_new,node_type, etype, nodes_u, nodes_v, super_nodes)
                 
-                du = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u]
-                dv = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
-                duv = du + dv
-                g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = duv
-                su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
-                sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
-                
-                
-                adj_uv = self._get_adj(nodes_u, nodes_v, etype)
-                adj_vu = self._get_adj(nodes_v, nodes_u, etype)
-                
-                feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
-                feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
-                cu = g_new.nodes[node_type].data["node_size"][nodes_u]
-                cv = g_new.nodes[node_type].data["node_size"][nodes_v]
             
-                if self.add_feat:
-                    suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
-                else:
-                    suv = su + sv
-                g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
+        for node_type, node_pairs in self.candidates.items():
+            if len(node_pairs) == 0:
+                continue        
+            nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
                 
+            nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+            super_nodes = g_new.nodes(ntype=node_type)[g_before.num_nodes(ntype=node_type):]
                 
-                
-                ## Create out edges of relations
-                sorted_mapping_u = self._create_mapping (nodes_u, super_nodes) #mapping_u[sorted_indices_u]
-                
-                sorted_mapping_v = self._create_mapping (nodes_v, super_nodes)
-                
-                src, dst, eid = g_before.out_edges(nodes_u, form="all", etype=etype)
-                indices = torch.searchsorted(sorted_mapping_u[:, 0], src)
-                result_2 = sorted_mapping_u[indices, 1]
-                adj = g_new.edges[etype].data["adj"][eid]
-                edges_from_u_super = torch.stack((result_2,dst), dim=1)
-                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                
-                
-              
-                
-                mask = torch.isin(dst, self.mappings_temp_u[dst_type])
-                dst_2= dst[mask]
-                indices = torch.searchsorted(self.mappings_temp_u[dst_type][:, 0], dst_2)
-                result = self.mappings_temp_u[dst_type][indices, 1]
-                edges_from_u_super = torch.stack((src[mask],result), dim=1)
-                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                
-                
-                mask = torch.isin(dst, self.mappings_temp_u[dst_type])
-                dst_2 = dst[mask]
-                indices = torch.searchsorted(self.mappings_temp_u[dst_type][:, 0], dst_2)
-                result = self.mappings_temp_u[dst_type][indices, 1]
-                edges_from_u_super = torch.stack((result_2[mask],result), dim=1)
-                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                
-                
-                src, dst , eid = g_before.out_edges(nodes_v, form="all", etype=etype)
-                indices = torch.searchsorted(sorted_mapping_v[:, 0], src)
-                result_2 = sorted_mapping_v[indices, 1]
-                adj = g_new.edges[etype].data["adj"][eid]
-                edges_from_u_super = torch.stack((result_2,dst), dim=1)
-                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                
-                mask = torch.isin(dst, self.mappings_temp_v[dst_type])
-                dst_2= dst[mask]
-                indices = torch.searchsorted(self.mappings_temp_v[dst_type][:, 0], dst_2)
-                result = self.mappings_temp_v[dst_type][indices, 1]
-                edges_from_u_super = torch.stack((src[mask],result), dim=1)
-                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
-                
-                
-                mask = torch.isin(dst, self.mappings_temp_v[dst_type])
-                dst_2 = dst[mask]
-                indices = torch.searchsorted(self.mappings_temp_v[dst_type][:, 0], dst_2)
-                result = self.mappings_temp_v[dst_type][indices, 1]
-                edges_from_u_super = torch.stack((result_2[mask],result), dim=1)
-                g_new.add_edges( edges_from_u_super[:,0], edges_from_u_super[:,1],data={"adj": adj}, etype=etype)
+            for src_type, etype,dst_type in g_new.canonical_etypes:
+                if node_type == src_type:
+                    self._connect_super_nodes_to_out_edges(g_before, g_new, nodes_u, super_nodes, etype)
+                    self._connect_super_nodes_to_out_edges(g_before, g_new, nodes_v, super_nodes, etype)
+                    
+                if  node_type == dst_type:
+                    self._connect_super_nodes_to_in_edges(g_before, g_new, nodes_u, super_nodes, etype)
+                    self._connect_super_nodes_to_in_edges(g_before, g_new, nodes_v, super_nodes, etype)
         
         for src_type, etype,dst_type in g_new.canonical_etypes:
-            if node_type == dst_type:
-                    self.mappings_temp_u
-            else:
+            if self.candidates[src_type] == [] or self.candidates[dst_type] == []:  
                 continue
+            
+            node_pairs = self.candidates[src_type]
+            
+            nodes_u_src = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
                 
-        
-            nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+            nodes_v_src = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+            super_nodes_src = g_new.nodes(ntype=src_type)[g_before.num_nodes(ntype=src_type):]
+            super_nodes_dst = g_new.nodes(ntype=dst_type)[g_before.num_nodes(ntype=dst_type):]
             
-            nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+            node_pairs = self.candidates[dst_type]
             
-            super_nodes = g_new.nodes(ntype=node_type)[g_before.num_nodes(ntype=node_type):]
-            g_before.out_edges(nodes_v, form="all", etype=etype)            
+            nodes_u_dst = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+                
+            nodes_v_dst = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+            
+            
+            self._connect_super_nodes_to_supernodes(g_before, g_new, nodes_u_src, nodes_u_dst, super_nodes_src, super_nodes_dst, etype)
+            self._connect_super_nodes_to_supernodes(g_before, g_new, nodes_v_src, nodes_v_dst, super_nodes_src, super_nodes_dst, etype)
+            
 
+    
     def _merge_nodes(self, g_before):
             """
       
@@ -402,28 +422,25 @@ class HeteroCoarsener(ABC):
             start_time = time.time()
             g_new = deepcopy(g_before)
             mappings = dict()
-            self._create_full_nodes(g_before, g_new, mappings)
-            self._create_full_edges(g_before, g_new, mappings)
+            self._create_full_g(g_before, g_new, mappings)
             for node_type, node_pairs in self.candidates.items():
                 if len(node_pairs)== 0:
                     continue
                 nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
                 nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
  
-                mapping = torch.arange(0, g_new.num_nodes(ntype=node_type), device=self.device )
-                num_pairs = len(node_pairs)
                 num_nodes_before = g_before.num_nodes(ntype= node_type)
                 super_nodes = g_new.nodes(ntype= node_type)[num_nodes_before:]
                 
                 for src_type, etype,dst_type in g_new.canonical_etypes:
-                    if src_type != node_type:
+                    if node_type != dst_type:
                         continue
-                    
-                 
+                        
+                    g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u] + g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
                
                     nodes_uv = torch.cat([nodes_u, nodes_v])
-
-                    g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
+                    if self.add_feat:
+                        g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
                     def msg_minus_neigh_s(edges):
                         return {'s':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1) ,
                                 'i':edges.data['adj']/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']) ,
@@ -443,7 +460,8 @@ class HeteroCoarsener(ABC):
                     
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
-                        g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
+                        if self.add_feat:
+                            g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
                     
                     # update U,V
                     edges_src, edges_dst = g_new.in_edges(super_nodes,  etype=etype)
@@ -455,18 +473,29 @@ class HeteroCoarsener(ABC):
                             share_ndata=True)     # node features remain shared views
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
-                        g_new.nodes[node_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
+                        if self.add_feat:
+                            g_new.nodes[node_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
                     
 
                     
                     
                     
                     
-
-                nodes_to_delete = torch.cat([nodes_u, nodes_v])           
+            for node_type, node_pairs in self.candidates.items():
+                if len(node_pairs) == 0:
+                    continue
+                nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+                nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+                
+                nodes_to_delete = torch.cat((nodes_u, nodes_v))           
                 g_new.remove_nodes(nodes_to_delete, ntype=node_type)
                 
+            for node_type, node_pairs in self.candidates.items():
+                
                 for src_type, etype,dst_type in g_new.canonical_etypes:
+                    if node_type != src_type:
+                        continue
+                    
                     mapping_src = mappings[src_type]
                     mapping_dst = mappings[dst_type]
                     all_eids = g_new.edges(form='eid', etype=etype)
