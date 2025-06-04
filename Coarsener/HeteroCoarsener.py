@@ -41,22 +41,25 @@ class HeteroCoarsener(ABC):
             
             
             rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
+            
             self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
+            if not self.add_feat:
+                g = deepcopy(self.summarized_graph)
+                g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
             
-            g = deepcopy(self.summarized_graph)
-            g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
-            
-            self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = g.nodes[dst_type].data[f"deg_{etype}"]
+                self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = g.nodes[dst_type].data[f"deg_{etype}"]
     
     @abstractmethod
     def _create_gnn_layer(self):
         pass    
     
-    def _get_adj(self, nodes_u, nodes_v, etype):
+    def _get_adj(self,nodes_u, nodes_v, etype, g = None):
+        if g == None:
+            g = self.summarized_graph
         if len(nodes_u) == 0:
             return torch.zeros(0)
         try:
-            exists = self.summarized_graph.has_edges_between(nodes_u, nodes_v, etype=etype)
+            exists = g.has_edges_between(nodes_u, nodes_v, etype=etype)
         except:
            print(nodes_u, nodes_v) 
            print( self.candidates)
@@ -67,10 +70,10 @@ class HeteroCoarsener(ABC):
 
 
         # Get edge IDs for the existing edges
-        edge_ids = self.summarized_graph.edge_ids(nodes_u[existing_edge_indices], nodes_v[existing_edge_indices], etype=etype)
+        edge_ids = g.edge_ids(nodes_u[existing_edge_indices], nodes_v[existing_edge_indices], etype=etype)
         #g_new.nodes[node_type].data[f'i{etype}'][new_nodes] =   infl_uv
     
-        edge_data = self.summarized_graph.edges[etype].data['adj'][edge_ids]
+        edge_data = g.edges[etype].data['adj'][edge_ids]
 
         # Assign edge data to the result tensor
         adj[existing_edge_indices] = edge_data
@@ -325,7 +328,8 @@ class HeteroCoarsener(ABC):
     def _connect_super_nodes_to_out_edges(self, g_before, g_new, nodes, super_nodes, etype):
         # connect super nodes out edges to nodes
         src, dst, eid = g_before.out_edges(nodes, form="all", etype=etype)
-        adj = g_new.edges[etype].data["adj"][eid]
+        #adj = g_new.edges[etype].data["adj"][eid]
+        adj = self._get_adj(src, dst, etype)
         super_nodes_src = self._get_supernode_indices(nodes, src, super_nodes)
         
         g_new.add_edges( super_nodes_src, dst,data={"adj": adj}, etype=etype)
@@ -334,11 +338,33 @@ class HeteroCoarsener(ABC):
          
         # connect super nodes in edges to nodes
         src, dst, eid = g_before.in_edges(nodes, form="all", etype=etype)
-        adj = g_new.edges[etype].data["adj"][eid]
+        #adj = g_new.edges[etype].data["adj"][eid]
+        adj = self._get_adj(src, dst, etype)
+        
         super_nodes_dst = self._get_supernode_indices(nodes, dst, super_nodes)
         
         g_new.add_edges( src, super_nodes_dst,data={"adj": adj}, etype=etype)
 
+    def _connect_super_nodes_to_supernodes_single_etype(self, g_before, g_new, nodes,   super_nodes, etype):
+        src, dst, eid = g_new.in_edges(super_nodes, form="all", etype=etype)
+        #adj = g_new.edges[etype].data["adj"][eid]
+        
+        
+        mask_src = torch.isin(src, nodes)
+      #  mask_dst = torch.isin(dst, super_nodes_src)
+      #  mask = torch.logical_and(mask_src, mask_dst)
+        src = src[mask_src]
+        super_nodes_src_2 = self._get_supernode_indices(nodes, src, super_nodes)
+        
+        
+        dst = dst[mask_src]
+       
+       # super_nodes_dst = self._get_supernode_indices(nodes_src, dst, super_nodes_src)
+        
+        adj = self._get_adj(src,dst , etype, g_new)
+        
+        g_new.add_edges( super_nodes_src_2, dst,data={"adj": adj}, etype=etype)
+    
     def _connect_super_nodes_to_supernodes(self, g_before, g_new, nodes_src, nodes_dst,  super_nodes_src, super_nodes_dst, etype):
         src, dst, eid = g_before.in_edges(nodes_dst, form="all", etype=etype)
         adj = g_new.edges[etype].data["adj"][eid]
@@ -383,14 +409,15 @@ class HeteroCoarsener(ABC):
             super_nodes = g_new.nodes(ntype=node_type)[g_before.num_nodes(ntype=node_type):]
                 
             for src_type, etype,dst_type in g_new.canonical_etypes:
-                if node_type == src_type:
+                if node_type == src_type: #  
                     self._connect_super_nodes_to_out_edges(g_before, g_new, nodes_u, super_nodes, etype)
                     self._connect_super_nodes_to_out_edges(g_before, g_new, nodes_v, super_nodes, etype)
                     
                 if  node_type == dst_type:
                     self._connect_super_nodes_to_in_edges(g_before, g_new, nodes_u, super_nodes, etype)
                     self._connect_super_nodes_to_in_edges(g_before, g_new, nodes_v, super_nodes, etype)
-        
+        # if self.add_feat:
+        #     return
         for src_type, etype,dst_type in g_new.canonical_etypes:
             if self.candidates[src_type] == [] or self.candidates[dst_type] == []:  
                 continue
@@ -408,10 +435,14 @@ class HeteroCoarsener(ABC):
             nodes_u_dst = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
                 
             nodes_v_dst = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
-            
-            
-            self._connect_super_nodes_to_supernodes(g_before, g_new, nodes_u_src, nodes_u_dst, super_nodes_src, super_nodes_dst, etype)
-            self._connect_super_nodes_to_supernodes(g_before, g_new, nodes_v_src, nodes_v_dst, super_nodes_src, super_nodes_dst, etype)
+            if self.add_feat:
+                self._connect_super_nodes_to_supernodes_single_etype(g_before, g_new, nodes_u_src, super_nodes_src,  etype)
+                self._connect_super_nodes_to_supernodes_single_etype(g_before, g_new, nodes_v_src, super_nodes_src,  etype)
+                
+            else:
+                
+                self._connect_super_nodes_to_supernodes(g_before, g_new, nodes_u_src, nodes_u_dst, super_nodes_src, super_nodes_dst, etype)
+                self._connect_super_nodes_to_supernodes(g_before, g_new, nodes_v_src, nodes_v_dst, super_nodes_src, super_nodes_dst, etype)
             
 
     
@@ -423,19 +454,20 @@ class HeteroCoarsener(ABC):
             g_new = deepcopy(g_before)
             mappings = dict()
             self._create_full_g(g_before, g_new, mappings)
-            for node_type, node_pairs in self.candidates.items():
-                if len(node_pairs)== 0:
-                    continue
-                nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
-                nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
- 
-                num_nodes_before = g_before.num_nodes(ntype= node_type)
-                super_nodes = g_new.nodes(ntype= node_type)[num_nodes_before:]
-                
-                for src_type, etype,dst_type in g_new.canonical_etypes:
-                    if node_type != dst_type:
+            for src_type, etype,dst_type in g_new.canonical_etypes:
+                    #if node_type != dst_type:
+                     #       continue
+                    node_pairs = self.candidates[dst_type]
+                    node_type = dst_type
+                #for node_type, node_pairs in self.candidates.items():
+                    if len(node_pairs)== 0:
                         continue
-                        
+                    nodes_u = torch.tensor([i for i, _ in node_pairs], dtype=torch.int64, device=self.device)
+                    nodes_v = torch.tensor([i for  _,i in node_pairs], dtype=torch.int64, device=self.device)
+ 
+                    num_nodes_before = g_before.num_nodes(ntype= node_type)
+                    super_nodes = g_new.nodes(ntype= node_type)[num_nodes_before:]
+                
                     g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u] + g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
                
                     nodes_uv = torch.cat([nodes_u, nodes_v])
@@ -452,6 +484,16 @@ class HeteroCoarsener(ABC):
                         return {f's_new': torch.sum(nodes.mailbox['s']  , dim=1), f'i_new': torch.sum(nodes.mailbox['i']  , dim=1)}
                     # update Neigbors
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
+                    if self.add_feat:
+                        edges = torch.stack((edges_src, edges_dst), dim=1)
+                        nodes_u_supernodes = torch.stack((nodes_u, super_nodes), dim = 1)
+                        nodes_v_supernodes = torch.stack((nodes_v, super_nodes), dim = 1)
+                        mask_u = self.vectorwise_isin(edges, nodes_u_supernodes) == False
+                        mask_v = self.vectorwise_isin(edges, nodes_v_supernodes) == False
+                        mask = torch.logical_and(mask_u, mask_v)
+                        edges_src = edges_src[mask]
+                        edges_dst = edges_dst[mask]
+                        
                     if len(edges_dst) > 0:
                     
                         rev_sub_g = dgl.reverse(g_new,
@@ -535,7 +577,7 @@ class HeteroCoarsener(ABC):
                         
                     
                             
-                    
+            self._update_deg()        
             print("_merge_nodes", time.time() - start_time)
             return g_new, mappings
 

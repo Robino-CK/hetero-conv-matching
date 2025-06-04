@@ -3,20 +3,25 @@ from Coarsener.HeteroRGCNCoarsener import HeteroRGCNCoarsener
 
 from Data.Citeseer import Citeseer
 import dgl.function as fn
-from Tests.TestSingle import RGCNTest
+from Tests.TestSingle import SingleTester
 from Tests.TestMulti import MultiGraphTest
 import unittest
 
 if __name__ == "__main__":
-    multi_tester = MultiGraphTest()
-    multi_tester.setUp()
-    multi_tester.test_merge_step()
+    
+    # single_tester = SingleTester()
+    # single_tester.setUp()
+    # single_tester.test_merge_step()
+    
+    # multi_tester = MultiGraphTest()
+    # multi_tester.setUp()
+    # multi_tester.test_merge_step()
     suite = unittest.TestLoader().loadTestsFromTestCase(MultiGraphTest)
     unittest.TextTestRunner().run(suite)
     
     
-    # suite = unittest.TestLoader().loadTestsFromTestCase(RGCNTest)
-    # unittest.TextTestRunner().run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(SingleTester)
+    unittest.TextTestRunner().run(suite)
     
     # coarsener.coarsen_step()
     # cit = Citeseer()

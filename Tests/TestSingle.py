@@ -3,14 +3,14 @@ import torch
 import dgl
 
 from Coarsener.HeteroRGCNCoarsener import HeteroRGCNCoarsener
-class RGCNTest(unittest.TestCase):
+class SingleTester(unittest.TestCase):
     def setUp(self):
         
         self.homo_graph =  dgl.heterograph({
             ('user', 'follows', 'user'): ([0, 1, 1, 1, 2], [1, 2, 3, 4,3])})
         self.homo_graph.nodes['user'].data['feat'] = torch.tensor([[1.0],[2.0],[3.0],[4.0],[5.0]])
         num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
-        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= False)
+        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= False, add_feat=True)
         
         self.device = self.homo_graph.device
         print("Starting rgcn test...")
