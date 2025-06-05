@@ -373,7 +373,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
             cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
-            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
+            du = self.summarized_graph.nodes[ntype].data["deg_cites"][node1_ids]
+            dv = self.summarized_graph.nodes[ntype].data["deg_cites"][node2_ids]
+
+            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
+            feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
+            feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+            
             cost = torch.norm(feat - feat_u, p=1, dim=1) + torch.norm(feat - feat_v, p=1, dim=1)
             
             self.merge_graphs[ntype].edata["costs_feat"] = cost * 2
@@ -384,9 +390,9 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         self._create_neighbor_costs()
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
-        # for ntype in self.summarized_graph.ntypes:
-        #     self._self_feature_costs()
-        #     self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"]     
+        for ntype in self.summarized_graph.ntypes:
+            self._self_feature_costs()
+            self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"]     
         
         
     def _update_merge_graph(self, mappings):
@@ -397,8 +403,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
        
         self._self_feature_costs()
-        # for ntype in self.summarized_graph.ntypes:
-        #     self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"] 
+        for ntype in self.summarized_graph.ntypes:
+            self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"] 
         self.candidates = self._find_lowest_costs()
         
         
