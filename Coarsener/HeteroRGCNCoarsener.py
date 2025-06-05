@@ -63,7 +63,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             else:
                 feat_v = torch.ones((v.shape[0], 1), device=self.device)
                 
-            if self.add_feat:
+            if True or self.add_feat:
                 s_e = feat_v * inv_sqrt_out[v].unsqueeze(-1)       # [E, D]
             else:
                 s_e = feat_v * inv_sqrt_in[v].unsqueeze(-1)
@@ -120,8 +120,6 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         cv = self.summarized_graph.nodes[ntype].data["node_size"][node2s].unsqueeze(1)
         cuv = cu + cv  # shape (L,)
 
-        if not self.add_feat:
-            return (su + sv) /  torch.sqrt(deg1 + deg2 + cuv.squeeze()).unsqueeze(1 ) 
             
         minus = torch.mul((adj2 / torch.sqrt(deg1 + cu.squeeze() )).unsqueeze(1), feat_u) + torch.mul((adj1 / torch.sqrt(deg2 + cv.squeeze() )).unsqueeze(1), feat_v) # + torch.matmul( (adj / torch.sqrt(deg2 + cv.squeeze() )), feat_v)
         
@@ -134,6 +132,9 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         #    (we broadcast / unsqueeze cuv into the right D-dimensional form)
         feat = (feat_u*cu + feat_v*cv) / (cu + cv)
         plus =     torch.mul((adj2 / torch.sqrt(deg1 + deg2 + cuv.squeeze() )).unsqueeze(1), feat) + torch.mul((adj1 / torch.sqrt(deg1 + deg2 + cuv.squeeze() )).unsqueeze(1), feat)
+        if not self.add_feat:
+            return  (su + sv - minus + plus)/ torch.sqrt((deg1 + deg2 + cuv.squeeze())).unsqueeze(1 )  #+   #)  # (L, D)
+
         h_all =  feat * ( cuv.squeeze() / ((deg1 + deg2 + cuv.squeeze()))).unsqueeze(1) + (su + sv - minus + plus)/ torch.sqrt((deg1 + deg2 + cuv.squeeze())).unsqueeze(1 )  #+   #)  # (L, D)
 
         return h_all
