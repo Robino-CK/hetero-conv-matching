@@ -16,6 +16,7 @@ class HeteroCoarsener(ABC):
         self.summarized_graph = self.summarized_graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
+        self.norm_p = 2
         self.add_feat = add_feat
         self.device = device
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
@@ -109,7 +110,7 @@ class HeteroCoarsener(ABC):
 
         def _query( H):
             # compute pairwise L1 distances
-            dist_matrix = torch.cdist(H, H, p=1)
+            dist_matrix = torch.cdist(H, H, p=self.norm_p)
             # get k smallest distances (including self)
             k = min(self.num_nearest_init_neighbors_per_type[etype], H.size(0))
             dists, idxs = torch.topk(dist_matrix, k, largest=False)

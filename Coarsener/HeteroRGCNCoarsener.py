@@ -163,8 +163,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
         
         
-        neigh_cost_u = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_u / torch.sqrt(du + cu).unsqueeze(1))) , dim=1, p=1)   * iu
-        neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=1)   * iv
+        neigh_cost_u = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_u / torch.sqrt(du + cu).unsqueeze(1))) , dim=1, p=self.norm_p)   * iu
+        neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=self.norm_p)   * iv
         #res = torch.where(mask,  neigh_cost_u + neigh_cost_v, torch.tensor(0.0, device=self.device))
         return neigh_cost_u + neigh_cost_v
     
@@ -277,7 +277,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             denom =  torch.sqrt( (edges.dst["d_n"] + edges.dst["c_n"] ) * (edges.src["d_v"] + edges.src["c_v"] ) ) 
             h_prime -= num  / denom.unsqueeze(1)
             
-            d = torch.norm(h_prime - edges.dst['h_n'], p=1, dim=1)
+            d = torch.norm(h_prime - edges.dst['h_n'], p=self.norm_p, dim=1)
             d = torch.where(mask, d, torch.tensor(0,device=self.device))
             return {'d': d}
         start_time = time.time()
@@ -359,7 +359,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             
             # L1 costs
-            cost = torch.norm(merged - h1, p=1, dim=1) + torch.norm(merged - h2, p=1, dim=1)
+            cost = torch.norm(merged - h1, p=2, dim=1) + torch.norm(merged - h2, p=self.norm_p, dim=1)
             
             self.merge_graphs[src_type].edata["costs_h"] = cost 
         print("_h_costs", time.time() - start_time)
@@ -380,7 +380,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
         feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
         
-        cost = torch.norm(feat - feat_u, p=1, dim=1) + torch.norm(feat - feat_v, p=1, dim=1)
+        cost = torch.norm(feat - feat_u, p=self.norm_p, dim=1) + torch.norm(feat - feat_v, p=self.norm_p, dim=1)
         
         self.merge_graphs[ntype].edata["costs_feat"] = cost
             
