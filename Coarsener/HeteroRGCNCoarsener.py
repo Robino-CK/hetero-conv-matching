@@ -278,7 +278,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             h_prime -= num  / denom.unsqueeze(1)
             
             d = torch.norm(h_prime - edges.dst['h_n'], p=1, dim=1)
-            d = torch.where(mask, d, torch.tensor(0))
+            d = torch.where(mask, d, torch.tensor(0,device=self.device))
             return {'d': d}
         start_time = time.time()
         hg.apply_edges(edge_formula, etype=('pair', 'knows', 'node'))
@@ -393,7 +393,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         for ntype in self.summarized_graph.ntypes:
             if self.add_feat:
                 continue
-            self._self_feature_costs()
+            self._self_feature_costs(ntype)
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"]     
         
         
@@ -404,10 +404,11 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
        
-        self._self_feature_costs()
+        
         for ntype in self.summarized_graph.ntypes:
             if self.add_feat:
                 continue
+            self._self_feature_costs(ntype)
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"] 
         self.candidates = self._find_lowest_costs()
         
