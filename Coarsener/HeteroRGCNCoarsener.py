@@ -364,26 +364,25 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[src_type].edata["costs_h"] = cost 
         print("_h_costs", time.time() - start_time)
          
-    def _self_feature_costs(self):
-         for ntype in self.summarized_graph.ntypes:
-            src, dst = self.merge_graphs[ntype].edges()
-            node1_ids = src  # [P]
-            node2_ids = dst  
-            feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1_ids]
-            feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2_ids]
-            
-            cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
-            cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
-            du = self.summarized_graph.nodes[ntype].data["deg_cites"][node1_ids]
-            dv = self.summarized_graph.nodes[ntype].data["deg_cites"][node2_ids]
+    def _self_feature_costs(self, ntype):
+        src, dst = self.merge_graphs[ntype].edges()
+        node1_ids = src  # [P]
+        node2_ids = dst  
+        feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1_ids]
+        feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2_ids]
+        
+        cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
+        cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
+        du = self.summarized_graph.nodes[ntype].data["deg_cites"][node1_ids]
+        dv = self.summarized_graph.nodes[ntype].data["deg_cites"][node2_ids]
 
-            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
-            feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
-            feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
-            
-            cost = torch.norm(feat - feat_u, p=1, dim=1) + torch.norm(feat - feat_v, p=1, dim=1)
-            
-            self.merge_graphs[ntype].edata["costs_feat"] = cost * 2
+        feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
+        feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
+        feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+        
+        cost = torch.norm(feat - feat_u, p=1, dim=1) + torch.norm(feat - feat_v, p=1, dim=1)
+        
+        self.merge_graphs[ntype].edata["costs_feat"] = cost
             
     def _init_merge_graphs(self, type_pairs):
         self.merge_graphs = dict()
@@ -392,6 +391,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
         for ntype in self.summarized_graph.ntypes:
+            if self.add_feat:
+                continue
             self._self_feature_costs()
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"]     
         
@@ -405,6 +406,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
        
         self._self_feature_costs()
         for ntype in self.summarized_graph.ntypes:
+            if self.add_feat:
+                continue
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"] 
         self.candidates = self._find_lowest_costs()
         

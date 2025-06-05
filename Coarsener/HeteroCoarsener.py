@@ -540,7 +540,7 @@ class HeteroCoarsener(ABC):
                 
                 nodes_to_delete = torch.cat((nodes_u, nodes_v))           
                 g_new.remove_nodes(nodes_to_delete, ntype=node_type)
-                
+            
             for node_type, node_pairs in self.candidates.items():
                 
                 for src_type, etype,dst_type in g_new.canonical_etypes:
@@ -569,7 +569,8 @@ class HeteroCoarsener(ABC):
                     
                     eids = g_new.add_edges(uniq_pairs[:,0], uniq_pairs[:,1], etype=(src_type, etype, dst_type))
                     g_new.edges[etype].data["adj"][eids] = sums
-
+                    self._update_deg()   
+            
             
                     # if src_type == dst_type:
                     #     g_new = dgl.remove_self_loop(g_new, etype=etype)
@@ -585,8 +586,7 @@ class HeteroCoarsener(ABC):
                     
                         
                     
-                            
-            self._update_deg()        
+                                 
             print("_merge_nodes", time.time() - start_time)
             return g_new, mappings
 

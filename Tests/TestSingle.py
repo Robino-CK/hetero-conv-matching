@@ -66,8 +66,41 @@ class SingleTester(unittest.TestCase):
        
         pass
     
-    def test_merge(self):
-        pass
+    def test_feat_seperate_costs(self):
+        self.homo_graph =  dgl.heterograph({
+            ('user', 'cites', 'user'): ([0, 1, 1, 1, 2], [1, 2, 3, 4,3])})
+        self.homo_graph.nodes['user'].data['feat'] = torch.tensor([[1.0],[2.0],[3.0],[4.0],[5.0]])
+        num_nearest_init_neighbors_per_type = {"cites": 3, "user": 2}
+        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= False, add_feat=False)
+        self.coarsener._create_gnn_layer()
+        self.coarsener._init_merge_graphs({"user": torch.tensor([[0,1]])})
+        total_costs = torch.tensor([
+            4.853,
+        ], device=self.device)
+        torch.testing.assert_close(self.coarsener.merge_graphs["user"].edata["costs"], total_costs, rtol=0, atol=0.1)
+
+    
+    def test_feat_seperate_merge(self):
+        self.homo_graph =  dgl.heterograph({
+            ('user', 'cites', 'user'): ([0, 1, 1, 1, 2], [1, 2, 3, 4,3])})
+        self.homo_graph.nodes['user'].data['feat'] = torch.tensor([[1.0],[2.0],[3.0],[4.0],[5.0]])
+        num_nearest_init_neighbors_per_type = {"cites": 3, "user": 2}
+        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= False, add_feat=False)
+        self.coarsener._create_gnn_layer()
+        self.coarsener.candidates = {"user": torch.tensor([[2, 4], [1, 3]])}
+        self.device = "cpu"
+        merged_s_real = torch.tensor(
+            [[1.3416],
+             [1.3416],
+             [5.9604]], device=self.device)
+        
+        
+        g, mapping = self.coarsener._merge_nodes(self.coarsener.summarized_graph)
+        mapping_real = torch.tensor([0,2,1,2,1], device=self.device)
+        
+        torch.testing.assert_close(mapping_real, mapping["user"], rtol=0, atol=0.1)
+        torch.testing.assert_close(g.nodes["user"].data[f"cites"], merged_s_real, rtol=0, atol=0.1)
+        
     
     def test_create_H_merged(self):
         self.coarsener._create_gnn_layer()
