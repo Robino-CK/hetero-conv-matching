@@ -359,7 +359,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             
             # L1 costs
-            cost = torch.norm(merged - h1, p=2, dim=1) + torch.norm(merged - h2, p=self.norm_p, dim=1)
+            cost = torch.norm(merged - h1, p=self.norm_p, dim=1) + torch.norm(merged - h2, p=self.norm_p, dim=1)
             
             self.merge_graphs[src_type].edata["costs_h"] = cost 
         print("_h_costs", time.time() - start_time)
