@@ -316,7 +316,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 neighbors_cost  = self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs,d_node, c_node, infl_node, feat_node, etype)
             else:            
                 neighbors_cost  = self.neighbor_difference_per_pair(self.summarized_graph, pairs, h_node, d_node, c_node, s_node, feat_node, a_edge, etype)
-            merge_graph.edata["costs_neig"] = neighbors_cost
+            merge_graph.edata[f"costs_neig_{etype}"] = neighbors_cost
         print("_create_neighbor_costs", time.time() - start_time)
     
     
@@ -358,11 +358,59 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             
             
-            # L1 costs
-            cost = torch.norm(merged - h1, p=self.norm_p, dim=1) + torch.norm(merged - h2, p=self.norm_p, dim=1)
             
-            self.merge_graphs[src_type].edata["costs_h"] = cost 
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.norm(merged - h1, p=self.norm_p, dim=1)
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  torch.norm(merged - h2, p=self.norm_p, dim=1)
         print("_h_costs", time.time() - start_time)
+        
+        
+    def _inner_product(self):
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            # ensure nested dict
+                
+                
+            
+            
+            src, dst = self.merge_graphs[src_type].edges()
+            
+             
+            # compute all merged h representations in one go
+            H_merged = self._create_h_merged(src,dst, src_type, etype)
+            
+            
+            # flatten all (u,v) pairs same as above
+            
+
+            node1_ids = src  # [P]
+            node2_ids = dst    # [P]
+
+            # gather representations
+            h1 = self.summarized_graph.nodes[src_type].data[f"h{etype}"][node1_ids]  # [P, H]
+            h2 = self.summarized_graph.nodes[src_type].data[f"h{etype}"][node2_ids]  # [P, H]
+            # build a dense [num_src, hidden] tensor
+            #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
+            merged = H_merged                               # [P, H]
+            
+            feat_u = self.summarized_graph.nodes[src_type].data["feat"][node1_ids]
+            feat_v = self.summarized_graph.nodes[src_type].data["feat"][node2_ids]
+        
+            cu = self.summarized_graph.nodes[src_type].data["node_size"][node1_ids]
+
+            cv = self.summarized_graph.nodes[src_type].data["node_size"][node2_ids]
+            
+            du = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][node1_ids]
+            dv = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][node2_ids]
+
+            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
+            feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
+            feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+
+            
+            # L1 cos
+            
+            self.merge_graphs[src_type].edata[f"costs_inner_{etype}_u"] = torch.norm(feat - feat_u - merged  + h1, p=self.norm_p, dim=1)
+            self.merge_graphs[src_type].edata[f"costs_inner_{etype}_v"] = torch.norm(feat - feat_v - merged + h2, p=self.norm_p, dim=1)
+                    
          
     def _self_feature_costs(self, ntype):
         src, dst = self.merge_graphs[ntype].edges()
@@ -372,44 +420,68 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2_ids]
         
         cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
+
         cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
-        du = self.summarized_graph.nodes[ntype].data["deg_cites"][node1_ids]
-        dv = self.summarized_graph.nodes[ntype].data["deg_cites"][node2_ids]
+        du = torch.zeros(node1_ids.shape[0], device=self.device)
+        dv = torch.zeros(node2_ids.shape[0], device=self.device)
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            
+            du += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
+            dv += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
 
         feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
         feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
         feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
         
-        cost = torch.norm(feat - feat_u, p=self.norm_p, dim=1) + torch.norm(feat - feat_v, p=self.norm_p, dim=1)
         
-        self.merge_graphs[ntype].edata["costs_feat"] = cost
-            
-    def _init_merge_graphs(self, type_pairs):
-        self.merge_graphs = dict()
-        self._h_costs( type_pairs)
-        self._create_neighbor_costs()
+        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] = torch.norm(feat - feat_u, p=self.norm_p, dim=1)
+        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] = torch.norm(feat - feat_v, p=self.norm_p, dim=1)
+    
+    def _sum_costs(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
+            
+            self.merge_graphs[src_type].edata["costs_u"] = 2* torch.pow(self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"],2) 
+            self.merge_graphs[src_type].edata["costs_u"] -= torch.pow(self.merge_graphs[src_type].edata[f"costs_inner_{etype}_u"], 2)  
+            
+            
+            self.merge_graphs[src_type].edata["costs_v"] = 2* torch.pow(self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"],2) 
+            self.merge_graphs[src_type].edata["costs_v"] -= torch.pow(self.merge_graphs[src_type].edata[f"costs_inner_{etype}_v"], 2)  
+            
+            
         for ntype in self.summarized_graph.ntypes:
             if self.add_feat:
                 continue
             self._self_feature_costs(ntype)
-            self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"]     
+            
+            self.merge_graphs[ntype].edata["costs_u"] += 2* torch.pow(self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] , 2)
+            self.merge_graphs[ntype].edata["costs_v"] += 2* torch.pow(self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] , 2)
+        
+            
+            
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            self.merge_graphs[src_type].edata["costs"] = torch.sqrt(self.merge_graphs[src_type].edata["costs_u"])
+            self.merge_graphs[src_type].edata["costs"] += torch.sqrt(self.merge_graphs[src_type].edata["costs_v"])
+            
+        
+            self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[src_type].edata[f"costs_neig_{etype}"]
+            
+        
+    
+           
+    def _init_merge_graphs(self, type_pairs):
+        self.merge_graphs = dict()
+        self._h_costs( type_pairs)
+        self._create_neighbor_costs()
+        self._inner_product()
+        self._sum_costs()
         
         
     def _update_merge_graph(self, mappings):
         self.reduce_merge_graph(mappings)
         self._h_costs()
         self._create_neighbor_costs()
-        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_h"] + self.merge_graphs[src_type].edata["costs_neig"] 
-       
-        
-        for ntype in self.summarized_graph.ntypes:
-            if self.add_feat:
-                continue
-            self._self_feature_costs(ntype)
-            self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[ntype].edata["costs_feat"] 
+        self._inner_product()
+        self._sum_costs()
         self.candidates = self._find_lowest_costs()
         
         

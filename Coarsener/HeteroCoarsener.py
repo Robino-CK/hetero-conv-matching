@@ -10,15 +10,16 @@ class HeteroCoarsener(ABC):
     
     
     
-    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= True, add_feat=True, device="cpu"):
+    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= True, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True):
         self.original_graph = graph.to(device)
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
-        self.norm_p = 2
+        self.norm_p = norm_p
         self.add_feat = add_feat
         self.device = device
+        self.use_out_degree = use_out_degree
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
         for ntype in self.summarized_graph.ntypes:
@@ -49,10 +50,15 @@ class HeteroCoarsener(ABC):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             
             
-            rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
+            if self.use_out_degree:
+                self.summarized_graph.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
             
-            self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
-            if False and not self.add_feat:
+            else:
+                rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
+            
+                self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
+            
+            if self.use_out_degree and not self.add_feat:
                 
                 g = deepcopy(self.summarized_graph)
                 g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
