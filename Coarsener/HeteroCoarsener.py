@@ -10,14 +10,14 @@ class HeteroCoarsener(ABC):
     
     
     
-    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= True, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True):
+    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True):
         self.original_graph = graph.to(device)
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
         self.norm_p = norm_p
-        self.add_feat = add_feat
+        self.feat_in_gcn = add_feat
         self.device = device
         self.use_out_degree = use_out_degree
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
@@ -50,7 +50,7 @@ class HeteroCoarsener(ABC):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             
             
-            if self.use_out_degree:
+            if not self.use_out_degree:
                 self.summarized_graph.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
             
             else:
@@ -58,7 +58,7 @@ class HeteroCoarsener(ABC):
             
                 self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
             
-            if self.use_out_degree and not self.add_feat:
+            if False and self.use_out_degree and not self.feat_in_gcn:
                 
                 g = deepcopy(self.summarized_graph)
                 g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
@@ -325,7 +325,7 @@ class HeteroCoarsener(ABC):
         feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
         cu = g_new.nodes[node_type].data["node_size"][nodes_u]
         cv = g_new.nodes[node_type].data["node_size"][nodes_v]
-        if self.add_feat:
+        if True: #self.feat_in_gcn and True:
             suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
         else:
             suv = su + sv
@@ -500,7 +500,7 @@ class HeteroCoarsener(ABC):
                         return {f's_new': torch.sum(nodes.mailbox['s']  , dim=1), f'i_new': torch.sum(nodes.mailbox['i']  , dim=1)}
                     # update Neigbors
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
-                    if self.add_feat:
+                    if True: #and self.feat_in_gcn:
                         edges = torch.stack((edges_src, edges_dst), dim=1)
                         nodes_u_supernodes = torch.stack((nodes_u, super_nodes), dim = 1)
                         nodes_v_supernodes = torch.stack((nodes_v, super_nodes), dim = 1)
@@ -586,7 +586,7 @@ class HeteroCoarsener(ABC):
                     d = g_new.nodes[src_type].data[f"deg_{etype}"] 
                     f = g_new.nodes[src_type].data[f"feat"]
                     s = g_new.nodes[src_type].data[f"s{etype}"]
-                    if self.add_feat:
+                    if self.feat_in_gcn:
                         g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     else:
                         g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s

@@ -6,12 +6,30 @@ import dgl.function as fn
 from Tests.TestSingle import SingleTester
 from Tests.TestMulti import MultiGraphTest
 import unittest
-
+import torch
 if __name__ == "__main__":
+    # dataset = Citeseer() 
+    # original_graph = dataset.load_graph()
+
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # original_graph = original_graph.to(device=device)
+    # print(device)
+    
+      
+    # num_nearest_init_neighbors_per_type = {"paper": 1, "cites": 3, "cited-by":1}
+    # coarsener = HeteroRGCNCoarsener(original_graph, 0.4, num_nearest_init_neighbors_per_type, device=device, pairs_per_level=10,norm_p=2, approx_neigh=False) 
+    # coarsener.init()
+    
+    # coarsener.coarsen_step()
+    
+    
+    # coarsener = HeteroRGCNCoarsener(original_graph, 0.4, num_nearest_init_neighbors_per_type, device=device, pairs_per_level=10,norm_p=2, add_feat=False, approx_neigh=False) 
+    # coarsener.init()
+    # coarsener.coarsen_step()
     
     single_tester = SingleTester()
-  #  single_tester.setUp()
-    single_tester.test_feat_sep()
+    single_tester.setUp()
+    single_tester.test_total_costs()
     
     # multi_tester = MultiGraphTest()
     # multi_tester.setUp()
@@ -20,8 +38,8 @@ if __name__ == "__main__":
     # unittest.TextTestRunner().run(suite)
     
     
-    # suite = unittest.TestLoader().loadTestsFromTestCase(SingleTester)
-    # unittest.TextTestRunner().run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(SingleTester)
+    unittest.TextTestRunner().run(suite)
     
     # coarsener.coarsen_step()
     # cit = Citeseer()
