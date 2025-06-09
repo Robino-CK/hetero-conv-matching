@@ -196,12 +196,19 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         c_node_src = self.summarized_graph.nodes[src_type].data["node_size"]
         s_node_src =  self.summarized_graph.nodes[src_type].data[f"s{etype}"]
         feat_node_src = self.summarized_graph.nodes[src_type].data[f"feat"]
-        
-        h_node_dst = self.summarized_graph.nodes[dst_type].data[f"h{self._get_back_etype(etype)}"]
-        d_node_dst = self.summarized_graph.nodes[dst_type].data[f"deg_{self._get_back_etype(etype)}"]
-        c_node_dst  = self.summarized_graph.nodes[dst_type].data["node_size"]
-        s_node_dst =  self.summarized_graph.nodes[dst_type].data[f"s{self._get_back_etype(etype)}"]
-        feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat"]
+        if src_type == dst_type:
+            h_node_dst = self.summarized_graph.nodes[dst_type].data[f"h{etype}"]
+            d_node_dst = self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"]
+            c_node_dst  = self.summarized_graph.nodes[dst_type].data["node_size"]
+            s_node_dst =  self.summarized_graph.nodes[dst_type].data[f"s{etype}"]
+            feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat"]
+            
+        else:
+            h_node_dst = self.summarized_graph.nodes[dst_type].data[f"h{self._get_back_etype(etype)}"]
+            d_node_dst = self.summarized_graph.nodes[dst_type].data[f"deg_{self._get_back_etype(etype)}"]
+            c_node_dst  = self.summarized_graph.nodes[dst_type].data["node_size"]
+            s_node_dst =  self.summarized_graph.nodes[dst_type].data[f"s{self._get_back_etype(etype)}"]
+            feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat"]
         
         
         a_edge = self.summarized_graph.edges[etype].data[f"adj"]
@@ -219,7 +226,10 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         # ------------------------------------------------------------------ #
         # 1 ▸ pick all edges touching any u or v                             #
         # ------------------------------------------------------------------ #
-        src, dst, _ = g.edges(form='all', etype=self._get_back_etype(etype))
+        if src_type == dst_type:
+            src, dst, _ = g.edges(form='all', etype=etype)
+        else:
+            src, dst, _ = g.edges(form='all', etype=self._get_back_etype(etype))
         src, dst    = src.to(device), dst.to(device)
        # print("get edges",  time.time()  - start_time )
         start_time = time.time()   
@@ -469,8 +479,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             if ntype != src_type:
                 continue
-            du += self.summarized_graph.nodes[ntype].data[f"deg_{self._get_back_etype(etype)}"][node1_ids]
-            dv += self.summarized_graph.nodes[ntype].data[f"deg_{self._get_back_etype(etype)}"][node2_ids]
+            if src_type == dst_type:
+                du += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
+                dv += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
+
+            else:
+                du += self.summarized_graph.nodes[ntype].data[f"deg_{self._get_back_etype(etype)}"][node1_ids]
+                dv += self.summarized_graph.nodes[ntype].data[f"deg_{self._get_back_etype(etype)}"][node2_ids]
 
         feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
         feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)

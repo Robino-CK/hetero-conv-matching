@@ -513,7 +513,7 @@ class HeteroCoarsener(ABC):
                         return {f's_new': torch.sum(nodes.mailbox['s']  , dim=1), f'i_new': torch.sum(nodes.mailbox['i']  , dim=1)}
                     # update Neigbors
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
-                    if self.multi_relations: #and self.feat_in_gcn:
+                    if True:#self.multi_relations: #and self.feat_in_gcn:
                         edges = torch.stack((edges_src, edges_dst), dim=1)
                         nodes_u_supernodes = torch.stack((nodes_u, super_nodes), dim = 1)
                         nodes_v_supernodes = torch.stack((nodes_v, super_nodes), dim = 1)
