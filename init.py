@@ -12,7 +12,7 @@ if __name__ == "__main__":
     
     dataset = DBLP() 
     original_graph = dataset.load_graph()
-    num_nearest_init_neighbors_per_type = {"papertoauthor": 1, "authortopaper": 25, "conferencetopaper":1, "papertoconference":1,"papertoterm":1, "termtopaper":1 }
+    num_nearest_init_neighbors_per_type = {"papertoauthor": 3, "authortopaper": 3, "conferencetopaper":3, "papertoconference":3,"papertoterm":3, "termtopaper":3 }
 
     coarsener = HeteroRGCNCoarsener(original_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", pairs_per_level=10,norm_p=2, approx_neigh=False, add_feat=False, use_out_degree=False) 
 
