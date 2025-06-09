@@ -219,7 +219,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         # ------------------------------------------------------------------ #
         # 1 ▸ pick all edges touching any u or v                             #
         # ------------------------------------------------------------------ #
-        src, dst, _ = g.edges(form='all', etype=etype)
+        src, dst, _ = g.edges(form='all', etype=self._get_back_etype(etype))
         src, dst    = src.to(device), dst.to(device)
         print("get edges",  time.time()  - start_time )
         start_time = time.time()   
@@ -369,7 +369,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         start_time = time.time()
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             # ensure nested dict
-            if type_pairs:
+            if type_pairs and not src_type in self.merge_graphs:
                 self.merge_graphs[src_type] = dgl.graph(([], []), num_nodes=self.summarized_graph.number_of_nodes(ntype=src_type), device=self.device)
               # self.merge_graphs[src_type] = dgl.to_bidirected(self.merge_graphs[src_type])
                 self.merge_graphs[src_type].add_edges(type_pairs[src_type][:,0],type_pairs[src_type][:,1])
@@ -467,9 +467,10 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         du = torch.zeros(node1_ids.shape[0], device=self.device)
         dv = torch.zeros(node2_ids.shape[0], device=self.device)
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            
-            du += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
-            dv += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
+            if ntype != src_type:
+                continue
+            du += self.summarized_graph.nodes[ntype].data[f"deg_{self._get_back_etype(etype)}"][node1_ids]
+            dv += self.summarized_graph.nodes[ntype].data[f"deg_{self._get_back_etype(etype)}"][node2_ids]
 
         feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
         feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
