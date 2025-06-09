@@ -12,6 +12,7 @@ class HeteroCoarsener(ABC):
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True):
         self.original_graph = graph.to(device)
+        print("lols")
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
         self.approx_neigh = approx_neigh
@@ -22,6 +23,7 @@ class HeteroCoarsener(ABC):
         self.use_out_degree = use_out_degree
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
+        self.multi_relations = len(graph.canonical_etypes) > 1
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
             
@@ -44,11 +46,12 @@ class HeteroCoarsener(ABC):
     
     
     def _update_deg(self):
+        print("hi")
+            
         rev_sub_g = dgl.reverse(self.summarized_graph,
                         copy_edata=True,      # duplicates every edge feature tensor
                         share_ndata=True)     # node features remain shared views
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            
             
             if not self.use_out_degree:
                 self.summarized_graph.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
@@ -58,12 +61,20 @@ class HeteroCoarsener(ABC):
             
                 self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
             
-            if False and self.use_out_degree and not self.feat_in_gcn:
+            if self.multi_relations:
                 
                 g = deepcopy(self.summarized_graph)
                 g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
-            
-                self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = g.nodes[dst_type].data[f"deg_{etype}"]
+                
+                rev_sub_g = dgl.reverse(self.summarized_graph,
+                        copy_edata=True,      # duplicates every edge feature tensor
+                        share_ndata=True)     # node features remain shared views
+
+                rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
+                print(src_type, etype, dst_type)    
+
+                self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
+                self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = rev_sub_g.nodes[dst_type].data[f"deg_{etype}"]
     
     @abstractmethod
     def _create_gnn_layer(self):
@@ -108,7 +119,11 @@ class HeteroCoarsener(ABC):
             if use_feat and 'feat' in self.summarized_graph.nodes[node_type].data:
                 H = self.summarized_graph.nodes[node_type].data['feat'].float()
             elif etype is not None and f'h{etype}' in self.summarized_graph.nodes[node_type].data:
-                H = self.summarized_graph.nodes[node_type].data[f'SGC{etype}'].float()
+                if self.multi_relations:
+                    H = self.summarized_graph.nodes[node_type].data[f'h{etype}'].float()
+      
+                else:
+                    H = self.summarized_graph.nodes[node_type].data[f'SGC{etype}'].float()
       
 
             H = H.to(self.device)
@@ -325,7 +340,7 @@ class HeteroCoarsener(ABC):
         feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
         cu = g_new.nodes[node_type].data["node_size"][nodes_u]
         cv = g_new.nodes[node_type].data["node_size"][nodes_v]
-        if True: #self.feat_in_gcn and True:
+        if not self.multi_relations: #self.feat_in_gcn and True:
             suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
         else:
             suv = su + sv
@@ -500,7 +515,7 @@ class HeteroCoarsener(ABC):
                         return {f's_new': torch.sum(nodes.mailbox['s']  , dim=1), f'i_new': torch.sum(nodes.mailbox['i']  , dim=1)}
                     # update Neigbors
                     edges_src, edges_dst = g_new.in_edges(nodes_uv,  etype=etype)
-                    if True: #and self.feat_in_gcn:
+                    if self.multi_relations: #and self.feat_in_gcn:
                         edges = torch.stack((edges_src, edges_dst), dim=1)
                         nodes_u_supernodes = torch.stack((nodes_u, super_nodes), dim = 1)
                         nodes_v_supernodes = torch.stack((nodes_v, super_nodes), dim = 1)
@@ -660,7 +675,9 @@ class HeteroCoarsener(ABC):
     
     def init(self):
         self.mappings = [] 
-        self._create_sgn_layer()
+        
+        if not self.multi_relations:
+            self._create_sgn_layer()
         self._create_gnn_layer()
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)

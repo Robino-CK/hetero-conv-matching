@@ -10,7 +10,10 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
     
     def _create_sgn_layer(self, k =1):
         for src_type, etype, _ in self.summarized_graph.canonical_etypes:
-            g = dgl.add_self_loop(self.summarized_graph, etype=etype)
+            if not self.multi_relations:
+                g = dgl.add_self_loop(self.summarized_graph, etype=etype)
+            else:
+                g = self.summarized_graph
             if self.device == "cpu":
                 A = g.adj_external(etype=etype).to_dense()
             else:
@@ -63,7 +66,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             else:
                 feat_v = torch.ones((v.shape[0], 1), device=self.device)
                 
-            if True or self.add_feat:
+            if self.use_out_degree:
                 s_e = feat_v * inv_sqrt_out[v].unsqueeze(-1)       # [E, D]
             else:
                 s_e = feat_v * inv_sqrt_in[v].unsqueeze(-1)
@@ -107,6 +110,12 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         su = cache[node1s]            # shape (L, D)
         sv = cache[node2s]
+        cu = self.summarized_graph.nodes[ntype].data["node_size"][node1s].unsqueeze(1)
+        cv = self.summarized_graph.nodes[ntype].data["node_size"][node2s].unsqueeze(1)
+        cuv = cu + cv  # shape (L,)
+
+        if self.multi_relations:
+            return (su + sv ) / torch.sqrt((deg1 + deg2 + cuv.squeeze())).unsqueeze(1 )
         
                 
         adj1 = self._get_adj(node1s, node2s, etype)
@@ -116,10 +125,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2s]
         
         
-        cu = self.summarized_graph.nodes[ntype].data["node_size"][node1s].unsqueeze(1)
-        cv = self.summarized_graph.nodes[ntype].data["node_size"][node2s].unsqueeze(1)
-        cuv = cu + cv  # shape (L,)
-
+        
             
         minus = torch.mul((adj2 / torch.sqrt(deg1 + cu.squeeze() )).unsqueeze(1), feat_u) + torch.mul((adj1 / torch.sqrt(deg2 + cv.squeeze() )).unsqueeze(1), feat_v) # + torch.matmul( (adj / torch.sqrt(deg2 + cv.squeeze() )), feat_v)
         

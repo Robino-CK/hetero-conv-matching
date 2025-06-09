@@ -6,8 +6,19 @@ import dgl.function as fn
 from Tests.TestSingle import SingleTester
 from Tests.TestMulti import MultiGraphTest
 import unittest
+from Data.DBLP import DBLP
 import torch
 if __name__ == "__main__":
+    
+    dataset = DBLP() 
+    original_graph = dataset.load_graph()
+    num_nearest_init_neighbors_per_type = {"papertoauthor": 1, "authortopaper": 25, "conferencetopaper":1, "papertoconference":1,"papertoterm":1, "termtopaper":1 }
+
+    coarsener = HeteroRGCNCoarsener(original_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", pairs_per_level=10,norm_p=2, approx_neigh=False, add_feat=False, use_out_degree=False) 
+
+    coarsener.init()
+    
+    
     # dataset = Citeseer() 
     # original_graph = dataset.load_graph()
 
