@@ -12,7 +12,7 @@ class HeteroCoarsener(ABC):
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True):
         self.original_graph = graph.to(device)
-        print("lols")
+       # print("lols")
         self.summarized_graph = deepcopy(graph)
         self.summarized_graph = self.summarized_graph.to(device)
         self.approx_neigh = approx_neigh
@@ -46,7 +46,6 @@ class HeteroCoarsener(ABC):
     
     
     def _update_deg(self):
-        print("hi")
             
         rev_sub_g = dgl.reverse(self.summarized_graph,
                         copy_edata=True,      # duplicates every edge feature tensor
@@ -71,8 +70,7 @@ class HeteroCoarsener(ABC):
                         share_ndata=True)     # node features remain shared views
 
                 rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
-                print(src_type, etype, dst_type)    
-
+             
                 self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
                 self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = rev_sub_g.nodes[dst_type].data[f"deg_{etype}"]
     
@@ -155,7 +153,7 @@ class HeteroCoarsener(ABC):
             if "feat" in self.summarized_graph.nodes[dst_type].data:
                 init_costs[ntype] = _init_calculate_clostest_features(ntype)   
         
-        print("_init_costs", time.time() - start_time)
+       # print("_init_costs", time.time() - start_time)
         return init_costs
     
     def _get_union(self, init_costs):
@@ -176,7 +174,7 @@ class HeteroCoarsener(ABC):
                 neigh = set(neighbors.tolist()) - {i}
                 closest.setdefault(ntype, {})
                 closest[ntype].setdefault(i, set()).update(neigh)
-        print("_get_union", time.time() -start_time)
+       # print("_get_union", time.time() -start_time)
         type_pairs = dict()
         for typ, nodes in closest.items():
             pairs = [(u, v) for u, vs in nodes.items() for v in vs]
@@ -223,7 +221,7 @@ class HeteroCoarsener(ABC):
 
             topk_non_overlapping_per_type[ntype] = topk_non_overlapping
 
-        print("_find_lowest_cost_edges", time.time() - start_time)
+       # print("_find_lowest_cost_edges", time.time() - start_time)
         return topk_non_overlapping_per_type
     
     def vectorwise_isin(self, a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
@@ -331,7 +329,10 @@ class HeteroCoarsener(ABC):
                
         su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
         sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
-        
+        if self.multi_relations:
+            g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = su + sv
+            return
+    
         
         adj_uv = self._get_adj(nodes_u, nodes_v, etype)
         adj_vu = self._get_adj(nodes_v, nodes_u, etype)
@@ -340,10 +341,7 @@ class HeteroCoarsener(ABC):
         feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
         cu = g_new.nodes[node_type].data["node_size"][nodes_u]
         cv = g_new.nodes[node_type].data["node_size"][nodes_v]
-        if not self.multi_relations: #self.feat_in_gcn and True:
-            suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
-        else:
-            suv = su + sv
+        suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
         g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
     
     def _get_supernode_indices(self, base_nodes, query_nodes, super_nodes):
@@ -609,7 +607,7 @@ class HeteroCoarsener(ABC):
                         
                     
                                  
-            print("_merge_nodes", time.time() - start_time)
+           # print("_merge_nodes", time.time() - start_time)
             return g_new, mappings
 
 

@@ -95,7 +95,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             else:
                 self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor
            
-        print("_create_h_spatial_rgcn", time.time() - start_time)
+     #   print("_create_h_spatial_rgcn", time.time() - start_time)
 
     
     def _create_h_merged(self,  node1s, node2s,ntype, etype):
@@ -221,14 +221,14 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         # ------------------------------------------------------------------ #
         src, dst, _ = g.edges(form='all', etype=self._get_back_etype(etype))
         src, dst    = src.to(device), dst.to(device)
-        print("get edges",  time.time()  - start_time )
+       # print("get edges",  time.time()  - start_time )
         start_time = time.time()   
         
         touches = (
          (dst[None, :] == u[:, None]) |      # dst is u
                   (dst[None, :] == v[:, None])        # dst is v
             )
-        print("create touch",  time.time()  - start_time )
+      #  print("create touch",  time.time()  - start_time )
         
         start_time = time.time()   
         
@@ -241,7 +241,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
 
         connects_u        = (dst[edge_idx] == u[pair_idx])
         connects_v        =  (dst[edge_idx] == v[pair_idx])                                
-        print("create connection",  time.time()  - start_time )
+     #   print("create connection",  time.time()  - start_time )
         # ------------------------------------------------------------------ #
         # 2 ▸ heterograph: pair ─knows─> neighbour                          #
         # ------------------------------------------------------------------ #
@@ -280,7 +280,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         start_time = time.time()
         hg = hg.to("cpu").to_simple(hg,  aggregator="sum", copy_edata=True)
         hg = hg.to(self.device)
-        print("to simple", time.time() -start_time)
+      #  print("to simple", time.time() -start_time)
         
         # ------------------------------------------------------------------ #
         # 3 ▸ fused CUDA kernel per (pair,nbr) edge                          #
@@ -324,7 +324,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         # ------------------------------------------------------------------ #
         pair_idx,_ = hg.edges(etype="knows")
         pair_d_sum = scatter_add(d, pair_idx, dim=0, dim_size=P) 
-        print("edges & scatter", time.time() -start_time)
+        #print("edges & scatter", time.time() -start_time)
         # (P, F_h)
 
         return pair_d_sum
@@ -530,7 +530,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
     
     def _sum_costs_feat_sep_2(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            print("Hi")
+           # print("Hi")
             self.merge_graphs[src_type].edata["costs_u"] = self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] 
             
             
