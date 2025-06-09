@@ -396,14 +396,13 @@ class HeteroCoarsener(ABC):
     
     def _connect_super_nodes_to_supernodes(self, g_before, g_new, nodes_src, nodes_dst,  super_nodes_src, super_nodes_dst, etype):
         src, dst, eid = g_before.in_edges(nodes_dst, form="all", etype=etype)
-        adj = g_new.edges[etype].data["adj"][eid]
         mask = torch.isin(src, nodes_src)
         src = src[mask]
         super_nodes_src = self._get_supernode_indices(nodes_src, src, super_nodes_src)
         
-        adj = g_new.edges[etype].data["adj"][eid]
         dst = dst[mask]
         super_nodes_dst = self._get_supernode_indices(nodes_dst, dst, super_nodes_dst)
+        adj = self._get_adj(src,dst , etype, g_new)
         
         
         g_new.add_edges( super_nodes_src, super_nodes_dst,data={"adj": adj}, etype=etype)
