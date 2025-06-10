@@ -7,7 +7,7 @@ class MultiGraphTest(unittest.TestCase):
     def setUp(self):
         
         self.graph =  dgl.heterograph({
-            ('square', 'squre_to_cicle', 'circle'): ([0, 1, 1], [0, 0, 1]),
+            ('square', 'square_to_circle', 'circle'): ([0, 1, 1], [0, 0, 1]),
             ('circle', 'circle_to_triangle', 'triangle'): ([0, 0,1,1], [0,1,1,2])})
             
             
@@ -16,8 +16,8 @@ class MultiGraphTest(unittest.TestCase):
         self.graph.nodes['circle'].data['feat'] = torch.tensor( [[2.], [4.]])
         
         self.graph.nodes['triangle'].data['feat'] = torch.tensor( [[1.], [2.],[3.]])
-        num_nearest_init_neighbors_per_type = {"square": 3, "squre_to_cicle": 2, "circle": 2, "circle_to_triangle": 2, "triangle": 2}
-        self.coarsener = HeteroRGCNCoarsener(self.graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", add_feat=False, approx_neigh= False)
+        num_nearest_init_neighbors_per_type = {"square": 3, "square_to_circle": 2, "circle": 2, "circle_to_triangle": 2, "triangle": 2}
+        self.coarsener = HeteroRGCNCoarsener(self.graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", add_feat=False, approx_neigh= False, use_out_degree=False)
         
         self.device = self.graph.device
         print("Starting rgcn test...")
@@ -41,20 +41,19 @@ class MultiGraphTest(unittest.TestCase):
             
         ], device=self.device)
         
-        i = torch.tensor( [
-            0.5,
-            2.71,
-            1,
-            0,
-            0    
-        ],device= self.device)
         
         
         
         torch.testing.assert_close(self.coarsener.summarized_graph.nodes["circle"].data[f'scircle_to_triangle'], s.unsqueeze(1), rtol=0, atol=0.1)  
         torch.testing.assert_close(self.coarsener.summarized_graph.nodes["circle"].data[f'hcircle_to_triangle'], h.unsqueeze(1), rtol=0, atol=0.1)  
     
-    def test_merge(self):
+        
+    
+    def test_costs(self):
+        self.coarsener.use_out_degree = False
+        self.coarsener._create_gnn_layer()
+        self.coarsener._init_merge_graphs({"circle" : torch.tensor([[0,1]] , device=self.device)})
+        torch.testing.assert_close(self.coarsener.merge_graphs["circle"].edata["costs"], torch.tensor([2.78], device=self.device), rtol=0, atol=0.1 )
         pass
     
     def test_create_H_merged(self):
@@ -84,8 +83,22 @@ class MultiGraphTest(unittest.TestCase):
         
         merged_h_real = torch.tensor(
             [[ (4 / torch.sqrt(torch.tensor(3 )) + 2) / torch.sqrt(torch.tensor(6))]], device=self.device)
-        
-        
+        deg_circle_to_triangle = torch.tensor(
+            [4.], device=self.device
+        )
+        deg_circle_from_square = torch.tensor(
+            [3.], device=self.device
+        )
+        deg_triangle = torch.tensor([2., 2.])
+        deg_square = torch.tensor(
+            [1., 2.], device=self.device
+        ) 
         g, mapping = self.coarsener._merge_nodes(self.coarsener.summarized_graph)
+        torch.testing.assert_close(g.nodes["circle"].data[f"deg_circle_to_triangle"], deg_circle_to_triangle, rtol=0, atol=0.1)
+        torch.testing.assert_close(g.nodes["triangle"].data[f"deg_circle_to_triangle"], deg_triangle, rtol=0, atol=0.1)
+        torch.testing.assert_close(g.nodes["circle"].data[f"deg_square_to_circle"], deg_circle_from_square, rtol=0, atol=0.1)
+        torch.testing.assert_close(g.nodes["square"].data[f"deg_square_to_circle"], deg_square, rtol=0, atol=0.1)
+        
+        
         torch.testing.assert_close(g.nodes["circle"].data[f"hcircle_to_triangle"], merged_h_real, rtol=0, atol=0.1)
         pass

@@ -72,7 +72,7 @@ class HeteroCoarsener(ABC):
                 rev_sub_g.update_all(fn.copy_e('adj', 'm'), fn.sum('m', f'deg_{etype}'), etype=etype)
              
                 self.summarized_graph.nodes[src_type].data[f"deg_{etype}"] = rev_sub_g.nodes[src_type].data[f"deg_{etype}"]
-                self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = rev_sub_g.nodes[dst_type].data[f"deg_{etype}"]
+                self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"] = g.nodes[dst_type].data[f"deg_{etype}"]
     
     @abstractmethod
     def _create_gnn_layer(self):
