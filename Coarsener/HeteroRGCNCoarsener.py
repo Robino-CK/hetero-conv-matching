@@ -80,9 +80,9 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             S_tensor = torch.zeros((n_src, feat_dim), device=self.device)
             S_tensor = S_tensor.index_add(0, u, s_e)
             infl = torch.zeros(n_src, device=self.device)
-            if self.feat_in_gcn:
-                infl = infl.index_add(0, v, inv_sqrt_in[u])
-           #     self.summarized_graph.nodes[src_type].data[f'i{etype}'] = infl
+            if self.approx_neigh:
+                infl = infl.index_add(0, u, inv_sqrt_out[v])
+                self.summarized_graph.nodes[src_type].data[f'i{etype}'] = infl
     
             # Compute H = D_out^{-1/2} * S
             H_tensor = inv_sqrt_out.unsqueeze(-1) * S_tensor
@@ -361,10 +361,11 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             c_node = cv = self.summarized_graph.nodes[src_type].data["node_size"]
             s_node =  self.summarized_graph.nodes[src_type].data[f"s{etype}"]
             feat_node = self.summarized_graph.nodes[src_type].data[f"feat"]
-        #    infl_node = self.summarized_graph.nodes[src_type].data[f"i{etype}"]
-          
+            
             a_edge = self.summarized_graph.edges[etype].data[f"adj"]
             if self.approx_neigh:
+                infl_node = self.summarized_graph.nodes[src_type].data[f"i{etype}"]
+          
                 neighbors_cost  = self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs,d_node, c_node, infl_node, feat_node, etype)
             else:            
                 neighbors_cost  = self.neighbor_difference_per_pair(self.summarized_graph, pairs, src_type,dst_type, etype)

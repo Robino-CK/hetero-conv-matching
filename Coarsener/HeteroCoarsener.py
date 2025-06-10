@@ -96,8 +96,7 @@ class HeteroCoarsener(ABC):
 
         # Get edge IDs for the existing edges
         edge_ids = g.edge_ids(nodes_u[existing_edge_indices], nodes_v[existing_edge_indices], etype=etype)
-        #g_new.nodes[node_type].data[f'i{etype}'][new_nodes] =   infl_uv
-    
+        
         edge_data = g.edges[etype].data['adj'][edge_ids]
 
         # Assign edge data to the result tensor
@@ -499,8 +498,8 @@ class HeteroCoarsener(ABC):
                     g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u] + g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
                
                     nodes_uv = torch.cat([nodes_u, nodes_v])
-                    # if self.add_feat:
-                    #     g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
+                    if self.approx_neigh:
+                        g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
                     def msg_minus_neigh_s(edges):
                         return {'s':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1) ,
                                 'i':edges.data['adj']/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']) ,
@@ -530,8 +529,8 @@ class HeteroCoarsener(ABC):
                     
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
-                        # if self.add_feat:
-                        #     g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
+                        if self.approx_neigh:
+                            g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
                     
                     # update U,V
                     edges_src, edges_dst = g_new.in_edges(super_nodes,  etype=etype)
@@ -543,8 +542,8 @@ class HeteroCoarsener(ABC):
                             share_ndata=True)     # node features remain shared views
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
-                        # if self.add_feat:
-                        #     g_new.nodes[node_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
+                        if self.approx_neigh:
+                            g_new.nodes[node_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
                     
 
                     

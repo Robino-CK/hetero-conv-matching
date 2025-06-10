@@ -128,25 +128,25 @@ class SingleTester(unittest.TestCase):
         
     #     pass
         
-    # def test_neighbors_costs_approx(self):
-    #     self.homo_graph =  dgl.heterograph({
-    #         ('user', 'follows', 'user'): ([0, 1, 2], [1, 2, 3])})
-    #     self.homo_graph.nodes['user'].data['feat'] = torch.tensor([[1.0],[2.0],[3.0],[4.0]])
-    #     num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
-    #     self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= False)
-    #     self.device = self.homo_graph.device
-    #     self.coarsener._create_gnn_layer()
-    #     #self.coarsener._init_merge_graphs({"user": torch.tensor([[0,3]])})
-    #     pairs = torch.tensor([[0, 3]], device= self.device)
-    #     h_node = self.coarsener.summarized_graph.nodes["user"].data[f"hfollows"]
-    #     d_node = self.coarsener.summarized_graph.nodes["user"].data[f"deg_follows"]
-    #     c_node = cv = self.coarsener.summarized_graph.nodes["user"].data["node_size"]
-    #     s_node =  self.coarsener.summarized_graph.nodes["user"].data[f"sfollows"]
-    #     feat_node = self.coarsener.summarized_graph.nodes["user"].data[f"feat"]
-    #     infl_node = self.coarsener.summarized_graph.nodes["user"].data[f"ifollows"]
+    def test_neighbors_costs_approx(self):
+        self.homo_graph =  dgl.heterograph({
+            ('user', 'follows', 'user'): ([0, 1, 1,1,2], [1, 2, 3,4,3])})
+        self.homo_graph.nodes['user'].data['feat'] = torch.tensor([[1.0],[2.0],[3.0],[4.0], [5.0]])
+        num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
+        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= True)
+        self.device = self.homo_graph.device
+        self.coarsener._create_gnn_layer()
+        #self.coarsener._init_merge_graphs({"user": torch.tensor([[0,3]])})
+        pairs = torch.tensor([[0, 3]], device= self.device)
+        h_node = self.coarsener.summarized_graph.nodes["user"].data[f"hfollows"]
+        d_node = self.coarsener.summarized_graph.nodes["user"].data[f"deg_follows"]
+        c_node = cv = self.coarsener.summarized_graph.nodes["user"].data["node_size"]
+        s_node =  self.coarsener.summarized_graph.nodes["user"].data[f"sfollows"]
+        feat_node = self.coarsener.summarized_graph.nodes["user"].data[f"feat"]
+        infl_node = self.coarsener.summarized_graph.nodes["user"].data[f"ifollows"]
         
-    #     costs = self.coarsener.neigbor_approx_difference_per_pair(self.homo_graph, pairs,  d_node, c_node, infl_node, feat_node, "follows")
-    #     torch.testing.assert_close(costs, torch.tensor([1.81], device=self.device), rtol=0, atol=0.1)
+        costs = self.coarsener.neigbor_approx_difference_per_pair(self.homo_graph, pairs,  d_node, c_node, infl_node, feat_node, "follows")
+        torch.testing.assert_close(costs, torch.tensor([1.81], device=self.device), rtol=0, atol=0.1)
         
         
     #     pass
