@@ -79,5 +79,9 @@ class IMDB():
 
         self.features = data.x_dict
         self.dataset = data
+        
+        for key in ['train_mask', 'val_mask', 'test_mask']:
+            g.nodes['movie'].data[key] = data["movie"][key]
+
         return g
 
