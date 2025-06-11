@@ -480,26 +480,21 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
 
         cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
-        du = torch.zeros(node1_ids.shape[0], device=self.device)
-        dv = torch.zeros(node2_ids.shape[0], device=self.device)
+        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] = torch.zeros(node1_ids.shape[0], device=self.device)
+        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] = torch.zeros(node2_ids.shape[0], device=self.device)
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             if ntype != src_type:
                 continue
-            if src_type == dst_type:
-                du += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
-                dv += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
+            du = self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
+            dv = self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
 
-            else:
-                du += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
-                dv += self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
-
-        feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
-        feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
-        feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
+            feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
+            feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
         
         
-        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] = torch.norm(feat - feat_u, p=self.norm_p, dim=1)
-        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] = torch.norm(feat - feat_v, p=self.norm_p, dim=1)
+            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] += torch.norm(feat - feat_u, p=self.norm_p, dim=1)
+            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] += torch.norm(feat - feat_v, p=self.norm_p, dim=1)
     
     def _sum_costs_feat_in_rgc(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
