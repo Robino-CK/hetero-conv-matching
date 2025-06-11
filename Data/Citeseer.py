@@ -26,7 +26,7 @@ class Citeseer():
 
 
         # Reduce to 50 dimensions (you can adjust this)
-        reduced_feat = self.reduce_features(data, n_components=500)
+        reduced_feat = self.reduce_features(data, n_components=50)
 
         # Build heterogeneous graph with 'cites' and 'cited-by' relations
         src, dst = g.edges()

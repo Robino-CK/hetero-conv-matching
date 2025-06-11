@@ -65,6 +65,12 @@ class MultiGraphTest(unittest.TestCase):
         ],device= self.device)
         
         torch.testing.assert_close(H_merged, H.unsqueeze(1), rtol=0, atol=0.1)
+        
+    def test_cca(self):
+        self.coarsener.use_cca = True
+        self.coarsener._create_gnn_layer()
+        self.coarsener.init()
+        t = 2
     
     def test_merge_step(self):
         self.coarsener._create_gnn_layer()

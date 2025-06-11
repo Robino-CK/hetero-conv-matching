@@ -53,16 +53,19 @@ class IMDB():
 
         # Convert PyG edge index dict to DGL edge tuples
         edge_tuples = {}
+        
         for (src_type, rel_type, dst_type), edge_index in edge_index_dict.items():
+            # if src_type == "movie":
+            #     continue
             src_nodes = edge_index[0].numpy()
             dst_nodes = edge_index[1].numpy()
             edge_tuples[(src_type, src_type + rel_type + dst_type, dst_type)] = (src_nodes, dst_nodes)
         # Create DGL heterograph
         g = heterograph(edge_tuples, num_nodes_dict=num_nodes_dict)
-
+        
         # You can also assign features
         for ntype in g.ntypes:
-            pca = PCA(n_components=100)
+            pca = PCA(n_components=30)
             pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
             scaler = MinMaxScaler()
 
@@ -71,6 +74,9 @@ class IMDB():
             g.nodes[ntype].data['feat'] = torch.from_numpy(normalized_features).type(torch.FloatTensor)
             
         g.nodes["movie"].data['label'] = data["movie"].y
+        for key in ['train_mask', 'val_mask', 'test_mask']:
+            g.nodes['movie'].data[key] = data["movie"][key]
+
         self.features = data.x_dict
         self.dataset = data
         return g

@@ -52,7 +52,11 @@ class SingleTester(unittest.TestCase):
         torch.testing.assert_close(self.coarsener.summarized_graph.nodes["user"].data[f'hfollows'], h.unsqueeze(1), rtol=0, atol=0.1)  
      #   torch.testing.assert_close(self.coarsener.summarized_graph.nodes["user"].data[f'ifollows'], i, rtol=0, atol=0.1)  
         
-
+    def test_infl_init(self):
+        num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
+        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= True, add_feat=True)
+        self.coarsener._create_gnn_layer()
+        
     
     def test_feat_sep(self):
         self.homo_graph =  dgl.heterograph({

@@ -7,6 +7,10 @@ import dgl.function as fn
 import numpy as np
 #from mvlearn.embed import MCCA
 from collections import Counter
+
+from sklearn.cross_decomposition import CCA
+
+
 class HeteroCoarsener(ABC):
     
     
@@ -15,8 +19,8 @@ class HeteroCoarsener(ABC):
                  norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, feat_weight=0.5, use_cca= False):
         self.original_graph = graph.to(device)
        # print("lols")
-        self.summarized_graph = deepcopy(graph)
-        self.summarized_graph = self.summarized_graph.to(device)
+        #self.summarized_graph = deepcopy(graph)
+        self.summarized_graph = graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
         self.norm_p = norm_p
@@ -46,16 +50,6 @@ class HeteroCoarsener(ABC):
         pass
     
     
-    def _pre_cca(self):
-        views = []
-        for ntype in self.summarized_graph.ntypes:
-            views.append(self.original_graph.nodes[ntype].data["feat"].to("cpu"))
-        views.append(self.original_graph.nodes[ntype].data["feat"].to("cpu"))
-        mcca = MCCA(n_components=3)  # Choose how many dimensions you want in the shared space
-        mcca.fit(views)
-
-    # Transform views into a shared space
-        transformed_views = mcca.transform(views)
         
     
     def _update_deg(self):
@@ -559,7 +553,8 @@ class HeteroCoarsener(ABC):
                         g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
                         
                         if self.approx_neigh:
-                            g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
+                            etype_turned = f"{dst_type}to{src_type}"
+                            g_new.nodes[src_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
                     
                     # update U,V
                     edges_src, edges_dst = g_new.in_edges(super_nodes,  etype=etype)
@@ -572,7 +567,8 @@ class HeteroCoarsener(ABC):
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] += rev_sub_g.nodes[src_type].data["s_new"]
                         if self.approx_neigh:
-                            g_new.nodes[node_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
+                            etype_turned = f"{dst_type}to{src_type}"
+                            g_new.nodes[src_type].data[f"i{etype}"] += rev_sub_g.nodes[src_type].data["i_new"]
                     
 
                     
@@ -721,10 +717,10 @@ class HeteroCoarsener(ABC):
     
     def init(self):
         self.mappings = [] 
-        if self.use_cca:
-            self._pre_cca()
+        # if self.use_cca:
+        #     self._pre_cca()
         if not self.multi_relations:
-            self._create_sgn_layer(k=2)
+            self._create_sgn_layer(k=1)
         self._create_gnn_layer()
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)
