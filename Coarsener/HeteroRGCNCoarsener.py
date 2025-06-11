@@ -81,7 +81,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             S_tensor = S_tensor.index_add(0, u, s_e)
             infl = torch.zeros(n_src, device=self.device)
             if self.approx_neigh:
-                infl = infl.index_add(0, u, inv_sqrt_out[v])
+                infl = infl.index_add(0, v, inv_sqrt_out[v])
                 self.summarized_graph.nodes[src_type].data[f'i{etype}'] = infl
     
             # Compute H = D_out^{-1/2} * S

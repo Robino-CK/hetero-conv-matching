@@ -328,10 +328,19 @@ class HeteroCoarsener(ABC):
                
         su = g_new.nodes[node_type].data[f's{etype}'][nodes_u]  
         sv =  g_new.nodes[node_type].data[f's{etype}'][nodes_v] 
+        
+        if self.approx_neigh:
+            iu = g_new.nodes[node_type].data[f"i{etype}"][nodes_u]
+            iv = g_new.nodes[node_type].data[f"i{etype}"][nodes_v]
+           
+        
         if self.multi_relations:
+        
             g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = su + sv
+            if self.approx_neigh:
+                g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = iu + iv 
+        
             return
-    
         
         adj_uv = self._get_adj(nodes_u, nodes_v, etype)
         adj_vu = self._get_adj(nodes_v, nodes_u, etype)
@@ -341,7 +350,15 @@ class HeteroCoarsener(ABC):
         cu = g_new.nodes[node_type].data["node_size"][nodes_u]
         cv = g_new.nodes[node_type].data["node_size"][nodes_v]
         suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
+        
         g_new.nodes[node_type].data[f"s{etype}"][super_nodes] = suv
+        if self.approx_neigh:
+            iuv = iu + iv - (adj_vu / torch.sqrt(du + cu )) -  (adj_uv / torch.sqrt(dv + cv ))
+            g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = iuv 
+        
+
+        
+                  
     
     def _get_supernode_indices(self, base_nodes, query_nodes, super_nodes):
         
@@ -498,8 +515,6 @@ class HeteroCoarsener(ABC):
                     g_new.nodes[node_type].data[f"deg_{etype}"][super_nodes] = g_new.nodes[node_type].data[f"deg_{etype}"][nodes_u] + g_new.nodes[node_type].data[f"deg_{etype}"][nodes_v]
                
                     nodes_uv = torch.cat([nodes_u, nodes_v])
-                    if self.approx_neigh:
-                        g_new.nodes[node_type].data[f"i{etype}"][super_nodes] = g_new.nodes[node_type].data[f"i{etype}"][nodes_u] + g_new.nodes[node_type].data[f"i{etype}"][nodes_v] 
                     def msg_minus_neigh_s(edges):
                         return {'s':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1) ,
                                 'i':edges.data['adj']/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']) ,
@@ -529,6 +544,7 @@ class HeteroCoarsener(ABC):
                     
                         rev_sub_g.send_and_recv((edges_dst,edges_src ), message_func=msg_minus_neigh_s, reduce_func=reduce_minus_neigh_s, etype=etype)
                         g_new.nodes[src_type].data[f"s{etype}"] -= rev_sub_g.nodes[src_type].data["s_new"]
+                        
                         if self.approx_neigh:
                             g_new.nodes[node_type].data[f"i{etype}"] -=  rev_sub_g.nodes[src_type].data["i_new"]
                     

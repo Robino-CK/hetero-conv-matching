@@ -146,11 +146,25 @@ class SingleTester(unittest.TestCase):
         infl_node = self.coarsener.summarized_graph.nodes["user"].data[f"ifollows"]
         
         costs = self.coarsener.neigbor_approx_difference_per_pair(self.homo_graph, pairs,  d_node, c_node, infl_node, feat_node, "follows")
-        torch.testing.assert_close(costs, torch.tensor([1.81], device=self.device), rtol=0, atol=0.1)
+        torch.testing.assert_close(costs, torch.tensor([5.1132], device=self.device), rtol=0, atol=0.1)
         
         
     #     pass
-    
+    def test_merge_approx(self):  
+        self.homo_graph =  dgl.heterograph({
+            ('user', 'follows', 'user'): ([0, 1, 1,1,2], [1, 2, 3,4,3])})
+        self.homo_graph.nodes['user'].data['feat'] = torch.tensor([[1.0],[2.0],[3.0],[4.0], [5.0]])
+        num_nearest_init_neighbors_per_type = {"follows": 3, "user": 2}
+        self.coarsener = HeteroRGCNCoarsener(self.homo_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", approx_neigh= True)
+        self.device = self.homo_graph.device
+        self.coarsener._create_gnn_layer()
+        #self.coarsener._init_merge_graphs({"user": torch.tensor([[0,3]])})
+        self.coarsener.candidates = {"user": torch.tensor([[0,1]])}
+        g, mapping = self.coarsener._merge_nodes(self.coarsener.summarized_graph)
+        
+        i = torch.tensor([0.7071, 2.0000, 1.0000, 0.4082], device=self.device)
+        torch.testing.assert_close(g.nodes["user"].data["ifollows"],i, rtol=0, atol=0.1)
+        pass
 
     def test_total_costs(self):
         self.homo_graph =  dgl.heterograph({
