@@ -10,7 +10,7 @@ class HeteroCoarsener(ABC):
     
     
     
-    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True):
+    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, feat_weight=0.5):
         self.original_graph = graph.to(device)
        # print("lols")
         self.summarized_graph = deepcopy(graph)
@@ -21,8 +21,10 @@ class HeteroCoarsener(ABC):
         self.feat_in_gcn = add_feat
         self.device = device
         self.use_out_degree = use_out_degree
+        self.feat_weight = feat_weight
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
+        self.inner_product = inner_product
         self.multi_relations = len(graph.canonical_etypes) > 1
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)

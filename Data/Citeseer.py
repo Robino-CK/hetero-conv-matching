@@ -4,6 +4,7 @@ import sys
 
 import torch.nn.functional
 
+from sklearn.preprocessing import MinMaxScaler
 
 #from Datasets.NodeClassification.NodeClassificationDataset import NodeClassificationDataset
 
@@ -25,7 +26,7 @@ class Citeseer():
 
 
         # Reduce to 50 dimensions (you can adjust this)
-        reduced_feat = self.reduce_features(data, n_components=100)
+        reduced_feat = self.reduce_features(data, n_components=500)
 
         # Build heterogeneous graph with 'cites' and 'cited-by' relations
         src, dst = g.edges()
@@ -34,9 +35,13 @@ class Citeseer():
     #        ('paper', 'cited-by', 'paper'): (dst, src)
         }
         hetero_g = dgl.heterograph(data_dict)
+        scaler = MinMaxScaler()
 
+            # Normalize the features between 0 and 1
+        normalized_features = scaler.fit_transform(reduced_feat)
+        
         # Assign reduced features and other data
-        hetero_g.nodes['paper'].data['feat'] = reduced_feat
+        hetero_g.nodes['paper'].data['feat'] = reduced_feat#torch.from_numpy(normalized_features).type(torch.FloatTensor)
         hetero_g.nodes['paper'].data['label'] = g.ndata['label']
         for key in ['train_mask', 'val_mask', 'test_mask']:
             hetero_g.nodes['paper'].data[key] = g.ndata[key]

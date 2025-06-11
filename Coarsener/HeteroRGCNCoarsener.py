@@ -516,7 +516,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[src_type].edata[f"costs_neig_{etype}"]
             
     
-    def _sum_costs_feat_sep(self):
+    def _sum_costs_feat_sep_with_inner(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             
             self.merge_graphs[src_type].edata["costs_u"] = 2* torch.pow(self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"],2) 
@@ -544,23 +544,23 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
     
     
-    def _sum_costs_feat_sep_2(self):
+    def _sum_costs_feat_sep(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
            # print("Hi")
             if src_type not in self.merge_graphs:
                 continue
-            self.merge_graphs[src_type].edata["costs_u"] = self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] 
+            self.merge_graphs[src_type].edata["costs_u"] = (1-self.feat_weight) *self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] 
             
             
-            self.merge_graphs[src_type].edata["costs_v"] = self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"]
+            self.merge_graphs[src_type].edata["costs_v"] = (1-self.feat_weight) *self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"]
             
             
         for ntype in self.summarized_graph.ntypes:
             if ntype not in self.merge_graphs:
                 continue
             self._self_feature_costs(ntype)
-            self.merge_graphs[ntype].edata["costs_u"] += self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] 
-            self.merge_graphs[ntype].edata["costs_v"] += self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] 
+            self.merge_graphs[ntype].edata["costs_u"] += self.feat_weight * self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] 
+            self.merge_graphs[ntype].edata["costs_v"] += self.feat_weight * self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] 
         
             
             
@@ -568,7 +568,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             if dst_type not in self.merge_graphs:
                 continue
             
-            self.merge_graphs[dst_type].edata["costs"] = self.merge_graphs[dst_type].edata["costs_u"]
+            self.merge_graphs[dst_type].edata["costs"] =  self.merge_graphs[dst_type].edata["costs_u"]
             self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata["costs_v"]
             
         
@@ -579,14 +579,19 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         if self.feat_in_gcn:
             self._sum_costs_feat_in_rgc()
         else:
-            self._sum_costs_feat_sep_2()
-    
+            if self.inner_product:
+        
+                self._sum_costs_feat_sep_with_inner()
+            else:
+                self._sum_costs_feat_sep()
            
     def _init_merge_graphs(self, type_pairs):
         self.merge_graphs = dict()
         self._h_costs( type_pairs)
         self._create_neighbor_costs()
-     #   self._inner_product()
+        if self.inner_product:
+        
+            self._inner_product()
         self._sum_costs()
         
         
@@ -594,7 +599,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         self.reduce_merge_graph(mappings)
         self._h_costs()
         self._create_neighbor_costs()
-    #    self._inner_product()
+        if self.inner_product:
+            self._inner_product()
         self._sum_costs()
         self.candidates = self._find_lowest_costs()
         
