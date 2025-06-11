@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 import time
 import dgl.function as fn
 import numpy as np
-from mvlearn.embed import MCCA
+#from mvlearn.embed import MCCA
 from collections import Counter
 class HeteroCoarsener(ABC):
     
