@@ -24,6 +24,11 @@ class MultiGraphTest(unittest.TestCase):
 
     def tearDown(self):
         print("rgcn test finished.")
+        
+    def test_r_gcn_i_init(self):
+        self.coarsener.approx_neigh = True
+        self.coarsener._create_gnn_layer()
+        
     
     def test_r_gcn_initialization(self):
         

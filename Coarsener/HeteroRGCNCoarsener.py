@@ -84,9 +84,11 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             S_tensor = S_tensor.index_add(0, u, s_e)
             infl = torch.zeros(n_dst, device=self.device)
             if self.approx_neigh:
-                infl = infl.index_add(0, v, inv_sqrt_in[v])
-                etype_around = f"{dst_type}to{src_type}"
-             
+                infl = infl.index_add(0, v, inv_sqrt_out[u])
+                if self.multi_relations:
+                    etype_around = f"{dst_type}to{src_type}"
+                else:
+                    etype_around = etype
                 self.summarized_graph.nodes[dst_type].data[f'i{etype_around}'] = infl
     
             # Compute H = D_out^{-1/2} * S
@@ -632,8 +634,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[dst_type].edata["costs"] =  self.merge_graphs[dst_type].edata["costs_u"]
             self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata["costs_v"]
             
-            # if f"costs_neig_{etype}" in self.merge_graphs[dst_type].edata:
-            #     self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
+            if f"costs_neig_{etype}" in self.merge_graphs[dst_type].edata:
+                self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
     
     
     def _sum_costs(self):
