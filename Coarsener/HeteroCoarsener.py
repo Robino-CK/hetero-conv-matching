@@ -651,8 +651,29 @@ class HeteroCoarsener(ABC):
             self.merge_graphs[node_type] = self.merge_graphs[node_type].remove_self_loop()
 
 
-    
+    def make_mask(self, mapping, ntype):
+        labels_dict = dict()
+        inverse_mapping = dict()
+        for ori_node, coar_node in mapping.items():
+            if coar_node in inverse_mapping:
+                inverse_mapping[coar_node].append(ori_node)
+            else:
+                inverse_mapping[coar_node] = [ori_node]
+                
+        for coar_node, ori_list in inverse_mapping.items():
+            label_list = []
+            for ori_node in ori_list:
+                label_list.append(self.original_graph.nodes[ntype].data["train_mask"][ori_node].item())
+            is_train = torch.any(torch.tensor(label_list, device=self.device))    
+            
+        # print(coar_node)
+            self.summarized_graph.nodes[ntype].data["train_mask"][coar_node] = is_train
+            self.summarized_graph.nodes[ntype].data["test_mask"][coar_node] = not is_train
+            self.summarized_graph.nodes[ntype].data["val_mask"][coar_node] = not is_train
+
+
                     
+
     def get_labels(self, mapping, ntype):
         
         labels_dict = dict()
@@ -689,7 +710,7 @@ class HeteroCoarsener(ABC):
         self.mappings = [] 
         
         if not self.multi_relations:
-            self._create_sgn_layer()
+            self._create_sgn_layer(k=2)
         self._create_gnn_layer()
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)

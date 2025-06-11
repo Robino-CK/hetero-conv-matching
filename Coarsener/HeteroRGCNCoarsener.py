@@ -374,7 +374,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             else:            
                 neighbors_cost  = self.neighbor_difference_per_pair(self.summarized_graph, pairs,dst_type, src_type, etype)
             merge_graph.edata[f"costs_neig_{etype}"] = neighbors_cost
-        print("_create_neighbor_costs", time.time() - start_time)
+      #  print("_create_neighbor_costs", time.time() - start_time)
     
     
     
@@ -419,7 +419,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.norm(merged - h1, p=self.norm_p, dim=1)
             self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  torch.norm(merged - h2, p=self.norm_p, dim=1)
-        print("_h_costs", time.time() - start_time)
+       # print("_h_costs", time.time() - start_time)
         
         
     def _inner_product(self):
