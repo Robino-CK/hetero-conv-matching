@@ -5,12 +5,14 @@ from abc import ABC, abstractmethod
 import time
 import dgl.function as fn
 import numpy as np
+from mvlearn.embed import MCCA
 from collections import Counter
 class HeteroCoarsener(ABC):
     
     
     
-    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True, norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, feat_weight=0.5):
+    def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
+                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, feat_weight=0.5, use_cca= False):
         self.original_graph = graph.to(device)
        # print("lols")
         self.summarized_graph = deepcopy(graph)
@@ -25,6 +27,7 @@ class HeteroCoarsener(ABC):
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
         self.inner_product = inner_product
+        self.use_cca = use_cca
         self.multi_relations = len(graph.canonical_etypes) > 1
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
@@ -41,11 +44,19 @@ class HeteroCoarsener(ABC):
         for ntype in graph.ntypes:
             self.ntype_distribution[ntype] = graph.num_nodes(ntype) / total_num_nodes
         pass
-    def opposite_etype(self, etype):
-        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            if etype == etype:
-                return (f"{dst_type}to{src_type}")
     
+    
+    def _pre_cca(self):
+        views = []
+        for ntype in self.summarized_graph.ntypes:
+            views.append(self.original_graph.nodes[ntype].data["feat"].to("cpu"))
+        views.append(self.original_graph.nodes[ntype].data["feat"].to("cpu"))
+        mcca = MCCA(n_components=3)  # Choose how many dimensions you want in the shared space
+        mcca.fit(views)
+
+    # Transform views into a shared space
+        transformed_views = mcca.transform(views)
+        
     
     def _update_deg(self):
             
@@ -710,7 +721,8 @@ class HeteroCoarsener(ABC):
     
     def init(self):
         self.mappings = [] 
-        
+        if self.use_cca:
+            self._pre_cca()
         if not self.multi_relations:
             self._create_sgn_layer(k=2)
         self._create_gnn_layer()
