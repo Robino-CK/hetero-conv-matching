@@ -27,7 +27,7 @@ class IMDB():
    
    #     self.epochs = 600
 
-    def load_graph(self) -> dgl.DGLGraph:
+    def load_graph(self, n_components=100) -> dgl.DGLGraph:
         # torch.serialization.add_safe_globals([HeteroData])
         # torch.serialization.add_safe_globals([HeteroData])
         # torch.serialization.add_safe_globals([EdgeAttr])
@@ -65,7 +65,8 @@ class IMDB():
         
         # You can also assign features
         for ntype in g.ntypes:
-            pca = PCA(n_components=30)
+            pca = PCA(n_components=n_components)
+            
             pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
             scaler = MinMaxScaler()
 

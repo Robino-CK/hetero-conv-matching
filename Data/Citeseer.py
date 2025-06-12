@@ -16,7 +16,7 @@ class Citeseer():
     def __init__(self):
         pass
 
-    def load_graph(self) -> dgl.DGLGraph:
+    def load_graph(self, n_components=50) -> dgl.DGLGraph:
         # Load the homogeneous Citeseer citation graph
         dataset = CiteseerGraphDataset()
         g = dataset[0]
@@ -26,8 +26,10 @@ class Citeseer():
 
 
         # Reduce to 50 dimensions (you can adjust this)
-        reduced_feat = self.reduce_features(data, n_components=50)
-
+        if n_components:
+            reduced_feat = self.reduce_features(data, n_components=n_components)
+        else:
+            reduced_feat = data
         # Build heterogeneous graph with 'cites' and 'cited-by' relations
         src, dst = g.edges()
         data_dict = {
