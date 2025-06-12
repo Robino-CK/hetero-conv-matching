@@ -8,7 +8,6 @@ import numpy as np
 #from mvlearn.embed import MCCA
 from collections import Counter
 
-from sklearn.cross_decomposition import CCA
 
 
 class HeteroCoarsener(ABC):
@@ -16,7 +15,7 @@ class HeteroCoarsener(ABC):
     
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
-                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, feat_weight=0.5, use_cca= False):
+                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, use_cca= False, initial_k_layer=2):
         self.original_graph = graph.to(device)
        # print("lols")
         #self.summarized_graph = deepcopy(graph)
@@ -27,7 +26,7 @@ class HeteroCoarsener(ABC):
         self.feat_in_gcn = add_feat
         self.device = device
         self.use_out_degree = use_out_degree
-        self.feat_weight = feat_weight
+        self.initial_k_layer = initial_k_layer
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
         self.inner_product = inner_product
@@ -694,14 +693,18 @@ class HeteroCoarsener(ABC):
                 inverse_mapping[coar_node] = [ori_node]
         for coar_node, ori_list in inverse_mapping.items():
             label_list = []
-            for ori_node in ori_list:
-                label_list.append(self.original_graph.nodes[ntype].data["label"][ori_node].item())
+            if not self.summarized_graph.nodes[ntype].data["train_mask"][coar_node]:
+                label_list.append(-1)
+            else:
+                for ori_node in ori_list:
+                    if self.original_graph.nodes[ntype].data["train_mask"][ori_node]:
+                        label_list.append(self.original_graph.nodes[ntype].data["label"][ori_node].item())
+        
             counter = Counter(label_list)
             
             labels_dict[coar_node],_ = counter.most_common()[0]
         
         return labels_dict
-
     
     def get_mapping(self, ntype):
         master_mapping = dict()
@@ -720,7 +723,7 @@ class HeteroCoarsener(ABC):
         # if self.use_cca:
         #     self._pre_cca()
         if not self.multi_relations:
-            self._create_sgn_layer(k=1)
+            self._create_sgn_layer(k=self.initial_k_layer)
         self._create_gnn_layer()
         init_costs = self._init_costs()
         type_pairs = self._get_union(init_costs)

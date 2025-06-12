@@ -6,7 +6,83 @@ import time
 import dgl.backend as F         # this is the backend (torch, TF, etc.)
 from torch_scatter import scatter_add   
 import numpy as np
-from sklearn.cross_decomposition import CCA
+
+import torch
+
+class CCA:
+    def __init__(self, n_components=None, reg=1e-6):
+        """
+        Canonical Correlation Analysis (CCA) using PyTorch.
+
+        Parameters:
+        - out_dim: number of canonical components to keep (if None, keep all).
+        - reg: regularization parameter (for numerical stability).
+        """
+        self.out_dim = n_components
+        self.reg = reg
+        self.Wx = None
+        self.Wy = None
+        self.mean_x = None
+        self.mean_y = None
+
+    def fit(self, X, Y):
+        """
+        Learn CCA projection matrices from paired datasets X and Y.
+
+        Parameters:
+        - X: torch.Tensor of shape (n_samples, n_features_x)
+        - Y: torch.Tensor of shape (n_samples, n_features_y)
+        """
+        # Center the data
+        self.mean_x = X.mean(dim=0)
+        self.mean_y = Y.mean(dim=0)
+        Xc = X - self.mean_x
+        Yc = Y - self.mean_y
+
+        n = X.shape[0]
+
+        # Covariance matrices
+        Cxx = (Xc.T @ Xc) / (n - 1) + self.reg * torch.eye(X.shape[1], device=X.device)
+        Cyy = (Yc.T @ Yc) / (n - 1) + self.reg * torch.eye(Y.shape[1], device=Y.device)
+        Cxy = (Xc.T @ Yc) / (n - 1)
+
+        # Solve generalized eigenvalue problem
+        Cxx_inv = torch.linalg.inv(Cxx)
+        Cyy_inv = torch.linalg.inv(Cyy)
+
+        eigvals, Wx = torch.linalg.eigh(Cxx_inv @ Cxy @ Cyy_inv @ Cxy.T)
+        idx = torch.argsort(eigvals, descending=True)
+        Wx = Wx[:, idx]
+
+        Wy = torch.linalg.inv(Cyy) @ Cxy.T @ Wx
+
+        if self.out_dim is not None:
+            Wx = Wx[:, :self.out_dim]
+            Wy = Wy[:, :self.out_dim]
+
+        self.Wx = Wx
+        self.Wy = Wy
+
+    def transform(self, X, Y=None):
+        """
+        Project X (and optionally Y) onto the canonical components.
+
+        Parameters:
+        - X: torch.Tensor of shape (n_samples, n_features_x)
+        - Y: torch.Tensor of shape (n_samples, n_features_y), optional
+
+        Returns:
+        - Zx: CCA projection of X
+        - Zy: CCA projection of Y (if Y is provided)
+        """
+        Xc = X - self.mean_x
+        Zx = Xc @ self.Wx
+        if Y is not None:
+            Yc = Y - self.mean_y
+            Zy = Yc @ self.Wy
+            return Zx, Zy
+        return Zx
+
 class HeteroRGCNCoarsener(HeteroCoarsener):
     
     def _get_back_etype(self, etype):
@@ -106,8 +182,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         if self.use_cca:
             self.ccas = dict()
             for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-                feat_src =   self.summarized_graph.nodes[src_type].data['feat'].to("cpu")
-                h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}'].to("cpu")
+                feat_src =   self.summarized_graph.nodes[src_type].data['feat']
+                h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                 
                 cca = CCA(n_components=feat_src.shape[1])
                 cca.fit(feat_src, h_src) 
@@ -421,13 +497,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             dv = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][dst]
             feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv ).unsqueeze(1)
             
-            feat_u,hu_cca = self.ccas[etype].transform(feat_u.to("cpu"), hu.to("cpu"))
-            feat_v,hv_cca = self.ccas[etype].transform(feat_v.to("cpu"), hv.to("cpu"))
-            feat_uv, huv_cca = self.ccas[etype].transform(feat.to("cpu"), huv.to("cpu"))
+            feat_u,hu_cca = self.ccas[etype].transform(feat_u, hu)
+            feat_v,hv_cca = self.ccas[etype].transform(feat_v, hv)
+            feat_uv, huv_cca = self.ccas[etype].transform(feat, huv)
             
-            feat_u,hu_cca = torch.from_numpy(feat_u).to(self.device), torch.from_numpy(hu_cca).to(self.device)
-            feat_v,hv_cca = torch.from_numpy(feat_v).to(self.device), torch.from_numpy(hv_cca).to(self.device)
-            feat_uv, huv_cca = torch.from_numpy(feat_uv).to(self.device), torch.from_numpy(huv_cca).to(self.device)
+            # feat_u,hu_cca = torch.from_numpy(feat_u).to(self.device), torch.from_numpy(hu_cca).to(self.device)
+            # feat_v,hv_cca = torch.from_numpy(feat_v).to(self.device), torch.from_numpy(hv_cca).to(self.device)
+            # feat_uv, huv_cca = torch.from_numpy(feat_uv).to(self.device), torch.from_numpy(huv_cca).to(self.device)
           #  print("du hurensohn!!")
             
             feat_uv =  feat_uv* (cu + cv ).unsqueeze(1) / (du +dv + cv+ cu ).unsqueeze(1) 
@@ -638,12 +714,17 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
     
     
-    def _sum_costs(self):
+    def _create_costs(self):
+        if self.use_cca:
+            self._h_cca_costs()
+        else:
+            self._h_costs()
+        self._create_neighbor_costs()
         if self.feat_in_gcn:
             self._sum_costs_feat_in_rgc()
         else:
             if self.inner_product:
-        
+                self._inner_product()
                 self._sum_costs_feat_sep_with_inner()
             else:
                 self._sum_costs_feat_sep()
@@ -651,26 +732,14 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
     def _init_merge_graphs(self, type_pairs):
         self.merge_graphs = dict()
         for ntype, pairs in type_pairs.items():
-            print(ntype)
             self.merge_graphs[ntype] = dgl.graph(([], []), num_nodes=self.summarized_graph.number_of_nodes(ntype=ntype), device=self.device)
-            # self.merge_graphs[src_type] = dgl.to_bidirected(self.merge_graphs[src_type])
             self.merge_graphs[ntype].add_edges(pairs[:,0],pairs[:,1])
-            
-        self._h_cca_costs()
-        self._create_neighbor_costs()
-        if self.inner_product:
-        
-            self._inner_product()
-        self._sum_costs()
+        self._create_costs()
         
         
     def _update_merge_graph(self, mappings):
         self.reduce_merge_graph(mappings)
-        self._h_cca_costs()
-        self._create_neighbor_costs()
-        if self.inner_product:
-            self._inner_product()
-        self._sum_costs()
+        self._create_costs()
         self.candidates = self._find_lowest_costs()
         
         
