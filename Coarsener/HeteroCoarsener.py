@@ -8,7 +8,10 @@ import numpy as np
 #from mvlearn.embed import MCCA
 from collections import Counter
 
-
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from CCA.NonLinStochCCA import NonlinearStochasticCCA 
 
 class HeteroCoarsener(ABC):
     
@@ -629,8 +632,18 @@ class HeteroCoarsener(ABC):
                     else:
                         g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     
-                        
-                    
+                     
+            if self.use_cca:
+                for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+                    feat_src =   self.summarized_graph.nodes[src_type].data['feat']
+                    h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
+                    cca = NonlinearStochasticCCA(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
+                    cca.fit(feat_src, h_src) 
+                    self.ccas[etype] = cca
+                
+                    #self.ccas[etype].fit(feat_src, h_src) 
+                    #self.ccas[etype] = cca
+                
                                  
            # print("_merge_nodes", time.time() - start_time)
             return g_new, mappings
