@@ -196,6 +196,9 @@ class HeteroCoarsener(ABC):
         for ntype in self.summarized_graph.ntypes:
             if ntype not in self.merge_graphs:
                 continue
+            if self.r > self.summarized_graph.num_nodes(ntype=ntype) / self.original_graph.num_nodes(ntype=ntype):
+                topk_non_overlapping_per_type[ntype] = []
+                continue
             costs = self.merge_graphs[ntype].edata["costs"]
             edges = self.merge_graphs[ntype].edges()
             k = min(self.num_nearest_init_neighbors_per_type[ntype] * self.pairs_per_level * 20, costs.shape[0])
@@ -693,13 +696,13 @@ class HeteroCoarsener(ABC):
                 inverse_mapping[coar_node] = [ori_node]
         for coar_node, ori_list in inverse_mapping.items():
             label_list = []
-            if not self.summarized_graph.nodes[ntype].data["train_mask"][coar_node]:
-                label_list.append(-1)
-            else:
-                for ori_node in ori_list:
-                    if self.original_graph.nodes[ntype].data["train_mask"][ori_node]:
-                        label_list.append(self.original_graph.nodes[ntype].data["label"][ori_node].item())
-        
+            # if not self.summarized_graph.nodes[ntype].data["train_mask"][coar_node]:
+            #     label_list.append(-1)
+            # else:
+            for ori_node in ori_list:
+                if self.original_graph.nodes[ntype].data["train_mask"][ori_node] or not self.summarized_graph.nodes[ntype].data["train_mask"][coar_node]:
+                    label_list.append(self.original_graph.nodes[ntype].data["label"][ori_node].item())
+    
             counter = Counter(label_list)
             
             labels_dict[coar_node],_ = counter.most_common()[0]
@@ -738,4 +741,10 @@ class HeteroCoarsener(ABC):
         self.mappings.append(mappings)
         self._update_merge_graph(mappings)
         
-    
+    def summarize(self, steps=10000):
+        for i in range(steps):
+            ratio = self.summarized_graph.num_nodes()/ self.original_graph.num_nodes()
+           # print(f"step: {i}, ratio: {ratio}" ) 
+            if not ratio > self.r:
+                return
+            self.coarsen_step()
