@@ -744,7 +744,7 @@ class HeteroCoarsener(ABC):
     def summarize(self, steps=10000):
         for i in range(steps):
             ratio = self.summarized_graph.num_nodes()/ self.original_graph.num_nodes()
-           # print(f"step: {i}, ratio: {ratio}" ) 
+            print(f"step: {i}, ratio: {ratio}" ) 
             if not ratio > self.r:
                 return
             self.coarsen_step()
