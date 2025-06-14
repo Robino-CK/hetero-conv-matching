@@ -18,12 +18,12 @@ class HeteroCoarsener(ABC):
     
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
-                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, use_cca= False, initial_k_layer=2,
-                 use_random_projection = False
+                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2,
+                 cca_cls = None, projection_cls = None
                  ):
         self.original_graph = graph.to(device)
        
-        self.use_random_projection = use_random_projection
+        self.projection_cls = projection_cls
         self.summarized_graph = graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
@@ -35,7 +35,7 @@ class HeteroCoarsener(ABC):
         self.num_nearest_init_neighbors_per_type = num_nearest_init_neighbors_per_type
         self.pairs_per_level = pairs_per_level
         self.inner_product = inner_product
-        self.use_cca = use_cca
+        self.cca_cls = cca_cls
         self.multi_relations = len(graph.canonical_etypes) > 1
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
@@ -635,11 +635,11 @@ class HeteroCoarsener(ABC):
                         g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     
                      
-            if self.use_cca:
+            if self.cca_cls:
                 for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
                     feat_src =   self.summarized_graph.nodes[src_type].data['feat']
                     h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
-                    cca = NonlinearStochasticCCA(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
+                    cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
                     cca.fit(feat_src, h_src) 
                     self.ccas[etype] = cca
                 
@@ -738,7 +738,7 @@ class HeteroCoarsener(ABC):
     
     def init(self):
         self.mappings = [] 
-        if self.use_random_projection:
+        if self.projection_cls:
             self._apply_random_projection_on_features()
         if not self.multi_relations:
             self._create_sgn_layer(k=self.initial_k_layer)
