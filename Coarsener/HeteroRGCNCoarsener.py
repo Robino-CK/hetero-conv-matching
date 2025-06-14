@@ -122,6 +122,9 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             self.summarized_graph.nodes[src_type].data[f's{etype}'] = S_tensor
             if self.feat_in_gcn:
+                if self.multi_relations:
+                    feats = self.summarized_graph.nodes[src_type].data['feat'].to(self.device)
+                
                 self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor + ((feats / (deg_out + c).unsqueeze(1) ))
             else:
                 self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor
@@ -603,8 +606,12 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[src_type].edata["costs"] = self.merge_graphs[src_type].edata["costs_u"]
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[src_type].edata["costs_v"]
             
-        
-            self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[src_type].edata[f"costs_neig_{etype}"]
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            if dst_type not in self.merge_graphs:
+                continue
+            
+            if f"costs_neig_{etype}" in self.merge_graphs[dst_type].edata:
+                self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
             
     
     def _sum_costs_feat_sep_with_inner(self):
@@ -708,7 +715,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                     
             
         for ntype in self.summarized_graph.ntypes:
-            if ntype not in self.merge_graphs:
+            if ntype not in self.merge_graphs  or self.cca_cls:
                 continue
             #if False :# self.factorin_feat
             self.merge_graphs[ntype].edata["costs_u"] +=  self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] 
@@ -727,7 +734,6 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 continue
             
             if f"costs_neig_{etype}" in self.merge_graphs[dst_type].edata:
-                print("help")
                 self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
     
     

@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 
 class CCA:
-    def __init__(self, n_components=None, reg=1e-6):
+    def __init__(self, x, y, n_components=None, reg=1e-6, device="cpu"):
         """
         Canonical Correlation Analysis (CCA) using PyTorch.
 
