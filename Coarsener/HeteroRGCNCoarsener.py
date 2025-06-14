@@ -551,31 +551,32 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[src_type].edata[f"costs_inner_{etype}_v"] = torch.norm(feat - feat_v - merged + h2, p=self.norm_p, dim=1)
                     
          
-    def _self_feature_costs(self, ntype):
-        src, dst = self.merge_graphs[ntype].edges()
-        node1_ids = src  # [P]
-        node2_ids = dst  
-        feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1_ids]
-        feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2_ids]
-        
-        cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
+    def _self_feature_costs(self):
+        for ntype in self.summarized_graph.ntypes:
+            src, dst = self.merge_graphs[ntype].edges()
+            node1_ids = src  # [P]
+            node2_ids = dst  
+            feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1_ids]
+            feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2_ids]
+            
+            cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
 
-        cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
-        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] = torch.zeros(node1_ids.shape[0], device=self.device)
-        self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] = torch.zeros(node2_ids.shape[0], device=self.device)
-        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-            if ntype != src_type:
-                continue
-            du = self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
-            dv = self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
+            cv = self.summarized_graph.nodes[ntype].data["node_size"][node2_ids]
+            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] = torch.zeros(node1_ids.shape[0], device=self.device)
+            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] = torch.zeros(node2_ids.shape[0], device=self.device)
+            for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+                if ntype != src_type:
+                    continue
+                du = self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node1_ids]
+                dv = self.summarized_graph.nodes[ntype].data[f"deg_{etype}"][node2_ids]
 
-            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
-            feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
-            feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
-        
-        
-            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] += torch.norm(feat - feat_u, p=self.norm_p, dim=1)
-            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] += torch.norm(feat - feat_v, p=self.norm_p, dim=1)
+                feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
+                feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
+                feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+            
+            
+                self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] += torch.norm(feat - feat_u, p=self.norm_p, dim=1)
+                self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] += torch.norm(feat - feat_v, p=self.norm_p, dim=1)
     
     def _sum_costs_feat_in_rgc(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
@@ -609,7 +610,6 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             
         for ntype in self.summarized_graph.ntypes:
-            self._self_feature_costs(ntype)
             self.merge_graphs[ntype].edata["costs_u"] += 2* torch.pow(self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] , 2)
             self.merge_graphs[ntype].edata["costs_v"] += 2* torch.pow(self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] , 2)
         
@@ -621,9 +621,57 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
         
             self.merge_graphs[src_type].edata["costs"] += self.merge_graphs[src_type].edata[f"costs_neig_{etype}"]
-    
+    import torch
+
+    def z_score(self, x: torch.Tensor, dim=None, unbiased=False) -> torch.Tensor:
+        """
+        Compute the z-score of a tensor.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+            dim (int or tuple of ints, optional): Dimension(s) along which to compute mean and std.
+                If None, compute over the entire tensor.
+            unbiased (bool): Whether to use Bessel's correction (sample std if True, population std if False).
+
+        Returns:
+            torch.Tensor: Tensor of z-scores.
+        """
+        mean = x.mean(dim=dim, keepdim=True)
+        std = x.std(dim=dim, unbiased=unbiased, keepdim=True)
+        return (x - mean) / std
+
             
-    
+    def _sum_z_score_costs(self):
+        for ntype in self.summarized_graph.ntypes:
+            self.merge_graphs[ntype].edata["costs_u"] = torch.zeros(self.merge_graphs[ntype].num_edges(), device=self.device)
+            self.merge_graphs[ntype].edata["costs_v"] = torch.zeros(self.merge_graphs[ntype].num_edges(), device=self.device)
+
+        for ntype in self.summarized_graph.ntypes:
+            if ntype not in self.merge_graphs:
+                continue
+            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}"] = self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] + self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] 
+            self.merge_graphs[ntype].edata["costs"] = self.z_score(self.merge_graphs[ntype].edata[f"costs_feat_{ntype}"])
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            if src_type not in self.merge_graphs:
+                continue
+            self.merge_graphs[src_type].edata["costs_u"] += self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] 
+            
+            
+            self.merge_graphs[src_type].edata["costs_v"] += self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"]
+            
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}"] = self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] + self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"]
+            
+            if f"costs_neig_{etype}" in self.merge_graphs[dst_type].edata:
+                self.merge_graphs[dst_type].edata[f"costs_h_{etype}"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
+        
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+            if src_type not in self.merge_graphs:
+                continue
+        
+            self.merge_graphs[src_type].edata["costs"] += self.z_score(self.merge_graphs[src_type].edata[f"costs_h_{etype}"])
+        
+            
+        
     
     def _sum_costs_feat_sep(self):
         for ntype in self.summarized_graph.ntypes:
@@ -631,23 +679,18 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[ntype].edata["costs_v"] = torch.zeros(self.merge_graphs[ntype].num_edges(), device=self.device)
         
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-           # print("Hi")
             if src_type not in self.merge_graphs:
                 continue
-        
             self.merge_graphs[src_type].edata["costs_u"] += self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] 
-            
-            
             self.merge_graphs[src_type].edata["costs_v"] += self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"]
-            
+                    
             
         for ntype in self.summarized_graph.ntypes:
             if ntype not in self.merge_graphs:
                 continue
-            continue
-            self._self_feature_costs(ntype)
-            self.merge_graphs[ntype].edata["costs_u"] +=  self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] 
-            self.merge_graphs[ntype].edata["costs_v"] +=  self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] 
+            if False :# self.factorin_feat
+                self.merge_graphs[ntype].edata["costs_u"] +=  self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] 
+                self.merge_graphs[ntype].edata["costs_v"] +=  self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] 
         
             
             
@@ -662,16 +705,20 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 self.merge_graphs[dst_type].edata["costs"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
     
     
+    
     def _create_costs(self):
         if self.cca_cls:
             self._h_cca_costs()
         else:
             self._h_costs()
         self._create_neighbor_costs()
+        self._self_feature_costs()
         if self.feat_in_gcn:
             self._sum_costs_feat_in_rgc()
         else:
-            if self.inner_product:
+            if self.use_zscore:
+                self._sum_z_score_costs()
+            elif self.inner_product:
                 self._inner_product()
                 self._sum_costs_feat_sep_with_inner()
             else:

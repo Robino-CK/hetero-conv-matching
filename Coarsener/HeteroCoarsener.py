@@ -18,11 +18,11 @@ class HeteroCoarsener(ABC):
     
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
-                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2,
+                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2, use_zscore =True,
                  cca_cls = None, projection_cls = None
                  ):
         self.original_graph = graph.to(device)
-       
+        self.use_zscore = use_zscore
         self.projection_cls = projection_cls
         self.summarized_graph = graph.to(device)
         self.approx_neigh = approx_neigh
@@ -195,6 +195,40 @@ class HeteroCoarsener(ABC):
             type_pairs[typ] = torch.stack((node1s, node2s), dim=1 )
         return type_pairs
     
+    def _find_lowest_costs_in_merge_graph(self, k, merge_graph_edge_label, ntype):
+        costs = self.merge_graphs[ntype].edata[merge_graph_edge_label]
+        edges = self.merge_graphs[ntype].edges()
+        k = min(k, costs.shape[0])
+        lowest_costs = torch.topk(costs, k, largest=False, sorted=True)
+        edge_indices = lowest_costs.indices
+        src_nodes = edges[0][edge_indices].cpu().numpy()
+        dst_nodes = edges[1][edge_indices].cpu().numpy()
+
+        return src_nodes, dst_nodes
+        
+    def _find_non_overlapping_costs(self,src_nodes, dst_nodes, ntype):
+        topk_non_overlapping = []
+        nodes = set()
+            
+        
+        # Avoiding the need to loop over every edge individually
+        for i in range(len(src_nodes)):
+            if len(nodes) > (self.pairs_per_level * self.ntype_distribution[ntype]):
+                break
+            src_node = src_nodes[i]
+            dst_node = dst_nodes[i]
+            if src_node in nodes or dst_node in nodes:
+                continue
+            if src_node == dst_node:
+                continue
+            
+            topk_non_overlapping.append((src_node, dst_node))
+            nodes.add(src_node)
+            nodes.add(dst_node)
+            
+        return topk_non_overlapping
+
+   
     def _find_lowest_costs(self):
         start_time = time.time()
         topk_non_overlapping_per_type = dict()
@@ -204,35 +238,11 @@ class HeteroCoarsener(ABC):
             if self.r > self.summarized_graph.num_nodes(ntype=ntype) / self.original_graph.num_nodes(ntype=ntype):
                 topk_non_overlapping_per_type[ntype] = []
                 continue
-            costs = self.merge_graphs[ntype].edata["costs"]
-            edges = self.merge_graphs[ntype].edges()
-            k = min(self.num_nearest_init_neighbors_per_type[ntype] * self.pairs_per_level * 20, costs.shape[0])
-            lowest_costs = torch.topk(costs, k, largest=False, sorted=True)
-            
-            # Vectorizing the loop
-            topk_non_overlapping = []
-            nodes = set()
-            
-            edge_indices = lowest_costs.indices
-            src_nodes = edges[0][edge_indices].cpu().numpy()
-            dst_nodes = edges[1][edge_indices].cpu().numpy()
-
-            # Avoiding the need to loop over every edge individually
-            for i in range(len(src_nodes)):
-                if len(nodes) > (self.pairs_per_level * self.ntype_distribution[ntype]):
-                    break
-                src_node = src_nodes[i]
-                dst_node = dst_nodes[i]
-                if src_node in nodes or dst_node in nodes:
-                    continue
-                if src_node == dst_node:
-                    continue
-                
-                topk_non_overlapping.append((src_node, dst_node))
-                nodes.add(src_node)
-                nodes.add(dst_node)
-
-            topk_non_overlapping_per_type[ntype] = topk_non_overlapping
+            k = self.num_nearest_init_neighbors_per_type[ntype] * self.pairs_per_level * 20
+    
+            src_nodes, dst_nodes = self._find_lowest_costs_in_merge_graph(k, "costs", ntype)
+    
+            topk_non_overlapping_per_type[ntype] = self._find_non_overlapping_costs(src_nodes, dst_nodes, ntype)
 
        # print("_find_lowest_cost_edges", time.time() - start_time)
         return topk_non_overlapping_per_type
