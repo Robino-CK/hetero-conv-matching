@@ -17,7 +17,9 @@ import torch.nn.functional as F
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from CCA.NonLinStochCCA import NonlinearStochasticCCA
+from Projections.NonLinStochCCA import NonlinearStochasticCCA
+from Projections.JLRandom import JLRandomProjection
+
 class HeteroRGCNCoarsener(HeteroCoarsener):
     
     def _get_back_etype(self, etype):
@@ -40,7 +42,18 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             feat =  self.summarized_graph.nodes[src_type].data['feat']
             H =  torch.pow((D @A @  D), k ) @ feat
             self.summarized_graph.nodes[src_type].data[f"SGC{etype}"] = H
-       
+    
+    
+    def _apply_random_projection_on_features(self):
+        for ntype in self.summarized_graph.ntypes:
+            feats = self.summarized_graph.nodes[ntype].data['feat'].to(self.device)
+            random_projection =JLRandomProjection(feats.shape[1], 50, device=self.device)
+            self.summarized_graph.nodes[ntype].data['feat'] = random_projection.forward(feats)
+                
+        
+        pass
+    
+    
         
     def _create_gnn_layer(self):
         

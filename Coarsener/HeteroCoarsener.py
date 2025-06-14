@@ -11,17 +11,19 @@ from collections import Counter
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from CCA.NonLinStochCCA import NonlinearStochasticCCA 
+from Projections.NonLinStochCCA import NonlinearStochasticCCA 
 
 class HeteroCoarsener(ABC):
     
     
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
-                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, use_cca= False, initial_k_layer=2):
+                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False, use_cca= False, initial_k_layer=2,
+                 use_random_projection = False
+                 ):
         self.original_graph = graph.to(device)
-       # print("lols")
-        #self.summarized_graph = deepcopy(graph)
+       
+        self.use_random_projection = use_random_projection
         self.summarized_graph = graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
@@ -736,8 +738,8 @@ class HeteroCoarsener(ABC):
     
     def init(self):
         self.mappings = [] 
-        # if self.use_cca:
-        #     self._pre_cca()
+        if self.use_random_projection:
+            self._apply_random_projection_on_features()
         if not self.multi_relations:
             self._create_sgn_layer(k=self.initial_k_layer)
         self._create_gnn_layer()
