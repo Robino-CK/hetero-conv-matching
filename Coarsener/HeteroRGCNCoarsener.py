@@ -211,9 +211,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
         
+        if self.use_cos_sim:
+            neigh_cost_u = F.cosine_similarity( feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)  , (feat_u / torch.sqrt(du + cu).unsqueeze(1)) , dim=1)   * iu
+            neigh_cost_v = F.cosine_similarity( feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   , (feat_v / torch.sqrt(dv + cv).unsqueeze(1)), dim=1)   * iv
         
-        neigh_cost_u = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_u / torch.sqrt(du + cu).unsqueeze(1))) , dim=1, p=self.norm_p)   * iu
-        neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=self.norm_p)   * iv
+        else:
+            neigh_cost_u = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_u / torch.sqrt(du + cu).unsqueeze(1))) , dim=1, p=self.norm_p)   * iu
+            neigh_cost_v = torch.norm( (feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   - (feat_v / torch.sqrt(dv + cv).unsqueeze(1))), dim=1, p=self.norm_p)   * iv
         #res = torch.where(mask,  neigh_cost_u + neigh_cost_v, torch.tensor(0.0, device=self.device))
         return neigh_cost_u + neigh_cost_v
     
@@ -357,8 +361,11 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             num = (edges.data['a_vn'].unsqueeze(-1) ) *  edges.src['f_v']
             denom =  torch.sqrt( (edges.dst["d_n"] + edges.dst["c_n"] ) * (edges.src["d_v"] + edges.src["c_v"] ) ) 
             h_prime -= num  / denom.unsqueeze(1)
+            if self.use_cos_sim:
+                d = F.cosine_similarity(h_prime, edges.dst['h_n'], dim=1)
             
-            d = torch.norm(h_prime - edges.dst['h_n'], p=self.norm_p, dim=1)
+            else:
+                d = torch.norm(h_prime - edges.dst['h_n'], p=self.norm_p, dim=1)
             if src_type == dst_type:
                 d = torch.where(mask, d, torch.tensor(0,device=self.device))
             return {'d': d}
@@ -464,8 +471,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             feat_uv =  feat_uv* (cu + cv ).unsqueeze(1) / (du +dv + cv+ cu ).unsqueeze(1) 
             feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
             feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
-            self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.norm(feat_uv - feat_u + huv_cca  - hu_cca, p=self.norm_p, dim=1)
-            self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  torch.norm(feat_uv - feat_v + huv_cca  - hv_cca, p=self.norm_p, dim=1)
+            if self.use_cos_sim:
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = F.cosine_similarity(feat_uv - feat_u , huv_cca  - hu_cca,  dim=1)
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  F.cosine_similarity(feat_uv - feat_v , huv_cca  - hv_cca,  dim=1)
+       # pr
+            else:
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.norm(feat_uv - feat_u + huv_cca  - hu_cca, p=self.norm_p, dim=1)
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  torch.norm(feat_uv - feat_v + huv_cca  - hv_cca, p=self.norm_p, dim=1)
        # pr
             
         
@@ -502,10 +514,13 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             
             
+            if self.use_cos_sim:
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = F.cosine_similarity(merged, h1, dim=1)
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  F.cosine_similarity(merged, h2, dim=1)
+            else:
             
-            
-            self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.norm(merged - h1, p=self.norm_p, dim=1)
-            self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  torch.norm(merged - h2, p=self.norm_p, dim=1)
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.norm(merged - h1, p=self.norm_p, dim=1)
+                self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] =  torch.norm(merged - h2, p=self.norm_p, dim=1)
        # print("_h_costs", time.time() - start_time)
 
         
@@ -553,7 +568,6 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
 
             
             # L1 cos
-            
             self.merge_graphs[src_type].edata[f"costs_inner_{etype}_u"] = torch.norm(feat - feat_u - merged  + h1, p=self.norm_p, dim=1)
             self.merge_graphs[src_type].edata[f"costs_inner_{etype}_v"] = torch.norm(feat - feat_v - merged + h2, p=self.norm_p, dim=1)
                     
@@ -585,10 +599,15 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv +du + dv).unsqueeze(1)
             feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
             feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+            if self.use_cos_sim:
+                self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] += F.cosine_similarity(feat , feat_u, dim=1)
+                self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] += F.cosine_similarity(feat ,feat_v, dim=1)
+    
+            else:
+            
         
-        
-            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] += torch.norm(feat - feat_u, p=self.norm_p, dim=1)
-            self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] += torch.norm(feat - feat_v, p=self.norm_p, dim=1)
+                self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_u"] += torch.norm(feat - feat_u, p=self.norm_p, dim=1)
+                self.merge_graphs[ntype].edata[f"costs_feat_{ntype}_v"] += torch.norm(feat - feat_v, p=self.norm_p, dim=1)
     
     def _sum_costs_feat_in_rgc(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:

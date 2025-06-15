@@ -18,7 +18,7 @@ class HeteroCoarsener(ABC):
     
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
-                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2, use_zscore =True,
+                 norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2, use_zscore =False, use_cos_sim=False,
                  cca_cls = None, projection_cls = None
                  ):
         self.original_graph = graph.to(device)
@@ -27,6 +27,7 @@ class HeteroCoarsener(ABC):
         self.summarized_graph = graph.to(device)
         self.approx_neigh = approx_neigh
         self.r = r
+        self.use_cos_sim = use_cos_sim
         self.norm_p = norm_p
         self.feat_in_gcn = add_feat
         self.device = device
