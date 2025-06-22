@@ -7,11 +7,13 @@ import dgl.function as fn
 import numpy as np
 #from mvlearn.embed import MCCA
 from collections import Counter
-
+import pickle
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from Projections.NonLinStochCCA import NonlinearStochasticCCA 
+import os
+
 
 class HeteroCoarsener(ABC):
     
@@ -19,8 +21,10 @@ class HeteroCoarsener(ABC):
     
     def __init__(self, graph: dgl.DGLHeteroGraph, r:float, num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
                  norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2, use_zscore =False, use_cos_sim=False,
-                 cca_cls = None, projection_cls = None
+                 cca_cls = None, projection_cls = None, folder_name=None, checkpoints = [0.99, 0.5,0.3,0.2,0.1,0.05,0.01]
                  ):
+        self.checkpoints = checkpoints
+        self.folder_name = folder_name
         self.original_graph = graph.to(device)
         self.use_zscore = use_zscore
         self.projection_cls = projection_cls
@@ -646,16 +650,13 @@ class HeteroCoarsener(ABC):
                         g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     
                      
-            if self.cca_cls:
+            if False and self.cca_cls:
                 for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
                     feat_src =   self.summarized_graph.nodes[src_type].data['feat']
                     h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                     cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
                     cca.fit(feat_src, h_src) 
                     self.ccas[etype] = cca
-                
-                    #self.ccas[etype].fit(feat_src, h_src) 
-                    #self.ccas[etype] = cca
                 
                                  
            # print("_merge_nodes", time.time() - start_time)
@@ -712,7 +713,7 @@ class HeteroCoarsener(ABC):
                     
 
     def get_labels(self, mapping, ntype):
-        
+        self.make_mask(mapping, ntype)
         labels_dict = dict()
         inverse_mapping = dict()
         for ori_node, coar_node in mapping.items():
@@ -762,15 +763,36 @@ class HeteroCoarsener(ABC):
     @abstractmethod
     def _update_merge_graph(self, mappings):
         pass
+    
+    def save(self, ratio ):
+        folder_name = f"results/{self.folder_name}"
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+        file_name = f"{folder_name}/{round(ratio, 2)}"
+        with open(f'{file_name}', 'wb') as fh:
+            pickle.dump(self, fh, pickle.HIGHEST_PROTOCOL)
+
+    
+    
     def coarsen_step(self):
         self.summarized_graph, mappings = self._merge_nodes(self.summarized_graph)
         self.mappings.append(mappings)
         self._update_merge_graph(mappings)
         
     def summarize(self, steps=10000):
+        current_check_point_index = 0
         for i in range(steps):
             ratio = self.summarized_graph.num_nodes()/ self.original_graph.num_nodes()
+            current_check_point = self.checkpoints[current_check_point_index]
+            if ratio < current_check_point :
+                if self.folder_name != None:
+                    self.save(ratio)
+                current_check_point_index += 1
+            if current_check_point_index == len(self.checkpoints):
+                return 
+                
             print(f"step: {i}, ratio: {ratio}" ) 
-            if not ratio > self.r:
-                return
+            #if not ratio > self.r:
+            #    return
+            
             self.coarsen_step()

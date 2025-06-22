@@ -27,7 +27,7 @@ class DBLP():
    
    #     self.epochs = 600
 
-    def load_graph(self) -> dgl.DGLGraph:
+    def load_graph(self, n_components) -> dgl.DGLGraph:
         # torch.serialization.add_safe_globals([HeteroData])
         # torch.serialization.add_safe_globals([HeteroData])
         # torch.serialization.add_safe_globals([EdgeAttr])
@@ -65,7 +65,7 @@ class DBLP():
             if ntype == "conference":
                 g.nodes[ntype].data['feat'] = torch.ones(num_nodes_dict['conference'],1)    
             elif ntype == "author":
-                pca = PCA(n_components=10)
+                pca = PCA(n_components=n_components)
                 pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
                 scaler = MinMaxScaler()
 
@@ -73,7 +73,7 @@ class DBLP():
                 normalized_features = scaler.fit_transform(pca_feat)
                 g.nodes[ntype].data['feat'] = torch.from_numpy(normalized_features).type(torch.FloatTensor)
             elif ntype == "paper":
-                pca = PCA(n_components=100)
+                pca = PCA(n_components=n_components)
                 pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
                 scaler = MinMaxScaler()
                 normalized_features = scaler.fit_transform(pca_feat)
@@ -81,6 +81,9 @@ class DBLP():
             else:
                 g.nodes[ntype].data['feat'] = data.x_dict[ntype]
         g.nodes["author"].data['label'] = data["author"].y
+        for key in ['train_mask', 'val_mask', 'test_mask']:
+            g.nodes['author'].data[key] = data["author"][key]
+
         self.features = data.x_dict
         self.dataset = data
         return g
