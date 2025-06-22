@@ -3,6 +3,15 @@ import torch
 import dgl
 import numpy as np
 from Coarsener.HeteroRGCNCoarsener import HeteroRGCNCoarsener
+
+# src_all_orig = original_graph.edges(etype="authortopaper")[0]
+# dst_all_orig = original_graph.edges(etype="authortopaper")[1]
+# for src_orig, dst_orig in zip(src_all_orig, dst_all_orig):
+#     src_c = mapping_author_array[src_orig.item()]
+#     dst_c = mapping_paper_array[dst_orig.item()]
+#     edges = coarsend_graph.edge_ids(src_c, dst_c, etype="authortopaper")
+#     assert len(edges) != 0, "warning"
+    
 class MultiGraphTest(unittest.TestCase):
     def setUp(self):
         
@@ -17,7 +26,7 @@ class MultiGraphTest(unittest.TestCase):
         
         self.graph.nodes['triangle'].data['feat'] = torch.tensor( [[1.], [2.],[3.]])
         num_nearest_init_neighbors_per_type = {"square": 3, "square_to_circle": 2, "circle": 2, "circle_to_triangle": 2, "triangle": 2}
-        self.coarsener = HeteroRGCNCoarsener(self.graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", add_feat=False, approx_neigh= False, use_out_degree=False)
+        self.coarsener = HeteroRGCNCoarsener(self.graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", add_feat=False, approx_neigh=True, use_out_degree=False, use_zscore=False)
         
         self.device = self.graph.device
         print("Starting rgcn test...")
@@ -53,6 +62,8 @@ class MultiGraphTest(unittest.TestCase):
         torch.testing.assert_close(self.coarsener.summarized_graph.nodes["circle"].data[f'hcircle_to_triangle'], h.unsqueeze(1), rtol=0, atol=0.1)  
     
         
+    
+    
     
     def test_costs(self):
         self.coarsener.use_out_degree = False
