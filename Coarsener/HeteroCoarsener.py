@@ -21,9 +21,10 @@ class HeteroCoarsener(ABC):
     
     def __init__(self, graph: dgl.DGLHeteroGraph,  num_nearest_init_neighbors_per_type, pairs_per_level=10,approx_neigh= False, add_feat=True,
                  norm_p = 1, device="cpu", use_out_degree=True, inner_product=False,  initial_k_layer=2, use_zscore =False, use_cos_sim=False,
-                 cca_cls = None, projection_cls = None, folder_name=None, checkpoints = [0.99, 0.5,0.3,0.2,0.1,0.05,0.01]
+                 cca_cls = None, projection_cls = None, folder_name=None, checkpoints = [0.99, 0.5,0.3,0.2,0.1,0.05,0.01], batch_size = 4096
                  ):
         self.checkpoints = checkpoints
+        self.batch_size = batch_size
         self.folder_name = folder_name
         self.original_graph = graph.to(device)
         self.use_zscore = use_zscore
@@ -305,6 +306,11 @@ class HeteroCoarsener(ABC):
                 old_feats = g_new.nodes[node_type].data["feat"]
                 feat_u = old_feats[nodes_u]
                 feat_v = old_feats[nodes_v]
+                
+                
+                feat_u_pca = g_new.nodes[node_type].data["feat_pca"][nodes_u]
+                feat_v_pca = g_new.nodes[node_type].data["feat_pca"][nodes_v]
+        
             cu = g_new.nodes[node_type].data["node_size"][nodes_u].unsqueeze(1)
             cv = g_new.nodes[node_type].data["node_size"][nodes_v].unsqueeze(1)
             
@@ -313,6 +319,9 @@ class HeteroCoarsener(ABC):
             g_new.nodes[node_type].data["node_size"][num_nodes_before:] = (cu + cv).squeeze()
             if "feat" in  g_new.nodes[node_type].data:
                 g_new.nodes[node_type].data["feat"][num_nodes_before:] = (feat_u * cu  + feat_v * cv ) / (cu + cv)
+                g_new.nodes[node_type].data["feat_pca"][num_nodes_before:] = (feat_u_pca * cu  + feat_v_pca * cv ) / (cu + cv)
+                
+                
             super_nodes = g_new.nodes(ntype= node_type)[num_nodes_before:]
             
             
@@ -333,9 +342,14 @@ class HeteroCoarsener(ABC):
             feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
             feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
             feat_uv = (feat_u * cu + feat_v * cv) / (cu + cv)
-            new_graph_size = g_new.num_nodes(ntype=node_type)
-    
             g_new.nodes[node_type].data["feat"][super_nodes] = feat_uv
+        
+            feat_u_pca = g_new.nodes[node_type].data["feat_pca"][nodes_u]
+            feat_v_pca = g_new.nodes[node_type].data["feat_pca"][nodes_v]
+            feat_uv_pca = (feat_u_pca * cu + feat_v_pca * cv) / (cu + cv)
+            g_new.nodes[node_type].data["feat_pca"][super_nodes] = feat_uv_pca
+        
+    
             
             
             cu = g_new.nodes[node_type].data["node_size"][nodes_u]
@@ -374,8 +388,12 @@ class HeteroCoarsener(ABC):
         adj_uv = self._get_adj(nodes_u, nodes_v, etype)
         adj_vu = self._get_adj(nodes_v, nodes_u, etype)
         
-        feat_u = g_new.nodes[node_type].data["feat"][nodes_u]
-        feat_v = g_new.nodes[node_type].data["feat"][nodes_v]
+        feat_u = g_new.nodes[node_type].data["feat_pca"][nodes_u]
+        feat_v = g_new.nodes[node_type].data["feat_pca"][nodes_v]
+        
+        
+        
+        
         cu = g_new.nodes[node_type].data["node_size"][nodes_u]
         cv = g_new.nodes[node_type].data["node_size"][nodes_v]
         suv = su - (adj_vu / (torch.sqrt(du + cu ))).unsqueeze(1) * feat_u  + sv -   (adj_uv / (torch.sqrt(dv + cv ))).unsqueeze(1)  * feat_v
@@ -545,7 +563,7 @@ class HeteroCoarsener(ABC):
                
                     nodes_uv = torch.cat([nodes_u, nodes_v])
                     def msg_minus_neigh_s(edges):
-                        return {'s':  (edges.data['adj'].unsqueeze(1) *edges.src["feat"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1) ,
+                        return {'s':  (edges.data['adj'].unsqueeze(1) *edges.src["feat_pca"])/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']).unsqueeze(1) ,
                                 'i':edges.data['adj']/torch.sqrt(edges.src[f"deg_{etype}"] + edges.src['node_size']) ,
                                 
                                 
@@ -642,7 +660,7 @@ class HeteroCoarsener(ABC):
                     
                     c = g_new.nodes[src_type].data[f"node_size"] 
                     d = g_new.nodes[src_type].data[f"deg_{etype}"] 
-                    f = g_new.nodes[src_type].data[f"feat"]
+                    f = g_new.nodes[src_type].data[f"feat_pca"]
                     s = g_new.nodes[src_type].data[f"s{etype}"]
                     if self.feat_in_gcn:
                         g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
@@ -652,7 +670,7 @@ class HeteroCoarsener(ABC):
                      
             if False and self.cca_cls:
                 for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-                    feat_src =   self.summarized_graph.nodes[src_type].data['feat']
+                    feat_src =   self.summarized_graph.nodes[src_type].data['feat_pca']
                     h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                     cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
                     cca.fit(feat_src, h_src) 

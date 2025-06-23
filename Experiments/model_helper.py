@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
                     epochs=1, optimizer=torch.optim.Adam, target_node_type="movie",
-                    model_param={"hidden_dim": 64},
+                    model_param={"hidden_dim": 256},
                     optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
                     device="cuda" if torch.cuda.is_available() else "cpu", eval_interval=10):
     

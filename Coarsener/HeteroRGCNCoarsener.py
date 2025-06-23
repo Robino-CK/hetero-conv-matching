@@ -42,7 +42,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 A = g.adj(etype=etype).to_dense()
                 
             D = torch.diag(torch.rsqrt(torch.sum(A, dim=1)))
-            feat =  self.summarized_graph.nodes[src_type].data['feat']
+            feat =  self.summarized_graph.nodes[src_type].data['feat_pca']
             H =  torch.pow((D @A @  D), k ) @ feat
             self.summarized_graph.nodes[src_type].data[f"SGC{etype}"] = H
     
@@ -83,7 +83,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
 
             # Load features or use scalar 1
             if has_feat:
-                feats = self.summarized_graph.nodes[dst_type].data['feat'].to(self.device)
+                feats = self.summarized_graph.nodes[dst_type].data['feat_pca'].to(self.device)
                 feat_dim = feats.shape[1]
             else:
                 # treat feature as scalar 1
@@ -126,7 +126,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.summarized_graph.nodes[src_type].data[f's{etype}'] = S_tensor
             if self.feat_in_gcn:
                 if self.multi_relations:
-                    feats = self.summarized_graph.nodes[src_type].data['feat'].to(self.device)
+                    feats = self.summarized_graph.nodes[src_type].data['feat_pca'].to(self.device)
                 
                 self.summarized_graph.nodes[src_type].data[f'h{etype}'] = H_tensor + ((feats / (deg_out + c).unsqueeze(1) ))
             else:
@@ -136,13 +136,15 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         if self.cca_cls:
             self.ccas = dict()
             for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
-                feat_src =   self.summarized_graph.nodes[src_type].data['feat']
+                feat_src =   self.summarized_graph.nodes[src_type].data['feat_pca']
                 h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                 
                 cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
                 cca.fit(feat_src, h_src) 
                 self.ccas[etype] = cca
-                
+        # else:
+        #     for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+        #         self.summarized_graph.nodes[src_type].data[f'h{etype}'] = 
      #   print("_create__spatial_rgcn", time.time() - start_time)
 
     
@@ -172,8 +174,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         adj1 = self._get_adj(node1s, node2s, etype)
         adj2 = self._get_adj(node2s, node1s, etype)
         
-        feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1s]
-        feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2s]
+        feat_u = self.summarized_graph.nodes[ntype].data["feat_pca"][node1s]
+        feat_v = self.summarized_graph.nodes[ntype].data["feat_pca"][node2s]
         
         
         
@@ -241,20 +243,20 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         d_node_src = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"]
         c_node_src = self.summarized_graph.nodes[src_type].data["node_size"]
-        feat_node_src = self.summarized_graph.nodes[src_type].data[f"feat"]
+        feat_node_src = self.summarized_graph.nodes[src_type].data[f"feat_pca"]
         if src_type == dst_type:
             h_node_dst = self.summarized_graph.nodes[dst_type].data[f"h{etype}"]
             d_node_dst = self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"]
             c_node_dst  = self.summarized_graph.nodes[dst_type].data["node_size"]
             s_node_dst =  self.summarized_graph.nodes[dst_type].data[f"s{etype}"]
-            feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat"]
+            feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat_pca"]
             
         else:
             h_node_dst = self.summarized_graph.nodes[dst_type].data[f"h{etype}"]
             d_node_dst = self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"]
             c_node_dst  = self.summarized_graph.nodes[dst_type].data["node_size"]
             s_node_dst =  self.summarized_graph.nodes[dst_type].data[f"s{etype}"]
-            feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat"]
+            feat_node_dst = self.summarized_graph.nodes[dst_type].data[f"feat_pca"]
         
         
         a_edge = self.summarized_graph.edges[etype].data[f"adj"]
@@ -411,7 +413,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 d_node = self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"]
                 c_node = cv = self.summarized_graph.nodes[dst_type].data["node_size"]
                 #s_node =  self.summarized_graph.nodes[dst_type].data[f"s{etype}"]
-                feat_node = self.summarized_graph.nodes[dst_type].data[f"feat"]
+                feat_node = self.summarized_graph.nodes[dst_type].data[f"feat_pca"]
                 
                 
                 
@@ -419,7 +421,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 d_node = self.summarized_graph.nodes[dst_type].data[f"deg_{etype}"]
                 c_node = cv = self.summarized_graph.nodes[dst_type].data["node_size"]
                 #s_node =  self.summarized_graph.nodes[dst_type].data[f"s{etype}"]
-                feat_node = self.summarized_graph.nodes[dst_type].data[f"feat"]
+                feat_node = self.summarized_graph.nodes[dst_type].data[f"feat_pca"]
                 if self.multi_relations:
                     etype_around = f"{dst_type}to{src_type}"
                 else:
@@ -430,7 +432,16 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
            #     a_edge = self.summarized_graph.edges[etype].data[f"adj"]
            
             #   
-                neighbors_cost  = self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs,d_node, c_node, infl_node, feat_node, etype)
+                if self.batch_size:
+                    costs = []
+                
+                    for i in range(0, len(pairs[:,0]), self.batch_size):
+                        s, d = pairs[:,0][i:i+self.batch_size], pairs[:,1][i:i+self.batch_size]
+                        pairs_batch = torch.stack((s,d), dim=1)
+                        costs.append(self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs_batch,d_node, c_node, infl_node, feat_node, etype))
+                    neighbors_cost  =torch.cat(costs, dim=0)
+                else: 
+                    neighbors_cost = self.neigbor_approx_difference_per_pair(self.summarized_graph, pairs,d_node, c_node, infl_node, feat_node, etype )
             else:            
                 neighbors_cost  = self.neighbor_difference_per_pair(self.summarized_graph, pairs,dst_type, src_type, etype)
             merge_graph.edata[f"costs_neig_{etype}"] = neighbors_cost
@@ -455,8 +466,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             # build a dense [num_src, hidden] tensor
             #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
             huv = H_merged                               # [P, H]
-            feat_u = self.summarized_graph.nodes[src_type].data["feat"][src]
-            feat_v = self.summarized_graph.nodes[src_type].data["feat"][dst]
+            feat_u = self.summarized_graph.nodes[src_type].data["feat_pca"][src]
+            feat_v = self.summarized_graph.nodes[src_type].data["feat_pca"][dst]
         
             cu = self.summarized_graph.nodes[src_type].data["node_size"][src]
 
@@ -488,7 +499,43 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
         
        
+    def _h_costs_batched(self):
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+       
+            if src_type not in self.merge_graphs:
+                continue
+
+            src_all, dst_all = self.merge_graphs[src_type].edges()
+
+            
+            costs_u = []
+            costs_v = []
+           
+            for i in range(0, len(src_all), self.batch_size):
+                src = src_all[i:i+self.batch_size]
+                dst = dst_all[i:i+self.batch_size]
+
+                H_merged = self._create_h_merged(src, dst, src_type, etype)  # [B, H]
+
+                h1 = self.summarized_graph.nodes[src_type].data[f"h{etype}"][src]  # [B, H]
+                h2 = self.summarized_graph.nodes[src_type].data[f"h{etype}"][dst]  # [B, H]
+
+                if self.use_cos_sim:
+                    cost_u = F.cosine_similarity(H_merged, h1, dim=1)  # [B]
+                    cost_v = F.cosine_similarity(H_merged, h2, dim=1)  # [B]
+                else:
+                    cost_u = torch.norm(H_merged - h1, p=self.norm_p, dim=1)  # [B]
+                    cost_v = torch.norm(H_merged - h2, p=self.norm_p, dim=1)  # [B]
+
+                costs_u.append(cost_u)
+                costs_v.append(cost_v)
+
+            # Concatenate batched results
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"] = torch.cat(costs_u, dim=0)
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] = torch.cat(costs_v, dim=0)
         
+    
+    
     def _h_costs(self):
         start_time = time.time()
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
@@ -500,7 +547,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             
             src, dst = self.merge_graphs[src_type].edges()
             
-             
+            
             # compute all merged h representations in one go
             H_merged = self._create_h_merged(src,dst, src_type, etype)
             
@@ -558,8 +605,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
             merged = H_merged                               # [P, H]
             
-            feat_u = self.summarized_graph.nodes[src_type].data["feat"][node1_ids]
-            feat_v = self.summarized_graph.nodes[src_type].data["feat"][node2_ids]
+            feat_u = self.summarized_graph.nodes[src_type].data["feat_pca"][node1_ids]
+            feat_v = self.summarized_graph.nodes[src_type].data["feat_pca"][node2_ids]
         
             cu = self.summarized_graph.nodes[src_type].data["node_size"][node1_ids]
 
@@ -578,15 +625,15 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             self.merge_graphs[src_type].edata[f"costs_inner_{etype}_v"] = torch.norm(feat - feat_v - merged + h2, p=self.norm_p, dim=1)
                     
          
-    def _self_feature_costs(self):
+    def _feature_costs(self):
         for ntype in self.summarized_graph.ntypes:
             if not ntype in self.merge_graphs.keys():
                 continue
             src, dst = self.merge_graphs[ntype].edges()
             node1_ids = src  # [P]
             node2_ids = dst  
-            feat_u = self.summarized_graph.nodes[ntype].data["feat"][node1_ids]
-            feat_v = self.summarized_graph.nodes[ntype].data["feat"][node2_ids]
+            feat_u = self.summarized_graph.nodes[ntype].data["feat_pca"][node1_ids]
+            feat_v = self.summarized_graph.nodes[ntype].data["feat_pca"][node2_ids]
             
             cu = self.summarized_graph.nodes[ntype].data["node_size"][node1_ids]
 
@@ -767,12 +814,18 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         if self.cca_cls:
             self._h_cca_costs()
         else:
-            self._h_costs()
+            if self.batch_size:
+                self._h_costs_batched()
+            else:
+                self._h_costs()
         self._create_neighbor_costs()
-        self._self_feature_costs()
+        
+        
         if self.feat_in_gcn:
             self._sum_costs_feat_in_rgc()
         else:
+            if self.cca_cls == None:
+                self.feature_costs()
             if self.use_zscore:
                 self._sum_z_score_costs()
             elif self.inner_product:

@@ -4,7 +4,7 @@ import sys
 
 import torch.nn.functional
 
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler 
 
 #from Datasets.NodeClassification.NodeClassificationDataset import NodeClassificationDataset
 
@@ -27,6 +27,10 @@ class Citeseer():
 
         # Reduce to 50 dimensions (you can adjust this)
         if n_components:
+            # scaler = StandardScaler()
+            # scaler.fit(data)
+            # scaled_data = scaler.transform(data) 
+            # scaled_data = torch.tensor(scaled_data, dtype=torch.double)
             reduced_feat = self.reduce_features(data, n_components=n_components)
         else:
             reduced_feat = data
@@ -43,7 +47,9 @@ class Citeseer():
         normalized_features = scaler.fit_transform(reduced_feat)
         
         # Assign reduced features and other data
-        hetero_g.nodes['paper'].data['feat'] = reduced_feat#torch.from_numpy(normalized_features).type(torch.FloatTensor)
+        hetero_g.nodes['paper'].data['feat'] = data#torch.from_numpy(normalized_features).type(torch.FloatTensor)
+        
+        hetero_g.nodes['paper'].data['feat_pca'] = reduced_feat#torch.from_numpy(normalized_features).type(torch.FloatTensor)
         hetero_g.nodes['paper'].data['label'] = g.ndata['label']
         for key in ['train_mask', 'val_mask', 'test_mask']:
             hetero_g.nodes['paper'].data[key] = g.ndata[key]
@@ -72,4 +78,4 @@ class Citeseer():
         X = feat_tensor.numpy()
         pca = PCA(n_components=n_components)
         X_reduced = pca.fit_transform(X)
-        return torch.from_numpy(X_reduced)
+        return torch.from_numpy(X_reduced).float()
