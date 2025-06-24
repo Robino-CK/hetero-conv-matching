@@ -447,6 +447,64 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             merge_graph.edata[f"costs_neig_{etype}"] = neighbors_cost
       #  print("_create_neighbor_costs", time.time() - start_time)
     
+    def _h_cca_costs_batched(self):
+        for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
+        
+            if src_type not in self.merge_graphs:    
+                continue
+            
+            
+            src_all, dst_all = self.merge_graphs[src_type].edges()
+            costs_u = []
+            costs_v = []
+           
+            for i in range(0, len(src_all), self.batch_size):
+                src = src_all[i:i+self.batch_size]
+                dst = dst_all[i:i+self.batch_size]
+ 
+                # compute all merged h representations in one go
+                H_merged = self._create_h_merged(src,dst, src_type, etype)
+        
+                # gather representations
+                hu = self.summarized_graph.nodes[src_type].data[f"h{etype}"][src]  # [P, H]
+                hv = self.summarized_graph.nodes[src_type].data[f"h{etype}"][dst]  # [P, H]
+                # build a dense [num_src, hidden] tensor
+                #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
+                huv = H_merged                               # [P, H]
+                feat_u = self.summarized_graph.nodes[src_type].data["feat_pca"][src]
+                feat_v = self.summarized_graph.nodes[src_type].data["feat_pca"][dst]
+            
+                cu = self.summarized_graph.nodes[src_type].data["node_size"][src]
+
+                cv = self.summarized_graph.nodes[src_type].data["node_size"][dst]
+                du = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][src]
+                dv = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][dst]
+                feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv ).unsqueeze(1)
+                
+                feat_u,hu_cca = self.ccas[etype].transform(feat_u, hu)
+                feat_v,hv_cca = self.ccas[etype].transform(feat_v, hv)
+                feat_uv, huv_cca = self.ccas[etype].transform(feat, huv)
+                
+                # feat_u,hu_cca = torch.from_numpy(feat_u).to(self.device), torch.from_numpy(hu_cca).to(self.device)
+                # feat_v,hv_cca = torch.from_numpy(feat_v).to(self.device), torch.from_numpy(hv_cca).to(self.device)
+                # feat_uv, huv_cca = torch.from_numpy(feat_uv).to(self.device), torch.from_numpy(huv_cca).to(self.device)
+                #  print("du hurensohn!!")
+                
+                feat_uv =  feat_uv* (cu + cv ).unsqueeze(1) / (du +dv + cv+ cu ).unsqueeze(1) 
+                feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
+                feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)
+                
+                
+                if self.use_cos_sim:
+                    costs_u.append( F.cosine_similarity(feat_uv - feat_u , huv_cca  - hu_cca,  dim=1))
+                    costs_v.append(F.cosine_similarity(feat_uv - feat_v , huv_cca  - hv_cca,  dim=1))
+                else:
+                    costs_u.append( torch.norm(feat_uv - feat_u + huv_cca  - hu_cca, p=self.norm_p, dim=1))
+                    costs_v.append(  torch.norm(feat_uv - feat_v + huv_cca  - hv_cca, p=self.norm_p, dim=1))
+    
+
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}_u"]  = torch.cat(costs_u, dim=0)
+            self.merge_graphs[src_type].edata[f"costs_h_{etype}_v"] = torch.cat(costs_v, dim=0)
     
     def _h_cca_costs(self):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
@@ -812,7 +870,10 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
     
     def _create_costs(self):
         if self.cca_cls:
-            self._h_cca_costs()
+            if self.batch_size:
+                self._h_cca_costs_batched()
+            else:
+                self._h_cca_costs()
         else:
             if self.batch_size:
                 self._h_costs_batched()
