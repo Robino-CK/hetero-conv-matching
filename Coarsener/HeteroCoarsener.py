@@ -46,6 +46,7 @@ class HeteroCoarsener(ABC):
         self.times = []
         self.memory_allocated = []
         self.memory_reserved = []
+        self.memory_max_allocated = []
         self.multi_relations = len(graph.canonical_etypes) > 1
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
@@ -808,6 +809,7 @@ class HeteroCoarsener(ABC):
             current_check_point = self.checkpoints[current_check_point_index]
             self.memory_allocated.append(torch.cuda.memory_allocated())
             self.memory_reserved.append(torch.cuda.memory_reserved())
+            self.memory_max_allocated.append(torch.cuda.max_memory_allocated())
             if ratio < current_check_point :
                 if self.folder_name != None:
                     self.save(ratio)
