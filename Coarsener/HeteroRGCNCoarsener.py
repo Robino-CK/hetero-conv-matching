@@ -813,14 +813,12 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             if dst_type not in self.merge_graphs:
                 continue
-            if self.multi_relations:
-                etype_around = f"{dst_type}to{src_type}"
-            else:
-                etype_around = etype
-
+            
             if f"costs_neig_{etype}" in self.merge_graphs[dst_type].edata:
-                self.merge_graphs[dst_type].edata[f"costs_h_{etype_around}"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
+                self.merge_graphs[dst_type].edata[f"costs_h_{etype}"] += self.merge_graphs[dst_type].edata[f"costs_neig_{etype}"]
+    
         
+            
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             if src_type not in self.merge_graphs:
                 continue
@@ -885,8 +883,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         if self.feat_in_gcn:
             self._sum_costs_feat_in_rgc()
         else:
-            if self.cca_cls == None:
-                self.feature_costs()
+            
             if self.use_zscore:
                 self._sum_z_score_costs()
             elif self.inner_product:

@@ -63,15 +63,19 @@ class DBLP():
         # You can also assign features
         for ntype in g.ntypes:
             if ntype == "conference":
-                g.nodes[ntype].data['feat'] = torch.ones(num_nodes_dict['conference'],1)    
+                g.nodes[ntype].data['feat'] = torch.ones(num_nodes_dict['conference'],1)
+                g.nodes[ntype].data['feat_pca'] = torch.ones(num_nodes_dict['conference'],1)    
             else:
-                pca = PCA(n_components=n_components)
-                pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
+                if n_components == None:
+                    g.nodes[ntype].data['feat_pca'] =data.x_dict[ntype]
+                else: 
+                    pca = PCA(n_components=n_components)
+                    pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
             #    scaler = MinMaxScaler()
 
             # Normalize the features between 0 and 1
              #   normalized_features = scaler.fit_transform(pca_feat)
-                g.nodes[ntype].data['feat_pca'] = torch.from_numpy(pca_feat).type(torch.FloatTensor)#torch.from_numpy(normalized_features).type(torch.FloatTensor)
+                    g.nodes[ntype].data['feat_pca'] = torch.from_numpy(pca_feat).type(torch.FloatTensor)#torch.from_numpy(normalized_features).type(torch.FloatTensor)
                 
                 g.nodes[ntype].data['feat'] = data.x_dict[ntype]
             
