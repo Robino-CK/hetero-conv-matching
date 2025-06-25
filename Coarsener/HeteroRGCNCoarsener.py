@@ -883,7 +883,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         if self.feat_in_gcn:
             self._sum_costs_feat_in_rgc()
         else:
-            
+            self._feature_costs()    
             if self.use_zscore:
                 self._sum_z_score_costs()
             elif self.inner_product:
