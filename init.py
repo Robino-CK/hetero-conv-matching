@@ -1,4 +1,6 @@
 
+import torch
+print("hi")
 from Coarsener.HeteroRGCNCoarsener import HeteroRGCNCoarsener
 
 from Data.Citeseer import Citeseer
@@ -10,8 +12,8 @@ from Data.DBLP import DBLP
 import torch
 if __name__ == "__main__":
     
-    dataset = DBLP() 
-    original_graph = dataset.load_graph()
+    dataset = Citeseer() 
+    original_graph = dataset.load_graph(n_components=10)
     num_nearest_init_neighbors_per_type = {"papertoauthor": 3, "authortopaper": 3, "conferencetopaper":3, "papertoconference":3,"papertoterm":3, "termtopaper":3 }
 
     coarsener = HeteroRGCNCoarsener(original_graph, 0.4, num_nearest_init_neighbors_per_type, device="cpu", pairs_per_level=10,norm_p=2, approx_neigh=False, add_feat=False, use_out_degree=False) 
