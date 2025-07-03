@@ -730,7 +730,7 @@ class HeteroCoarsener(ABC):
         # print(coar_node)
             self.summarized_graph.nodes[ntype].data["train_mask"][coar_node] = is_train
             self.summarized_graph.nodes[ntype].data["test_mask"][coar_node] = not is_train
-            self.summarized_graph.nodes[ntype].data["val_mask"][coar_node] = not is_train
+            #self.summarized_graph.nodes[ntype].data["val_mask"][coar_node] = not is_train
 
 
                     

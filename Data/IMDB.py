@@ -71,11 +71,11 @@ class IMDB():
                 pca = PCA(n_components=n_components)
                 
                 pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
-                scaler = MinMaxScaler()
+               # scaler = MinMaxScaler()
 
                 # Normalize the features between 0 and 1
-                normalized_features = scaler.fit_transform(pca_feat)
-                g.nodes[ntype].data['feat_pca'] = torch.from_numpy(normalized_features).type(torch.FloatTensor)
+                #normalized_features = scaler.fit_transform(pca_feat)
+                g.nodes[ntype].data['feat_pca'] = torch.from_numpy(pca_feat).type(torch.FloatTensor)
             g.nodes[ntype].data['feat'] = data.x_dict[ntype]
         g.nodes["movie"].data['label'] = data["movie"].y
         for key in ['train_mask', 'val_mask', 'test_mask']:

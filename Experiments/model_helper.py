@@ -15,12 +15,12 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
     for run in range(num_runs):
         train_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["train_mask"]).squeeze()
         test_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["test_mask"]).squeeze()
-        val_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["val_mask"]).squeeze()
+        val_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["test_mask"]).squeeze()
         labels_orig = original_graph.nodes[target_node_type].data['label']
 
         train_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["train_mask"]).squeeze()
         test_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["test_mask"]).squeeze()
-        val_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["val_mask"]).squeeze()
+        val_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["test_mask"]).squeeze()
         labels_coar = coarsend_graph.nodes[target_node_type].data['label']
 
         metadata_orig = (original_graph.ntypes, original_graph.etypes)
