@@ -19,7 +19,7 @@ class MLP(nn.Module):
 
 
 class ContrastiveLearner:
-    def __init__(self, input_dim_1, input_dim_2, n_components=128, temperature=0.5, lr=1e-3, epochs=1000, batch_size=512, device='cpu'):
+    def __init__(self, input_dim_1, input_dim_2, n_components=128, temperature=0.5, lr=1e-3, epochs=500, batch_size=512, device='cpu'):
         out_dim = n_components
         self.model1 = MLP(input_dim=input_dim_1, output_dim=out_dim).to(device)
         self.model2 = MLP(input_dim=input_dim_2, output_dim=out_dim).to(device)
@@ -53,7 +53,8 @@ class ContrastiveLearner:
 
         loss = -torch.log(nominator / denominator).mean()
         return loss
-
+    def quality(self, X,Y):
+        return self._nt_xent_loss(X, Y)
     def fit(self, X1, X2):
         dataset = torch.utils.data.TensorDataset(X1, X2)
         dataloader = torch.utils.data.DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
@@ -88,4 +89,4 @@ class ContrastiveLearner:
         with torch.no_grad():
             Z1 = self.model1(X1.to(self.device))
             Z2 = self.model2(X2.to(self.device))
-        return Z1, Z2
+        return Z1, Z2, self._nt_xent_loss(Z1,Z2)

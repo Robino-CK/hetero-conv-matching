@@ -31,7 +31,7 @@ class HeteroCoarsener(ABC):
         self.projection_cls = projection_cls
         self.summarized_graph = graph.to(device)
         self.approx_neigh = approx_neigh
-        self.r = checkpoints[-1]
+        self.r = checkpoints[0]
         self.use_cos_sim = use_cos_sim
         self.norm_p = norm_p
         self.feat_in_gcn = add_feat
@@ -48,12 +48,21 @@ class HeteroCoarsener(ABC):
         self.memory_reserved = []
         self.memory_max_allocated = []
         self.multi_relations = len(graph.canonical_etypes) > 1
+        self.metrics = dict()
+        self.metrics['theta'] = dict()
+        self.metrics['costs'] =  dict()
+        self.metrics['costs_h'] =  dict()
+        self.metrics['costs_neigh'] =  dict()
+        self.metrics['r'] = []
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
-            
+            self.metrics['costs'][ntype] = []
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             self.summarized_graph.edges[etype].data["adj"] = torch.ones(self.summarized_graph.num_edges(etype=etype), device=self.device)
-        
+            
+            self.metrics['costs_h'][etype] = []
+            self.metrics['costs_neigh'][etype] = []
+            self.metrics['theta'][etype] = []
         self._update_deg()
         
             
@@ -667,19 +676,24 @@ class HeteroCoarsener(ABC):
                     d = g_new.nodes[src_type].data[f"deg_{etype}"] 
                     f = g_new.nodes[src_type].data[f"feat_pca"]
                     s = g_new.nodes[src_type].data[f"s{etype}"]
-                    if self.feat_in_gcn:
+                    if self.feat_in_gcn and not self.multi_relations:
                         g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     else:
                         g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     
                      
-            if False and self.cca_cls:
+            if self.cca_cls:
                 for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
                     feat_src =   self.summarized_graph.nodes[src_type].data['feat_pca']
                     h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
-                    cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
-                    cca.fit(feat_src, h_src) 
-                    self.ccas[etype] = cca
+                    quality =  self.ccas[etype].quality(feat_src,h_src)
+                    self.metrics['theta'][etype].append(quality)
+                    
+                    # if corr < 0.7:
+
+                    #     cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
+                    #     cca.fit(feat_src, h_src) 
+                    #     self.ccas[etype] = cca
                 
                                  
            # print("_merge_nodes", time.time() - start_time)
@@ -806,6 +820,7 @@ class HeteroCoarsener(ABC):
         current_check_point_index = 0
         for i in range(steps):
             ratio = self.summarized_graph.num_nodes()/ self.original_graph.num_nodes()
+            self.metrics["r"].append(ratio)
             current_check_point = self.checkpoints[current_check_point_index]
             self.memory_allocated.append(torch.cuda.memory_allocated())
             self.memory_reserved.append(torch.cuda.memory_reserved())
@@ -818,9 +833,11 @@ class HeteroCoarsener(ABC):
                 #print(torch.cuda.memory_allocated() / 1024**2, "MB allocated")
                 #print(torch.cuda.memory_reserved() / 1024**2, "MB reserved")
                 #
+                
                 current_check_point_index += 1
-            if current_check_point_index == len(self.checkpoints):
-                return 
+                if current_check_point_index == len(self.checkpoints):
+                    return 
+                self.r = self.checkpoints[current_check_point_index]
                 
             print(f"step: {i}, ratio: {ratio}" ) 
             #if not ratio > self.r:
