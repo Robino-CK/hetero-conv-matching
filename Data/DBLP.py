@@ -37,7 +37,7 @@ class DBLP():
         # torch.serialization.add_safe_globals([EdgeStorage])
         
         # Load the dataset
-        path = './dblp'
+        path = './raw/dblp'
         dataset = torch_geometric.datasets.DBLP(path)
         data = dataset[0]  # Only one graph
 

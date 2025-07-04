@@ -3,7 +3,7 @@ import random
 import numpy as np
 
 
-def create_random_mask(original_graph, device, target_ntype):
+def create_random_mask(original_graph, device, target_ntype, train_ratio=0.6, val_ratio=0.2):
     # Assuming 'original_graph.nodes['movie'].data' contains the nodes
     # We will create masks for training, validation, and testing
 
@@ -15,8 +15,8 @@ def create_random_mask(original_graph, device, target_ntype):
     np.random.shuffle(node_indices)
 
     # 3. Define the split proportions (e.g., 60% train, 15% val, 15% test)
-    train_size = int(0.6 * total_nodes)
-    val_size = int(0.2 * total_nodes)
+    train_size = int(train_ratio * total_nodes)
+    val_size = int(val_ratio * total_nodes)
     test_size = total_nodes - train_size - val_size
 
     # 4. Assign the splits
