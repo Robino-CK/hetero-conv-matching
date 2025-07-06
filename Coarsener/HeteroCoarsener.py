@@ -54,9 +54,12 @@ class HeteroCoarsener(ABC):
         self.metrics['costs_h'] =  dict()
         self.metrics['costs_neigh'] =  dict()
         self.metrics['r'] = []
+        
+        self.metrics["num_nodes"] =  dict()
         for ntype in self.summarized_graph.ntypes:
             self.summarized_graph.nodes[ntype].data['node_size'] = torch.ones(self.summarized_graph.num_nodes(ntype), device=self.device)
             self.metrics['costs'][ntype] = []
+            self.metrics["num_nodes"][ntype] = []
         for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
             self.summarized_graph.edges[etype].data["adj"] = torch.ones(self.summarized_graph.num_edges(etype=etype), device=self.device)
             
@@ -66,15 +69,18 @@ class HeteroCoarsener(ABC):
         self._update_deg()
         
             
-        
-        total_num_nodes = graph.num_nodes()
-        self.ntype_distribution = dict()
+        self.ntype_ratio_to_biggest = dict()
+        max_nodes = 0
         for ntype in graph.ntypes:
-            self.ntype_distribution[ntype] = graph.num_nodes(ntype) / total_num_nodes
-        pass
-    
-    
+            max_nodes += graph.num_nodes(ntype)
         
+        for ntype in graph.ntypes:
+            self.ntype_ratio_to_biggest[ntype] =  graph.num_nodes(ntype) / max_nodes
+        
+        
+    
+    def _balancing(self):
+        pass
     
     def _update_deg(self):
             
@@ -226,14 +232,14 @@ class HeteroCoarsener(ABC):
 
         return src_nodes, dst_nodes
         
-    def _find_non_overlapping_costs(self,src_nodes, dst_nodes, ntype):
+    def _find_non_overlapping_costs(self,k, src_nodes, dst_nodes, ntype):
         topk_non_overlapping = []
         nodes = set()
             
         
         # Avoiding the need to loop over every edge individually
         for i in range(len(src_nodes)):
-            if len(nodes) > (self.pairs_per_level * self.ntype_distribution[ntype]):
+            if i > k:
                 break
             src_node = src_nodes[i]
             dst_node = dst_nodes[i]
@@ -258,11 +264,16 @@ class HeteroCoarsener(ABC):
             if self.r > self.summarized_graph.num_nodes(ntype=ntype) / self.original_graph.num_nodes(ntype=ntype):
                 topk_non_overlapping_per_type[ntype] = []
                 continue
-            k = self.num_nearest_init_neighbors_per_type[ntype] * self.pairs_per_level * 20
+            import math
+            import random
+            likelihood =  self.pairs_per_level * self.ntype_ratio_to_biggest[ntype] -  math.floor(self.pairs_per_level * self.ntype_ratio_to_biggest[ntype])
+            added_one =  1 if random.uniform(0, 1) < likelihood else 0
+            print(likelihood)
+            k = math.floor(self.pairs_per_level * self.ntype_ratio_to_biggest[ntype]) + added_one 
     
-            src_nodes, dst_nodes = self._find_lowest_costs_in_merge_graph(k, "costs", ntype)
+            src_nodes, dst_nodes = self._find_lowest_costs_in_merge_graph(k *  20, "costs", ntype)
     
-            topk_non_overlapping_per_type[ntype] = self._find_non_overlapping_costs(src_nodes, dst_nodes, ntype)
+            topk_non_overlapping_per_type[ntype] = self._find_non_overlapping_costs(k, src_nodes, dst_nodes, ntype)
 
        # print("_find_lowest_cost_edges", time.time() - start_time)
         return topk_non_overlapping_per_type
@@ -680,7 +691,8 @@ class HeteroCoarsener(ABC):
                         g_new.nodes[src_type].data[f"h{etype}"] = ((c / (c + d ) ).unsqueeze(1) * f) + (1 / torch.sqrt(c + d)).unsqueeze(1) * s
                     else:
                         g_new.nodes[src_type].data[f"h{etype}"] = (1 / torch.sqrt(c + d)).unsqueeze(1) * s
-                    
+                
+                self.metrics["num_nodes"][node_type].append( g_new.num_nodes(ntype = node_type) )               
                      
             if self.cca_cls:
                 for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
@@ -688,13 +700,13 @@ class HeteroCoarsener(ABC):
                     h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                     quality =  self.ccas[etype].quality(feat_src,h_src)
                     self.metrics['theta'][etype].append(quality)
-                    
+                     
                     # if corr < 0.7:
 
                     #     cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
                     #     cca.fit(feat_src, h_src) 
                     #     self.ccas[etype] = cca
-                
+            
                                  
            # print("_merge_nodes", time.time() - start_time)
             return g_new, mappings
