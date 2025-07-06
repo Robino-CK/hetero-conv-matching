@@ -2,8 +2,22 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from abc import ABC, abstractmethod
 
-class MLP(nn.Module):
+
+class LinearMLP(nn.Module):
+    def __init__(self, input_dim, output_dim):
+        super().__init__()
+        self.network = nn.Sequential(
+            nn.Linear(input_dim, 256), 
+            nn.Linear(256, output_dim)
+        )
+
+    def forward(self, x):
+        return self.network(x)
+
+
+class NonLinearMLP(nn.Module):
     def __init__(self, input_dim, output_dim):
         super().__init__()
         self.network = nn.Sequential(
@@ -18,30 +32,29 @@ class MLP(nn.Module):
         return self.network(x)
 
 
-class ContrastiveLearner:
+class ContrastiveLearner(ABC):
     def __init__(self, input_dim_1, input_dim_2, n_components=128, temperature=0.5, lr=1e-3, epochs=500, batch_size=512, device='cpu'):
-        out_dim = n_components
-        self.model1 = MLP(input_dim=input_dim_1, output_dim=out_dim).to(device)
-        self.model2 = MLP(input_dim=input_dim_2, output_dim=out_dim).to(device)
-        self.out_dim = out_dim
+        self.out_dim = n_components
         self.temperature = temperature
         self.lr = lr
         self.epochs = epochs
         self.batch_size = batch_size
         self.device = device
 
+        self.model1 = self._build_model(input_dim_1, n_components).to(device)
+        self.model2 = self._build_model(input_dim_2, n_components).to(device)
+
+    @abstractmethod
+    def _build_model(self, input_dim, output_dim):
+        pass
+
     def _nt_xent_loss(self, z1, z2):
-        """
-        Normalized Temperature-scaled Cross Entropy Loss (NT-Xent).
-        z1, z2: tensors of shape (batch_size, out_dim)
-        """
         z1 = F.normalize(z1, dim=1)
         z2 = F.normalize(z2, dim=1)
 
-        representations = torch.cat([z1, z2], dim=0)  # (2N, D)
-        similarity_matrix = torch.matmul(representations, representations.T)  # (2N, 2N)
+        representations = torch.cat([z1, z2], dim=0)
+        similarity_matrix = torch.matmul(representations, representations.T)
 
-        # remove similarity with itself
         mask = torch.eye(similarity_matrix.size(0), device=self.device).bool()
         similarity_matrix = similarity_matrix[~mask].view(similarity_matrix.size(0), -1)
 
@@ -53,8 +66,10 @@ class ContrastiveLearner:
 
         loss = -torch.log(nominator / denominator).mean()
         return loss
-    def quality(self, X,Y):
+
+    def quality(self, X, Y):
         return self._nt_xent_loss(X, Y)
+
     def fit(self, X1, X2):
         dataset = torch.utils.data.TensorDataset(X1, X2)
         dataloader = torch.utils.data.DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
@@ -83,10 +98,22 @@ class ContrastiveLearner:
 
             print(f"Epoch {epoch+1}/{self.epochs}, Loss: {total_loss:.4f}")
 
-    def transform(self, X1, X2):
+    def transform(self, X1, X2=None):
         self.model1.eval()
         self.model2.eval()
         with torch.no_grad():
+            if X2 is None:
+                return self.model1(X1.to(self.device))
             Z1 = self.model1(X1.to(self.device))
             Z2 = self.model2(X2.to(self.device))
-        return Z1, Z2, self._nt_xent_loss(Z1,Z2)
+        return Z1, Z2
+
+
+class LinearContrastiveLearner(ContrastiveLearner):
+    def _build_model(self, input_dim, output_dim):
+        return LinearMLP(input_dim, output_dim)
+
+
+class NonLinearContrastiveLearner(ContrastiveLearner):
+    def _build_model(self, input_dim, output_dim):
+        return NonLinearMLP(input_dim, output_dim)
