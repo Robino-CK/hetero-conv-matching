@@ -217,9 +217,15 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
         if self.cca_cls:
-            feat_u =  self.ccas[etype].transform(feat_u)
-            feat_v = self.ccas[etype].transform(feat_v)
-            feat =  self.ccas[etype].transform(feat)
+            if self.multi_relations:
+                dst_type = etype.split("to")[1]
+                src_type = etype.split("to")[0]
+                etype_around = f"{dst_type}to{src_type}"
+            else:
+                etype_around = etype
+            feat_u =  self.ccas[etype_around].transform(feat_u)
+            feat_v = self.ccas[etype_around].transform(feat_v)
+            feat =  self.ccas[etype_around].transform(feat)
         if self.use_cos_sim:
             neigh_cost_u = F.cosine_similarity( feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)  , (feat_u / torch.sqrt(du + cu).unsqueeze(1)) , dim=1)   * iu
             neigh_cost_v = F.cosine_similarity( feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   , (feat_v / torch.sqrt(dv + cv).unsqueeze(1)), dim=1)   * iv

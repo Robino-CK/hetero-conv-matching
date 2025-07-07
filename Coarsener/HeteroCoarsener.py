@@ -698,8 +698,8 @@ class HeteroCoarsener(ABC):
                 for src_type, etype, dst_type in self.summarized_graph.canonical_etypes:
                     feat_src =   self.summarized_graph.nodes[src_type].data['feat_pca']
                     h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
-                    quality =  self.ccas[etype].quality(feat_src,h_src)
-                    self.metrics['theta'][etype].append(quality)
+                    #quality =  self.ccas[etype].quality(feat_src,h_src)
+                    #self.metrics['theta'][etype].append(quality)
                      
                     # if corr < 0.7:
 
