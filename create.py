@@ -34,7 +34,7 @@ def get_proj(name):
     else:
         return None
 
-def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n_components=30, zscore=False, num_neighbors_per_ntype=25,num_neighbors_per_etype=25, checkpoints=None, batch_size=None, run=0):
+def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=30, zscore=False, num_neighbors_per_ntype=25,num_neighbors_per_etype=25, checkpoints=None, batch_size=None, run=0):
     # Make sure we can use CUDA
     try: 
         torch.cuda.empty_cache()
@@ -68,7 +68,7 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n
         pca_name = ""
         if n_components != None:
             pca_name = f'pca_{n_components}'
-        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}{run}' 
+        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}_5_pairs_{run}' 
         coarsener = HeteroRGCNCoarsener(
             original_graph, 
             num_nearest_init_neighbors_per_type=num_neighbors, 
