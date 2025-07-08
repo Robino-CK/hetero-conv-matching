@@ -34,7 +34,7 @@ def get_proj(name):
     else:
         return None
 
-def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n_components=30, zscore=False, num_neighbors_per_ntype=25,num_neighbors_per_etype=25, checkpoints=None, batch_size=None):
+def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n_components=30, zscore=False, num_neighbors_per_ntype=25,num_neighbors_per_etype=25, checkpoints=None, batch_size=None, run=0):
     # Make sure we can use CUDA
     try: 
         torch.cuda.empty_cache()
@@ -68,7 +68,7 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n
         pca_name = ""
         if n_components != None:
             pca_name = f'pca_{n_components}'
-        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}' 
+        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}{run}' 
         coarsener = HeteroRGCNCoarsener(
             original_graph, 
             num_nearest_init_neighbors_per_type=num_neighbors, 
@@ -94,44 +94,45 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n
         print('error!' , e)
 
 
-d = IMDB()
 
-coarsen_graph(d, proj_name="CCA")
-coarsen_graph(d, proj_name="AUTO")
-coarsen_graph(d, proj_name="CLL")
-coarsen_graph(d, proj_name="CLNL")
-# d = ACM()
+for i in range(5):
+    d = IMDB()
+    coarsen_graph(d, proj_name="CCA", run=i)
+    coarsen_graph(d, proj_name="AUTO", run=i)
+    coarsen_graph(d, proj_name="CLL", run=i)
+    coarsen_graph(d, proj_name="CLNL", run=i)
+    d = ACM()
 
-# coarsen_graph(d, proj_name="CCA")
-# coarsen_graph(d, proj_name="AUTO")
-# coarsen_graph(d, proj_name="CLL")
-# coarsen_graph(d, proj_name="CLNL")
+    coarsen_graph(d, proj_name="CCA", run=i)
+    coarsen_graph(d, proj_name="AUTO", run=i)
+    coarsen_graph(d, proj_name="CLL", run=i)
+    coarsen_graph(d, proj_name="CLNL", run=i)
 
-# d = DBLP()
+    d = DBLP()
 
-# coarsen_graph(d, proj_name="CCA")
-# coarsen_graph(d, proj_name="AUTO")
-# coarsen_graph(d, proj_name="CLL")
-# coarsen_graph(d, proj_name="CLNL")
+    coarsen_graph(d, proj_name="CCA", run=i)
+    coarsen_graph(d, proj_name="AUTO", run=i)
+    coarsen_graph(d, proj_name="CLL", run=i)
+    coarsen_graph(d, proj_name="CLNL", run=i)
 
-# d = Citeseer()
+    d = Citeseer()
 
-# coarsen_graph(d)
-# coarsen_graph(d, proj_name="AUTO")
-# coarsen_graph(d, proj_name="CLL")
-# coarsen_graph(d, proj_name="CLNL")
-# d = Actor()
-# coarsen_graph(d )
-# coarsen_graph(d, proj_name="CCA")
-# coarsen_graph(d, proj_name="AUTO")
-# coarsen_graph(d, proj_name="CLL")
-# coarsen_graph(d, proj_name="CLNL")
+    coarsen_graph(d)
+    coarsen_graph(d, proj_name="AUTO", run=i)
+    coarsen_graph(d, proj_name="CLL", run=i)
+    coarsen_graph(d, proj_name="CLNL", run=i)
+    d = Actor()
+    coarsen_graph(d )
+    coarsen_graph(d, proj_name="CCA", run=i)
+    coarsen_graph(d, proj_name="AUTO", run=i)
+    coarsen_graph(d, proj_name="CLL", run=i)
+    coarsen_graph(d, proj_name="CLNL", run=i)
 
-# d = DBLP()
+    d = DBLP()
 
-# coarsen_graph(d, proj_name="CCA")
-# coarsen_graph(d, proj_name="AUTO")
-# coarsen_graph(d, proj_name="CLL")
-# coarsen_graph(d, proj_name="CLNL")
+    coarsen_graph(d, proj_name="CCA", run=i)
+    coarsen_graph(d, proj_name="AUTO", run=i)
+    coarsen_graph(d, proj_name="CLL", run=i)
+    coarsen_graph(d, proj_name="CLNL", run=i)
 
 #nohup python run.py > output.log 2>&1 &
