@@ -1,0 +1,979 @@
+nohup: ignoring input
+/storage/scratch/0994359/hetero-conv-matching/.venv/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
+  backends.update(_get_backends("networkx.backends"))
+['results/ACM_CCA_pca_30/1.0', 'results/ACM_CCA_pca_30/0.9', 'results/ACM_CCA_pca_30/0.8', 'results/ACM_CCA_pca_30/0.7', 'results/ACM_CCA_pca_30/0.6', 'results/ACM_CCA_pca_30/0.5', 'results/ACM_CCA_pca_30/0.4', 'results/ACM_CCA_pca_30/0.3', 'results/ACM_CCA_pca_30/0.2', 'results/ACM_CCA_pca_30/0.1', 'results/ACM_CCA_pca_30/0.02', 'results/ACM_CCA_pca_30/0.01', 'results/ACM_CCA_pca_30/0.0', 'results/ACM_AUTO_pca_30/1.0', 'results/ACM_AUTO_pca_30/0.9', 'results/ACM_AUTO_pca_30/0.8', 'results/ACM_AUTO_pca_30/0.7', 'results/ACM_AUTO_pca_30/0.6', 'results/ACM_AUTO_pca_30/0.5', 'results/ACM_AUTO_pca_30/0.4', 'results/ACM_AUTO_pca_30/0.3', 'results/ACM_AUTO_pca_30/0.2', 'results/ACM_AUTO_pca_30/0.1', 'results/ACM_AUTO_pca_30/0.02', 'results/ACM_AUTO_pca_30/0.01', 'results/ACM_AUTO_pca_30/0.0', 'results/ACM_CLL_pca_30/1.0', 'results/ACM_CLL_pca_30/0.9', 'results/ACM_CLL_pca_30/0.8', 'results/ACM_CLL_pca_30/0.7', 'results/ACM_CLL_pca_30/0.6', 'results/ACM_CLL_pca_30/0.5', 'results/ACM_CLL_pca_30/0.4', 'results/ACM_CLL_pca_30/0.3', 'results/ACM_CLL_pca_30/0.2', 'results/ACM_CLL_pca_30/0.1', 'results/ACM_CLL_pca_30/0.02', 'results/ACM_CLL_pca_30/0.01', 'results/ACM_CLL_pca_30/0.0', 'results/ACM_CLNL_pca_30/1.0', 'results/ACM_CLNL_pca_30/0.9', 'results/ACM_CLNL_pca_30/0.8', 'results/ACM_CLNL_pca_30/0.7', 'results/ACM_CLNL_pca_30/0.6', 'results/ACM_CLNL_pca_30/0.5', 'results/ACM_CLNL_pca_30/0.4', 'results/ACM_CLNL_pca_30/0.3', 'results/ACM_CLNL_pca_30/0.2', 'results/ACM_CLNL_pca_30/0.1', 'results/ACM_CLNL_pca_30/0.02', 'results/ACM_CLNL_pca_30/0.01', 'results/ACM_CLNL_pca_30/0.0', 'results/DBLP_CCA_pca_30/1.0', 'results/DBLP_CCA_pca_30/0.9', 'results/DBLP_CCA_pca_30/0.8', 'results/DBLP_CCA_pca_30/0.7', 'results/DBLP_CCA_pca_30/0.6', 'results/DBLP_CCA_pca_30/0.5', 'results/DBLP_CCA_pca_30/0.4', 'results/DBLP_CCA_pca_30/0.3', 'results/DBLP_CCA_pca_30/0.2', 'results/DBLP_CCA_pca_30/0.1', 'results/DBLP_CCA_pca_30/0.02', 'results/DBLP_CCA_pca_30/0.01', 'results/DBLP_CCA_pca_30/0.0', 'results/DBLP_AUTO_pca_30/1.0', 'results/DBLP_AUTO_pca_30/0.9', 'results/DBLP_AUTO_pca_30/0.8', 'results/DBLP_AUTO_pca_30/0.7', 'results/DBLP_AUTO_pca_30/0.6', 'results/DBLP_AUTO_pca_30/0.5', 'results/DBLP_AUTO_pca_30/0.4', 'results/DBLP_AUTO_pca_30/0.3', 'results/DBLP_AUTO_pca_30/0.2', 'results/DBLP_AUTO_pca_30/0.1', 'results/DBLP_AUTO_pca_30/0.02', 'results/DBLP_AUTO_pca_30/0.01', 'results/DBLP_AUTO_pca_30/0.0', 'results/DBLP_CLL_pca_30/1.0', 'results/DBLP_CLL_pca_30/0.9', 'results/DBLP_CLL_pca_30/0.8', 'results/DBLP_CLL_pca_30/0.7', 'results/DBLP_CLL_pca_30/0.6', 'results/DBLP_CLL_pca_30/0.5', 'results/DBLP_CLL_pca_30/0.4', 'results/DBLP_CLL_pca_30/0.3', 'results/DBLP_CLL_pca_30/0.2', 'results/DBLP_CLL_pca_30/0.1', 'results/DBLP_CLL_pca_30/0.02', 'results/DBLP_CLL_pca_30/0.01', 'results/DBLP_CLL_pca_30/0.0', 'results/Citeseer_None_pca_30/1.0', 'results/Citeseer_None_pca_30/0.9', 'results/Citeseer_None_pca_30/0.8', 'results/Citeseer_None_pca_30/0.7', 'results/Citeseer_None_pca_30/0.6', 'results/Citeseer_None_pca_30/0.5', 'results/Citeseer_None_pca_30/0.4', 'results/Citeseer_None_pca_30/0.3', 'results/Citeseer_None_pca_30/0.2', 'results/Citeseer_None_pca_30/0.1', 'results/Citeseer_None_pca_30/0.02', 'results/Citeseer_None_pca_30/0.01', 'results/Citeseer_None_pca_30/0.0', 'results/Citeseer_AUTO_pca_30/1.0', 'results/Citeseer_AUTO_pca_30/0.9', 'results/Citeseer_AUTO_pca_30/0.8', 'results/Citeseer_AUTO_pca_30/0.7', 'results/Citeseer_AUTO_pca_30/0.6', 'results/Citeseer_AUTO_pca_30/0.5', 'results/Citeseer_AUTO_pca_30/0.4', 'results/Citeseer_AUTO_pca_30/0.3', 'results/Citeseer_AUTO_pca_30/0.2', 'results/Citeseer_AUTO_pca_30/0.1', 'results/Citeseer_AUTO_pca_30/0.02', 'results/Citeseer_AUTO_pca_30/0.01', 'results/Citeseer_AUTO_pca_30/0.0', 'results/Citeseer_CLL_pca_30/1.0', 'results/Citeseer_CLL_pca_30/0.9', 'results/Citeseer_CLL_pca_30/0.8', 'results/Citeseer_CLL_pca_30/0.7', 'results/Citeseer_CLL_pca_30/0.6', 'results/Citeseer_CLL_pca_30/0.5', 'results/Citeseer_CLL_pca_30/0.4', 'results/Citeseer_CLL_pca_30/0.3', 'results/Citeseer_CLL_pca_30/0.2', 'results/Citeseer_CLL_pca_30/0.1', 'results/Citeseer_CLL_pca_30/0.02', 'results/Citeseer_CLL_pca_30/0.01', 'results/Citeseer_CLL_pca_30/0.0', 'results/Citeseer_CLNL_pca_30/1.0', 'results/Citeseer_CLNL_pca_30/0.9', 'results/Citeseer_CLNL_pca_30/0.8', 'results/Citeseer_CLNL_pca_30/0.7', 'results/Citeseer_CLNL_pca_30/0.6', 'results/Citeseer_CLNL_pca_30/0.5', 'results/Citeseer_CLNL_pca_30/0.4', 'results/Citeseer_CLNL_pca_30/0.3', 'results/Citeseer_CLNL_pca_30/0.2', 'results/Citeseer_CLNL_pca_30/0.1', 'results/Citeseer_CLNL_pca_30/0.02', 'results/Citeseer_CLNL_pca_30/0.01', 'results/Citeseer_CLNL_pca_30/0.0', 'results/Actor_None_pca_30/1.0', 'results/Actor_None_pca_30/0.9', 'results/Actor_None_pca_30/0.8', 'results/Actor_None_pca_30/0.7', 'results/Actor_None_pca_30/0.6', 'results/Actor_None_pca_30/0.5', 'results/Actor_None_pca_30/0.4', 'results/Actor_None_pca_30/0.3', 'results/Actor_None_pca_30/0.2', 'results/Actor_None_pca_30/0.1', 'results/Actor_None_pca_30/0.02', 'results/Actor_None_pca_30/0.01', 'results/Actor_None_pca_30/0.0', 'results/Actor_CCA_pca_30/1.0', 'results/Actor_CCA_pca_30/0.9', 'results/Actor_CCA_pca_30/0.8', 'results/Actor_CCA_pca_30/0.7', 'results/Actor_CCA_pca_30/0.6', 'results/Actor_CCA_pca_30/0.5', 'results/Actor_CCA_pca_30/0.4', 'results/Actor_CCA_pca_30/0.3', 'results/Actor_CCA_pca_30/0.2', 'results/Actor_CCA_pca_30/0.1', 'results/Actor_CCA_pca_30/0.02', 'results/Actor_CCA_pca_30/0.01', 'results/Actor_CCA_pca_30/0.0', 'results/Actor_AUTO_pca_30/1.0', 'results/Actor_AUTO_pca_30/0.9', 'results/Actor_AUTO_pca_30/0.8', 'results/Actor_AUTO_pca_30/0.7', 'results/Actor_AUTO_pca_30/0.6', 'results/Actor_AUTO_pca_30/0.5', 'results/Actor_AUTO_pca_30/0.4', 'results/Actor_AUTO_pca_30/0.3', 'results/Actor_AUTO_pca_30/0.2', 'results/Actor_AUTO_pca_30/0.1', 'results/Actor_AUTO_pca_30/0.02', 'results/Actor_AUTO_pca_30/0.01', 'results/Actor_AUTO_pca_30/0.0', 'results/Actor_CLL_pca_30/1.0', 'results/Actor_CLL_pca_30/0.9', 'results/Actor_CLL_pca_30/0.8', 'results/Actor_CLL_pca_30/0.7', 'results/Actor_CLL_pca_30/0.6', 'results/Actor_CLL_pca_30/0.5', 'results/Actor_CLL_pca_30/0.4', 'results/Actor_CLL_pca_30/0.3', 'results/Actor_CLL_pca_30/0.2', 'results/Actor_CLL_pca_30/0.1', 'results/Actor_CLL_pca_30/0.02', 'results/Actor_CLL_pca_30/0.01', 'results/Actor_CLL_pca_30/0.0', 'results/Actor_CLNL_pca_30/1.0', 'results/Actor_CLNL_pca_30/0.9', 'results/Actor_CLNL_pca_30/0.8', 'results/Actor_CLNL_pca_30/0.7', 'results/Actor_CLNL_pca_30/0.6', 'results/Actor_CLNL_pca_30/0.5', 'results/Actor_CLNL_pca_30/0.4', 'results/Actor_CLNL_pca_30/0.3', 'results/Actor_CLNL_pca_30/0.2', 'results/Actor_CLNL_pca_30/0.1', 'results/Actor_CLNL_pca_30/0.02', 'results/Actor_CLNL_pca_30/0.01', 'results/Actor_CLNL_pca_30/0.0', 'results/DBLP_CLNL_pca_30/1.0', 'results/DBLP_CLNL_pca_30/0.9', 'results/DBLP_CLNL_pca_30/0.8', 'results/DBLP_CLNL_pca_30/0.7', 'results/DBLP_CLNL_pca_30/0.6', 'results/DBLP_CLNL_pca_30/0.5', 'results/DBLP_CLNL_pca_30/0.4', 'results/DBLP_CLNL_pca_30/0.3', 'results/DBLP_CLNL_pca_30/0.2', 'results/DBLP_CLNL_pca_30/0.1', 'results/DBLP_CLNL_pca_30/0.02', 'results/DBLP_CLNL_pca_30/0.01', 'results/DBLP_CLNL_pca_30/0.0']
+results/ACM_CCA_pca_30/1.0
+paper
+ratio 0.9993602632059952
+results/ACM_CCA_pca_30/1.0
+0.8503305004721435 0.9291784702549575
+results/ACM_CCA_pca_30/0.9
+paper
+ratio 0.8998354962529702
+results/ACM_CCA_pca_30/0.9
+0.931067044381492 0.9202077431539188
+results/ACM_CCA_pca_30/0.8
+paper
+ratio 0.7999451654176567
+results/ACM_CCA_pca_30/0.8
+0.9197355996222851 0.9235127478753541
+results/ACM_CCA_pca_30/0.7
+paper
+ratio 0.6999634436117712
+results/ACM_CCA_pca_30/0.7
+0.9291784702549575 0.9150141643059491
+results/ACM_CCA_pca_30/0.6
+paper
+ratio 0.5999817218058856
+results/ACM_CCA_pca_30/0.6
+0.9324834749763928 0.8762983947119924
+results/ACM_CCA_pca_30/0.5
+paper
+ratio 0.4995430451471395
+results/ACM_CCA_pca_30/0.5
+0.9315391879131256 0.9197355996222851
+results/ACM_CCA_pca_30/0.4
+paper
+ratio 0.399652714311826
+results/ACM_CCA_pca_30/0.4
+0.8753541076487252 0.8899905571293674
+results/ACM_CCA_pca_30/0.3
+paper
+ratio 0.2997623834765125
+results/ACM_CCA_pca_30/0.3
+0.9187913125590179 0.8852691218130312
+results/ACM_CCA_pca_30/0.2
+paper
+ratio 0.19978066167062694
+results/ACM_CCA_pca_30/0.2
+0.9287063267233239 0.40321057601510857
+results/ACM_CCA_pca_30/0.1
+paper
+ratio 0.09952476695302503
+results/ACM_CCA_pca_30/0.1
+0.9320113314447592 0.40226628895184136
+results/ACM_CCA_pca_30/0.02
+paper
+ratio 0.019831840614147323
+results/ACM_CCA_pca_30/0.02
+0.9263456090651558 0.31964117091595845
+results/ACM_CCA_pca_30/0.01
+paper
+ratio 0.009870224821787607
+results/ACM_CCA_pca_30/0.01
+0.9258734655335222 0.5207743153918791
+results/ACM_CCA_pca_30/0.0
+paper
+ratio 0.004843721440321696
+results/ACM_CCA_pca_30/0.0
+0.9216241737488197 0.31964117091595845
+results/ACM_AUTO_pca_30/1.0
+paper
+ratio 0.9993602632059952
+results/ACM_AUTO_pca_30/1.0
+0.9287063267233239 0.9258734655335222
+results/ACM_AUTO_pca_30/0.9
+paper
+ratio 0.8999268872235423
+results/ACM_AUTO_pca_30/0.9
+0.9230406043437205 0.9230406043437205
+results/ACM_AUTO_pca_30/0.8
+paper
+ratio 0.7998537744470846
+results/ACM_AUTO_pca_30/0.8
+0.9121813031161473 0.9206798866855525
+results/ACM_AUTO_pca_30/0.7
+paper
+ratio 0.6995064887589106
+results/ACM_AUTO_pca_30/0.7
+0.9301227573182247 0.8947119924457035
+results/ACM_AUTO_pca_30/0.6
+paper
+ratio 0.5997989398647413
+results/ACM_AUTO_pca_30/0.6
+0.9305949008498584 0.9173748819641171
+results/ACM_AUTO_pca_30/0.5
+paper
+ratio 0.4999086090294279
+results/ACM_AUTO_pca_30/0.5
+0.9305949008498584 0.9140698772426817
+results/ACM_AUTO_pca_30/0.4
+paper
+ratio 0.3999268872235423
+results/ACM_AUTO_pca_30/0.4
+0.8635505193578848 0.9032105760151086
+results/ACM_AUTO_pca_30/0.3
+paper
+ratio 0.2995796015353683
+results/ACM_AUTO_pca_30/0.3
+0.9239848914069877 0.8696883852691218
+results/ACM_AUTO_pca_30/0.2
+paper
+ratio 0.19959787972948273
+results/ACM_AUTO_pca_30/0.2
+0.9324834749763928 0.9131255901794145
+results/ACM_AUTO_pca_30/0.1
+paper
+ratio 0.09989033083531347
+results/ACM_AUTO_pca_30/0.1
+0.9296506137865911 0.704438149197356
+results/ACM_AUTO_pca_30/0.02
+paper
+ratio 0.019831840614147323
+results/ACM_AUTO_pca_30/0.02
+0.842304060434372 0.3408876298394712
+results/ACM_AUTO_pca_30/0.01
+paper
+ratio 0.0097788338512155
+results/ACM_AUTO_pca_30/0.01
+0.9235127478753541 0.3432483474976393
+results/ACM_AUTO_pca_30/0.0
+paper
+ratio 0.004843721440321696
+results/ACM_AUTO_pca_30/0.0
+0.9291784702549575 0.3432483474976393
+results/ACM_CLL_pca_30/1.0
+paper
+ratio 0.9997258270882837
+results/ACM_CLL_pca_30/1.0
+0.9235127478753541 0.9296506137865911
+results/ACM_CLL_pca_30/0.9
+paper
+ratio 0.8997441052823981
+results/ACM_CLL_pca_30/0.9
+0.93342776203966 0.8956562795089708
+results/ACM_CLL_pca_30/0.8
+paper
+ratio 0.7998537744470846
+results/ACM_CLL_pca_30/0.8
+0.93342776203966 0.9187913125590179
+results/ACM_CLL_pca_30/0.7
+paper
+ratio 0.6995064887589106
+results/ACM_CLL_pca_30/0.7
+0.9301227573182247 0.902738432483475
+results/ACM_CLL_pca_30/0.6
+paper
+ratio 0.5997989398647413
+results/ACM_CLL_pca_30/0.6
+0.9225684608120869 0.9140698772426817
+results/ACM_CLL_pca_30/0.5
+paper
+ratio 0.4995430451471395
+results/ACM_CLL_pca_30/0.5
+0.9291784702549575 0.9013220018885741
+results/ACM_CLL_pca_30/0.4
+paper
+ratio 0.3995613233412539
+results/ACM_CLL_pca_30/0.4
+0.9315391879131256 0.9041548630783758
+results/ACM_CLL_pca_30/0.3
+paper
+ratio 0.2996709925059404
+results/ACM_CLL_pca_30/0.3
+0.9244570349386213 0.9107648725212465
+results/ACM_CLL_pca_30/0.2
+paper
+ratio 0.19968927070005482
+results/ACM_CLL_pca_30/0.2
+0.8720491029272899 0.8914069877242682
+results/ACM_CLL_pca_30/0.1
+paper
+ratio 0.09989033083531347
+results/ACM_CLL_pca_30/0.1
+0.9135977337110481 0.8153918791312559
+results/ACM_CLL_pca_30/0.02
+paper
+ratio 0.019831840614147323
+results/ACM_CLL_pca_30/0.02
+0.9258734655335222 0.6052880075542965
+results/ACM_CLL_pca_30/0.01
+paper
+ratio 0.009870224821787607
+results/ACM_CLL_pca_30/0.01
+0.9291784702549575 0.601038715769594
+results/ACM_CLL_pca_30/0.0
+paper
+ratio 0.004660939499177482
+results/ACM_CLL_pca_30/0.0
+0.9235127478753541 0.6496694995278565
+results/ACM_CLNL_pca_30/1.0
+paper
+ratio 0.9994516541765673
+results/ACM_CLNL_pca_30/1.0
+0.931067044381492 0.9220963172804533
+results/ACM_CLNL_pca_30/0.9
+paper
+ratio 0.8998354962529702
+results/ACM_CLNL_pca_30/0.9
+0.9287063267233239 0.9282341831916903
+results/ACM_CLNL_pca_30/0.8
+paper
+ratio 0.7998537744470846
+results/ACM_CLNL_pca_30/0.8
+0.9178470254957507 0.927289896128423
+results/ACM_CLNL_pca_30/0.7
+paper
+ratio 0.6997806616706269
+results/ACM_CLNL_pca_30/0.7
+0.9277620396600567 0.9235127478753541
+results/ACM_CLNL_pca_30/0.6
+paper
+ratio 0.5997075488941692
+results/ACM_CLNL_pca_30/0.6
+0.9225684608120869 0.9206798866855525
+results/ACM_CLNL_pca_30/0.5
+paper
+ratio 0.4999086090294279
+results/ACM_CLNL_pca_30/0.5
+0.9268177525967894 0.9192634560906515
+results/ACM_CLNL_pca_30/0.4
+paper
+ratio 0.3999268872235423
+results/ACM_CLNL_pca_30/0.4
+0.9296506137865911 0.9131255901794145
+results/ACM_CLNL_pca_30/0.3
+paper
+ratio 0.2996709925059404
+results/ACM_CLNL_pca_30/0.3
+0.9169027384324835 0.898961284230406
+results/ACM_CLNL_pca_30/0.2
+paper
+ratio 0.1992323158471943
+results/ACM_CLNL_pca_30/0.2
+0.9301227573182247 0.9036827195467422
+results/ACM_CLNL_pca_30/0.1
+paper
+ratio 0.09934198501188082
+results/ACM_CLNL_pca_30/0.1
+0.931067044381492 0.8101983002832861
+results/ACM_CLNL_pca_30/0.02
+paper
+ratio 0.01964905867300311
+results/ACM_CLNL_pca_30/0.02
+0.9282341831916903 0.6779981114258735
+results/ACM_CLNL_pca_30/0.01
+paper
+ratio 0.009961615792359714
+results/ACM_CLNL_pca_30/0.01
+0.9324834749763928 0.6449480642115203
+results/ACM_CLNL_pca_30/0.0
+paper
+ratio 0.004843721440321696
+results/ACM_CLNL_pca_30/0.0
+0.9315391879131256 0.597261567516525
+results/DBLP_CCA_pca_30/1.0
+author
+ratio 0.9995407225964482
+results/DBLP_CCA_pca_30/1.0
+0.9355234878722751 0.9358305188824071
+results/DBLP_CCA_pca_30/0.9
+author
+ratio 0.8999157991426822
+results/DBLP_CCA_pca_30/0.9
+0.9355234878722751 0.9376727049431992
+results/DBLP_CCA_pca_30/0.8
+author
+ratio 0.799984690753215
+results/DBLP_CCA_pca_30/0.8
+0.9349094258520111 0.9244703715075223
+results/DBLP_CCA_pca_30/0.7
+author
+ratio 0.6999770361298224
+results/DBLP_CCA_pca_30/0.7
+0.934602394841879 0.920785999385938
+results/DBLP_CCA_pca_30/0.6
+author
+ratio 0.5995483772198408
+results/DBLP_CCA_pca_30/0.6
+0.9361375498925392 0.920478968375806
+results/DBLP_CCA_pca_30/0.5
+author
+ratio 0.4997703612982241
+results/DBLP_CCA_pca_30/0.5
+0.934602394841879 0.920785999385938
+results/DBLP_CCA_pca_30/0.4
+author
+ratio 0.3999923453766075
+results/DBLP_CCA_pca_30/0.4
+0.9364445809026711 0.9244703715075223
+results/DBLP_CCA_pca_30/0.3
+author
+ratio 0.2997167789344764
+results/DBLP_CCA_pca_30/0.3
+0.9361375498925392 0.9235492784771262
+results/DBLP_CCA_pca_30/0.2
+author
+ratio 0.19967085119412126
+results/DBLP_CCA_pca_30/0.2
+0.9364445809026711 0.9118821000921093
+results/DBLP_CCA_pca_30/0.1
+author
+ratio 0.09977801592161666
+results/DBLP_CCA_pca_30/0.1
+0.935216456862143 0.9146453791832975
+results/DBLP_CCA_pca_30/0.02
+author
+ratio 0.019902020820575628
+results/DBLP_CCA_pca_30/0.02
+0.935216456862143 0.7915259441203562
+results/DBLP_CCA_pca_30/0.01
+author
+ratio 0.009989283527250458
+results/DBLP_CCA_pca_30/0.01
+0.934295363831747 0.42186060792140007
+results/DBLP_CCA_pca_30/0.0
+author
+ratio 0.004860685854255971
+results/DBLP_CCA_pca_30/0.0
+0.934295363831747 0.3509364445809027
+results/DBLP_AUTO_pca_30/1.0
+author
+ratio 0.9995789957134109
+results/DBLP_AUTO_pca_30/1.0
+0.934295363831747 0.9355234878722751
+results/DBLP_AUTO_pca_30/0.9
+author
+ratio 0.8999540722596449
+results/DBLP_AUTO_pca_30/0.9
+0.9367516119128032 0.9306109917101627
+results/DBLP_AUTO_pca_30/0.8
+author
+ratio 0.7999081445192896
+results/DBLP_AUTO_pca_30/0.8
+0.934602394841879 0.922014123426466
+results/DBLP_AUTO_pca_30/0.7
+author
+ratio 0.6998239436619719
+results/DBLP_AUTO_pca_30/0.7
+0.9364445809026711 0.9201719373656739
+results/DBLP_AUTO_pca_30/0.6
+author
+ratio 0.5999311083894673
+results/DBLP_AUTO_pca_30/0.6
+0.9370586429229352 0.9201719373656739
+results/DBLP_AUTO_pca_30/0.5
+author
+ratio 0.49984690753214944
+results/DBLP_AUTO_pca_30/0.5
+0.9247774025176543 0.9269266195885785
+results/DBLP_AUTO_pca_30/0.4
+author
+ratio 0.3998392529087569
+results/DBLP_AUTO_pca_30/0.4
+0.9361375498925392 0.9395148910039914
+results/DBLP_AUTO_pca_30/0.3
+author
+ratio 0.2996019595835885
+results/DBLP_AUTO_pca_30/0.3
+0.9364445809026711 0.9367516119128032
+results/DBLP_AUTO_pca_30/0.2
+author
+ratio 0.1997091243110839
+results/DBLP_AUTO_pca_30/0.2
+0.9355234878722751 0.908197727970525
+results/DBLP_AUTO_pca_30/0.1
+author
+ratio 0.09970146968769136
+results/DBLP_AUTO_pca_30/0.1
+0.9364445809026711 0.7869204789683758
+results/DBLP_AUTO_pca_30/0.02
+author
+ratio 0.01986374770361298
+results/DBLP_AUTO_pca_30/0.02
+0.9358305188824071 0.2883021185139699
+results/DBLP_AUTO_pca_30/0.01
+author
+ratio 0.009989283527250458
+results/DBLP_AUTO_pca_30/0.01
+0.9358305188824071 0.20478968375805956
+results/DBLP_AUTO_pca_30/0.0
+author
+ratio 0.004975505205143907
+results/DBLP_AUTO_pca_30/0.0
+0.935216456862143 0.3432606693276021
+results/DBLP_CLL_pca_30/1.0
+author
+ratio 0.9996555419473362
+results/DBLP_CLL_pca_30/1.0
+0.9355234878722751 0.9349094258520111
+results/DBLP_CLL_pca_30/0.9
+author
+ratio 0.8999923453766074
+results/DBLP_CLL_pca_30/0.9
+0.9370586429229352 0.9253914645379183
+results/DBLP_CLL_pca_30/0.8
+author
+ratio 0.7999081445192896
+results/DBLP_CLL_pca_30/0.8
+0.9361375498925392 0.920785999385938
+results/DBLP_CLL_pca_30/0.7
+author
+ratio 0.6999387630128597
+results/DBLP_CLL_pca_30/0.7
+0.9349094258520111 0.8953024255449801
+results/DBLP_CLL_pca_30/0.6
+author
+ratio 0.5999311083894673
+results/DBLP_CLL_pca_30/0.6
+0.9367516119128032 0.908197727970525
+results/DBLP_CLL_pca_30/0.5
+author
+ratio 0.4998851806491121
+results/DBLP_CLL_pca_30/0.5
+0.935216456862143 0.9026711697881487
+results/DBLP_CLL_pca_30/0.4
+author
+ratio 0.3998775260257195
+results/DBLP_CLL_pca_30/0.4
+0.935216456862143 0.9051274178692048
+results/DBLP_CLL_pca_30/0.3
+author
+ratio 0.29998469075321493
+results/DBLP_CLL_pca_30/0.3
+0.9364445809026711 0.8655204175621738
+results/DBLP_CLL_pca_30/0.2
+author
+ratio 0.19993876301285976
+results/DBLP_CLL_pca_30/0.2
+0.9367516119128032 0.9131102241326374
+results/DBLP_CLL_pca_30/0.1
+author
+ratio 0.09996938150642988
+results/DBLP_CLL_pca_30/0.1
+0.9355234878722751 0.921400061406202
+results/DBLP_CLL_pca_30/0.02
+author
+ratio 0.019902020820575628
+results/DBLP_CLL_pca_30/0.02
+0.9355234878722751 0.803193122505373
+results/DBLP_CLL_pca_30/0.01
+author
+ratio 0.009989283527250458
+results/DBLP_CLL_pca_30/0.01
+0.9364445809026711 0.6441510592569849
+results/DBLP_CLL_pca_30/0.0
+author
+ratio 0.0049372320881812615
+results/DBLP_CLL_pca_30/0.0
+0.9364445809026711 0.4246238870125883
+results/Citeseer_None_pca_30/1.0
+paper
+ratio 0.9972948602344455
+results/Citeseer_None_pca_30/1.0
+0.681 0.683
+results/Citeseer_None_pca_30/0.9
+paper
+ratio 0.8993086865043582
+results/Citeseer_None_pca_30/0.9
+0.684 0.68
+results/Citeseer_None_pca_30/0.8
+paper
+ratio 0.7992185151788398
+results/Citeseer_None_pca_30/0.8
+0.686 0.683
+results/Citeseer_None_pca_30/0.7
+paper
+ratio 0.6991283438533213
+results/Citeseer_None_pca_30/0.7
+0.686 0.688
+results/Citeseer_None_pca_30/0.6
+paper
+ratio 0.5987376014427412
+results/Citeseer_None_pca_30/0.6
+0.683 0.689
+results/Citeseer_None_pca_30/0.5
+paper
+ratio 0.49894800120228433
+results/Citeseer_None_pca_30/0.5
+0.683 0.679
+results/Citeseer_None_pca_30/0.4
+paper
+ratio 0.3997595431319507
+results/Citeseer_None_pca_30/0.4
+0.684 0.664
+results/Citeseer_None_pca_30/0.3
+paper
+ratio 0.2969642320408777
+results/Citeseer_None_pca_30/0.3
+0.683 0.674
+results/Citeseer_None_pca_30/0.2
+paper
+ratio 0.19657348963029755
+results/Citeseer_None_pca_30/0.2
+0.68 0.684
+results/Citeseer_None_pca_30/0.1
+paper
+ratio 0.09948902915539524
+results/Citeseer_None_pca_30/0.1
+0.683 0.677
+results/Citeseer_None_pca_30/0.02
+paper
+ratio 0.018034265103697024
+results/Citeseer_None_pca_30/0.02
+0.682 0.205
+results/Citeseer_None_pca_30/0.01
+paper
+ratio 0.009317703636910129
+results/Citeseer_None_pca_30/0.01
+0.676 0.169
+results/Citeseer_None_pca_30/0.0
+paper
+ratio 0.004809137360985873
+results/Citeseer_None_pca_30/0.0
+0.682 0.169
+results/Citeseer_AUTO_pca_30/1.0
+paper
+ratio 0.9978960024045687
+results/Citeseer_AUTO_pca_30/1.0
+0.681 0.682
+results/Citeseer_AUTO_pca_30/0.9
+paper
+ratio 0.8975052599939886
+results/Citeseer_AUTO_pca_30/0.9
+0.683 0.681
+results/Citeseer_AUTO_pca_30/0.8
+paper
+ratio 0.799819657348963
+results/Citeseer_AUTO_pca_30/0.8
+0.682 0.659
+results/Citeseer_AUTO_pca_30/0.7
+paper
+ratio 0.6991283438533213
+results/Citeseer_AUTO_pca_30/0.7
+0.684 0.673
+results/Citeseer_AUTO_pca_30/0.6
+paper
+ratio 0.5981364592726179
+results/Citeseer_AUTO_pca_30/0.6
+0.683 0.667
+results/Citeseer_AUTO_pca_30/0.5
+paper
+ratio 0.49714457469191464
+results/Citeseer_AUTO_pca_30/0.5
+0.683 0.684
+results/Citeseer_AUTO_pca_30/0.4
+paper
+ratio 0.3991584009618275
+results/Citeseer_AUTO_pca_30/0.4
+0.683 0.668
+results/Citeseer_AUTO_pca_30/0.3
+paper
+ratio 0.29906822963630897
+results/Citeseer_AUTO_pca_30/0.3
+0.686 0.683
+results/Citeseer_AUTO_pca_30/0.2
+paper
+ratio 0.1971746318004208
+results/Citeseer_AUTO_pca_30/0.2
+0.682 0.644
+results/Citeseer_AUTO_pca_30/0.1
+paper
+ratio 0.09918845807033363
+results/Citeseer_AUTO_pca_30/0.1
+0.684 0.343
+results/Citeseer_AUTO_pca_30/0.02
+paper
+ratio 0.019837691614066726
+results/Citeseer_AUTO_pca_30/0.02
+0.679 0.178
+results/Citeseer_AUTO_pca_30/0.01
+paper
+ratio 0.008716561466786895
+results/Citeseer_AUTO_pca_30/0.01
+0.682 0.109
+results/Citeseer_AUTO_pca_30/0.0
+paper
+ratio 0.004809137360985873
+results/Citeseer_AUTO_pca_30/0.0
+0.683 0.077
+results/Citeseer_CLL_pca_30/1.0
+paper
+ratio 0.9972948602344455
+results/Citeseer_CLL_pca_30/1.0
+0.682 0.686
+results/Citeseer_CLL_pca_30/0.9
+paper
+ratio 0.8981064021641119
+results/Citeseer_CLL_pca_30/0.9
+0.682 0.689
+results/Citeseer_CLL_pca_30/0.8
+paper
+ratio 0.7977156597535318
+results/Citeseer_CLL_pca_30/0.8
+0.678 0.699
+results/Citeseer_CLL_pca_30/0.7
+paper
+ratio 0.6988277727682597
+results/Citeseer_CLL_pca_30/0.7
+0.683 0.687
+results/Citeseer_CLL_pca_30/0.6
+paper
+ratio 0.5972347460174331
+results/Citeseer_CLL_pca_30/0.6
+0.683 0.68
+results/Citeseer_CLL_pca_30/0.5
+paper
+ratio 0.4977457168620379
+results/Citeseer_CLL_pca_30/0.5
+0.682 0.683
+results/Citeseer_CLL_pca_30/0.4
+paper
+ratio 0.3976555455365194
+results/Citeseer_CLL_pca_30/0.4
+0.684 0.691
+results/Citeseer_CLL_pca_30/0.3
+paper
+ratio 0.2996693718064322
+results/Citeseer_CLL_pca_30/0.3
+0.681 0.692
+results/Citeseer_CLL_pca_30/0.2
+paper
+ratio 0.19987977156597536
+results/Citeseer_CLL_pca_30/0.2
+0.681 0.659
+results/Citeseer_CLL_pca_30/0.1
+paper
+ratio 0.0985873159002104
+results/Citeseer_CLL_pca_30/0.1
+0.684 0.69
+results/Citeseer_CLL_pca_30/0.02
+paper
+ratio 0.018635407273820258
+results/Citeseer_CLL_pca_30/0.02
+0.674 0.359
+results/Citeseer_CLL_pca_30/0.01
+paper
+ratio 0.008415990381725278
+results/Citeseer_CLL_pca_30/0.01
+0.682 0.231
+results/Citeseer_CLL_pca_30/0.0
+paper
+ratio 0.004809137360985873
+results/Citeseer_CLL_pca_30/0.0
+0.681 0.077
+results/Citeseer_CLNL_pca_30/1.0
+paper
+ratio 0.9966937180643222
+results/Citeseer_CLNL_pca_30/1.0
+0.684 0.681
+results/Citeseer_CLNL_pca_30/0.9
+paper
+ratio 0.8969041178238654
+results/Citeseer_CLNL_pca_30/0.9
+0.68 0.686
+results/Citeseer_CLNL_pca_30/0.8
+paper
+ratio 0.798316801923655
+results/Citeseer_CLNL_pca_30/0.8
+0.681 0.693
+results/Citeseer_CLNL_pca_30/0.7
+paper
+ratio 0.6988277727682597
+results/Citeseer_CLNL_pca_30/0.7
+0.682 0.678
+results/Citeseer_CLNL_pca_30/0.6
+paper
+ratio 0.5975353171024947
+results/Citeseer_CLNL_pca_30/0.6
+0.684 0.678
+results/Citeseer_CLNL_pca_30/0.5
+paper
+ratio 0.4965434325217914
+results/Citeseer_CLNL_pca_30/0.5
+0.684 0.647
+results/Citeseer_CLNL_pca_30/0.4
+paper
+ratio 0.3961526901112113
+results/Citeseer_CLNL_pca_30/0.4
+0.681 0.644
+results/Citeseer_CLNL_pca_30/0.3
+paper
+ratio 0.2984670874661858
+results/Citeseer_CLNL_pca_30/0.3
+0.681 0.666
+results/Citeseer_CLNL_pca_30/0.2
+paper
+ratio 0.19957920048091374
+results/Citeseer_CLNL_pca_30/0.2
+0.68 0.64
+results/Citeseer_CLNL_pca_30/0.1
+paper
+ratio 0.09828674481514878
+results/Citeseer_CLNL_pca_30/0.1
+0.68 0.707
+results/Citeseer_CLNL_pca_30/0.02
+paper
+ratio 0.018034265103697024
+results/Citeseer_CLNL_pca_30/0.02
+0.681 0.469
+results/Citeseer_CLNL_pca_30/0.01
+paper
+ratio 0.009618274721971746
+results/Citeseer_CLNL_pca_30/0.01
+0.682 0.16
+results/Citeseer_CLNL_pca_30/0.0
+paper
+ratio 0.004508566275924256
+results/Citeseer_CLNL_pca_30/0.0
+0.683 0.169
+results/Actor_None_pca_30/1.0
+None
+None
+results/Actor_None_pca_30/0.9
+None
+None
+results/Actor_None_pca_30/0.8
+None
+None
+results/Actor_None_pca_30/0.7
+None
+None
+results/Actor_None_pca_30/0.6
+None
+None
+results/Actor_None_pca_30/0.5
+None
+None
+results/Actor_None_pca_30/0.4
+None
+None
+results/Actor_None_pca_30/0.3
+None
+None
+results/Actor_None_pca_30/0.2
+None
+None
+results/Actor_None_pca_30/0.1
+None
+None
+results/Actor_None_pca_30/0.02
+None
+None
+results/Actor_None_pca_30/0.01
+None
+None
+results/Actor_None_pca_30/0.0
+None
+None
+results/Actor_CCA_pca_30/1.0
+None
+None
+results/Actor_CCA_pca_30/0.9
+None
+None
+results/Actor_CCA_pca_30/0.8
+None
+None
+results/Actor_CCA_pca_30/0.7
+None
+None
+results/Actor_CCA_pca_30/0.6
+None
+None
+results/Actor_CCA_pca_30/0.5
+None
+None
+results/Actor_CCA_pca_30/0.4
+None
+None
+results/Actor_CCA_pca_30/0.3
+None
+None
+results/Actor_CCA_pca_30/0.2
+None
+None
+results/Actor_CCA_pca_30/0.1
+None
+None
+results/Actor_CCA_pca_30/0.02
+None
+None
+results/Actor_CCA_pca_30/0.01
+None
+None
+results/Actor_CCA_pca_30/0.0
+None
+None
+results/Actor_AUTO_pca_30/1.0
+None
+None
+results/Actor_AUTO_pca_30/0.9
+None
+None
+results/Actor_AUTO_pca_30/0.8
+None
+None
+results/Actor_AUTO_pca_30/0.7
+None
+None
+results/Actor_AUTO_pca_30/0.6
+None
+None
+results/Actor_AUTO_pca_30/0.5
+None
+None
+results/Actor_AUTO_pca_30/0.4
+None
+None
+results/Actor_AUTO_pca_30/0.3
+None
+None
+results/Actor_AUTO_pca_30/0.2
+None
+None
+results/Actor_AUTO_pca_30/0.1
+None
+None
+results/Actor_AUTO_pca_30/0.02
+None
+None
+results/Actor_AUTO_pca_30/0.01
+None
+None
+results/Actor_AUTO_pca_30/0.0
+None
+None
+results/Actor_CLL_pca_30/1.0
+None
+None
+results/Actor_CLL_pca_30/0.9
+None
+None
+results/Actor_CLL_pca_30/0.8
+None
+None
+results/Actor_CLL_pca_30/0.7
+None
+None
+results/Actor_CLL_pca_30/0.6
+None
+None
+results/Actor_CLL_pca_30/0.5
+None
+None
+results/Actor_CLL_pca_30/0.4
+None
+None
+results/Actor_CLL_pca_30/0.3
+None
+None
+results/Actor_CLL_pca_30/0.2
+None
+None
+results/Actor_CLL_pca_30/0.1
+None
+None
+results/Actor_CLL_pca_30/0.02
+None
+None
+results/Actor_CLL_pca_30/0.01
+None
+None
+results/Actor_CLL_pca_30/0.0
+None
+None
+results/Actor_CLNL_pca_30/1.0
+None
+None
+results/Actor_CLNL_pca_30/0.9
+None
+None
+results/Actor_CLNL_pca_30/0.8
+None
+None
+results/Actor_CLNL_pca_30/0.7
+None
+None
+results/Actor_CLNL_pca_30/0.6
+None
+None
+results/Actor_CLNL_pca_30/0.5
+None
+None
+results/Actor_CLNL_pca_30/0.4
+None
+None
+results/Actor_CLNL_pca_30/0.3
+None
+None
+results/Actor_CLNL_pca_30/0.2
+None
+None
+results/Actor_CLNL_pca_30/0.1
+None
+None
+results/Actor_CLNL_pca_30/0.02
+None
+None
+results/Actor_CLNL_pca_30/0.01
+None
+None
+results/Actor_CLNL_pca_30/0.0
+None
+None
+results/DBLP_CLNL_pca_30/1.0
+author
+ratio 0.9995024494794856
+results/DBLP_CLNL_pca_30/1.0
+0.9349094258520111 0.934602394841879
+results/DBLP_CLNL_pca_30/0.9
+author
+ratio 0.8998392529087569
+results/DBLP_CLNL_pca_30/0.9
+0.9367516119128032 0.9299969296898987
+results/DBLP_CLNL_pca_30/0.8
+author
+ratio 0.799869871402327
+results/DBLP_CLNL_pca_30/0.8
+0.933681301811483 0.920785999385938
+results/DBLP_CLNL_pca_30/0.7
+author
+ratio 0.6999770361298224
+results/DBLP_CLNL_pca_30/0.7
+0.9358305188824071 0.9149524101934295
+results/DBLP_CLNL_pca_30/0.6
+author
+ratio 0.5998928352725046
+results/DBLP_CLNL_pca_30/0.6
+0.9355234878722751 0.9158735032238257
+results/DBLP_CLNL_pca_30/0.5
+author
+ratio 0.4998851806491121
+results/DBLP_CLNL_pca_30/0.5
+0.9355234878722751 0.9189438133251459
+results/DBLP_CLNL_pca_30/0.4
+author
+ratio 0.39991579914268216
+results/DBLP_CLNL_pca_30/0.4
+0.934602394841879 0.9192508443352778
+results/DBLP_CLNL_pca_30/0.3
+author
+ratio 0.29998469075321493
+results/DBLP_CLNL_pca_30/0.3
+0.934295363831747 0.921400061406202
+results/DBLP_CLNL_pca_30/0.2
+author
+ratio 0.19990048989589712
+results/DBLP_CLNL_pca_30/0.2
+0.9367516119128032 0.9293828676696346
+results/DBLP_CLNL_pca_30/0.1
+author
+ratio 0.09958665033680343
+results/DBLP_CLNL_pca_30/0.1
+0.9355234878722751 0.8741172858458705
+results/DBLP_CLNL_pca_30/0.02
+author
+ratio 0.019978567054500917
+results/DBLP_CLNL_pca_30/0.02
+0.9355234878722751 0.6033159349094258
+results/DBLP_CLNL_pca_30/0.01
+author
+ratio 0.009951010410287814
+results/DBLP_CLNL_pca_30/0.01
+0.9330672397912189 0.5363831747006448
+results/DBLP_CLNL_pca_30/0.0
+author
+ratio 0.004860685854255971
+results/DBLP_CLNL_pca_30/0.0
+0.9367516119128032 0.2950568007368744

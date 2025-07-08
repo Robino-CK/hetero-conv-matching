@@ -43,6 +43,7 @@ class ContrastiveLearner(ABC):
 
         self.model1 = self._build_model(input_dim_1, n_components).to(device)
         self.model2 = self._build_model(input_dim_2, n_components).to(device)
+        
 
     @abstractmethod
     def _build_model(self, input_dim, output_dim):
@@ -111,9 +112,11 @@ class ContrastiveLearner(ABC):
 
 class LinearContrastiveLearner(ContrastiveLearner):
     def _build_model(self, input_dim, output_dim):
+        self.name = 'cll'
         return LinearMLP(input_dim, output_dim)
 
 
 class NonLinearContrastiveLearner(ContrastiveLearner):
     def _build_model(self, input_dim, output_dim):
+        self.name = 'clnl'
         return NonLinearMLP(input_dim, output_dim)

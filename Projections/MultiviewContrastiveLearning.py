@@ -18,7 +18,7 @@ class MLP(nn.Module):
         return self.network(x)
 
 class MultiViewContrastiveLearner:
-    def __init__(self, input_dims, n_components=128, temperature=0.5, lr=1e-3, epochs=300, batch_size=512, device='cpu'):
+    def __init__(self, input_dims, n_components=128, temperature=0.5, lr=1e-3, epochs=500, batch_size=512, device='cpu'):
         """
         input_dims: list of input dimensions for each view, e.g. [input_dim_1, input_dim_2, ..., input_dim_K]
         """

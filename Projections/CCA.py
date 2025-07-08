@@ -19,6 +19,7 @@ class CCAOld:
         self.Wy = None
         self.mean_x = None
         self.mean_y = None
+        
 
     def fit(self, X, Y):
         """
@@ -96,6 +97,7 @@ class CCA:
         self.Wy = None  # projection matrix for Y
         self.mean_x = None
         self.mean_y = None
+        self.name = 'cca'
         
     def fit(self, X, Y):
         """

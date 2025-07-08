@@ -18,8 +18,8 @@ class MLP(nn.Module):
 
     def forward(self, x):
         return self.network(x)
-class CCA:
-    def __init__(self, input_dim_1, input_dim_2, n_components=50, reg=1e-3, lr=1e-3, epochs=50, batch_size=512  , device='cpu'):
+class DeepCCA:
+    def __init__(self, input_dim_1, input_dim_2, n_components=50, reg=1e-3, lr=1e-3, epochs=500, batch_size=512  , device='cpu'):
         """
         model1, model2: neural networks for view 1 and view 2
         out_dim: output dimensionality for the shared representation
@@ -36,6 +36,7 @@ class CCA:
         self.epochs = epochs
         self.batch_size = batch_size
         self.device = device
+        self.name = 'deepcca'
 
     def _cca_loss(self, H1, H2, eps=1e-6):
         """Canonical Correlation Analysis loss for two views."""

@@ -17,7 +17,7 @@ class MLP(nn.Module):
         return self.network(x)
 
 class MultiviewAutoencoder:
-    def __init__(self, input_dim_1, input_dim_2, n_components=50, lr=1e-3, epochs=50, batch_size=512, align_views=True, device='cpu'):
+    def __init__(self, input_dim_1, input_dim_2, n_components=50, lr=1e-3, epochs=500, batch_size=512, align_views=True, device='cpu'):
         self.encoder1 = MLP(input_dim_1, n_components).to(device)
         self.encoder2 = MLP(input_dim_2, n_components).to(device)
         self.decoder1 = MLP(n_components, input_dim_1).to(device)
@@ -29,6 +29,7 @@ class MultiviewAutoencoder:
         self.batch_size = batch_size
         self.device = device
         self.align_views = align_views  # whether to include alignment loss
+        self.name = 'auto'
 
     def _loss(self, x1, x2, x1_recon, x2_recon, z1, z2):
         # Reconstruction loss (MSE)
