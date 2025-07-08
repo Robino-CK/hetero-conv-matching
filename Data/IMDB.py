@@ -40,11 +40,11 @@ class IMDB():
         path = './imdb'
         dataset = torch_geometric.datasets.IMDB(path)
         data = dataset[0]  # Only one graph
-
+        
         num_nodes_dict = {
             'movie': data.x_dict['movie'].shape[0],
-            'director': data.x_dict['director'].shape[0],
-            'actor': data.x_dict['actor'].shape[0],
+            'directror': data.x_dict['director'].shape[0],
+            'actror': data.x_dict['actor'].shape[0],
         #    'conference': data["conference"]["num_nodes"]
         }
 
@@ -59,24 +59,40 @@ class IMDB():
             #     continue
             src_nodes = edge_index[0].numpy()
             dst_nodes = edge_index[1].numpy()
+            if src_type == 'actor':
+                src_type = 'actror'
+            if dst_type == 'actor':
+                dst_type = 'actror'
+            if src_type == 'director':
+                src_type = 'directror'
+            if dst_type == 'director':
+                dst_type = 'directror'
             edge_tuples[(src_type, src_type + rel_type + dst_type, dst_type)] = (src_nodes, dst_nodes)
         # Create DGL heterograph
         g = heterograph(edge_tuples, num_nodes_dict=num_nodes_dict)
         
         # You can also assign features
-        for ntype in g.ntypes:
+        for ntype_2 in g.ntypes:
+            ntype = ntype_2
+            if ntype_2 == 'actror':
+                ntype = 'actor'
+
+            if ntype_2 == 'directror':
+                ntype = 'director'
+            
             if n_components == None:
-                    g.nodes[ntype].data['feat_pca'] =data.x_dict[ntype]
+                    g.nodes[ntype_2].data['feat_pca'] =data.x_dict[ntype]
             else:
                 pca = PCA(n_components=n_components)
                 
                 pca_feat = pca.fit_transform((data.x_dict[ntype] - data.x_dict[ntype].mean(dim=0)) / (data.x_dict[ntype].std(dim=0) + 0.0001))
                # scaler = MinMaxScaler()
-
+                print('help')
                 # Normalize the features between 0 and 1
                 #normalized_features = scaler.fit_transform(pca_feat)
-                g.nodes[ntype].data['feat_pca'] = torch.from_numpy(pca_feat).type(torch.FloatTensor)
-            g.nodes[ntype].data['feat'] = data.x_dict[ntype]
+                g.nodes[ntype_2].data['feat_pca'] = torch.from_numpy(pca_feat).type(torch.FloatTensor)
+            
+            g.nodes[ntype_2].data['feat'] = data.x_dict[ntype]
         g.nodes["movie"].data['label'] = data["movie"].y
         for key in ['train_mask', 'val_mask', 'test_mask']:
             g.nodes['movie'].data[key] = data["movie"][key]
