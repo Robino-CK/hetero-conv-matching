@@ -4,7 +4,7 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
                     epochs=1, optimizer=torch.optim.Adam, target_node_type="movie",
                     model_param={"hidden_dim": 256},
                     optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
-                    device="cuda" if torch.cuda.is_available() else "cpu", eval_interval=10):
+                    device="cuda" if torch.cuda.is_available() else "cpu", eval_interval=10, run_orig=True):
     
     original_accuracies = []
     coarsened_accuracies = []
@@ -69,28 +69,32 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
         coarsened_loss_per_run = []
         
         for epoch in range(epochs):
-            loss_orig = train(model_original, original_graph, feat_orig, labels_orig, train_idx_orig, optimizer_original)
+            if run_orig: 
+                loss_orig = train(model_original, original_graph, feat_orig, labels_orig, train_idx_orig, optimizer_original)
             loss_coar = train(model_coarsened, coarsend_graph, feat_coar, labels_coar, train_idx_coar, optimizer_coarsened)
             if epoch % eval_interval == 0:
-                original_acc, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
+                if run_orig:
+                    original_acc, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
+                    original_acc_per_run.append(original_acc)
+                    original_loss_per_run.append(loss_orig.item())
+                
                 coarsened_acc, _ = test(model_coarsened, original_graph, feat_orig, labels_orig, val_idx_orig)
-                original_acc_per_run.append(original_acc)
                 coarsened_acc_per_run.append(coarsened_acc)
 
-                original_loss_per_run.append(loss_orig.item())
                 coarsened_loss_per_run.append(loss_coar.item())
         
                 
-                
-        original_acc, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
+        if run_orig:
+            original_acc, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
+            original_acc_per_run.append(original_acc)
+            original_accuracies.append(original_acc_per_run)
+            original_loss.append(original_loss_per_run)
+        
         coarsened_acc, _ = test(model_coarsened, original_graph, feat_orig, labels_orig, val_idx_orig)
-        original_acc_per_run.append(original_acc)
         coarsened_acc_per_run.append(coarsened_acc)
         
-        original_accuracies.append(original_acc_per_run)
         coarsened_accuracies.append(coarsened_acc_per_run)
 
-        original_loss.append(original_loss_per_run)
         coarsened_loss.append(coarsened_loss_per_run)
 
     return original_accuracies, coarsened_accuracies, original_loss, coarsened_loss, model_coarsened, model_original
