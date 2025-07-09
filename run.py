@@ -77,6 +77,8 @@ def eval( model=HeteroSGCPaper ):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
+        if "pairs" not in f:
+            continue
         try: 
             import pickle
         
@@ -97,17 +99,18 @@ def eval( model=HeteroSGCPaper ):
 
             labels = coarsener.get_labels(mapping, node_target_type)
             coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
-            
-
-            _, coar, _, loss_coar ,_,_= run_experiments(original_graph, coarsend_graph,  model,
-                                                            model_param={"hidden_dim": 64,"num_layers":4},
-                                    optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
-                                    num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
+            accur = []
+            for i in range(5):
+                _, coar, _, loss_coar ,_,_= run_experiments(original_graph, coarsend_graph,  model,
+                                                                model_param={"hidden_dim": 64,"num_layers":4},
+                                        optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
+                                        num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
             #orig_short = [ o[-1] for o in orig ]
-            coar_short = [ o[-1] for o in coar ]
+                coar_short = [ o[-1] for o in coar ]
+                accur.append(max(coar_short))
             ratio = f.split('/')[2]
             column = f.split('/')[1]
-            df = update_row_by_ratio(df, columns, ratio, column,  max(coar_short))
+            df = update_row_by_ratio(df, columns, ratio, column,accur  )
             
             df.to_csv('res_actor.csv')            
 
