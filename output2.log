@@ -1,0 +1,6287 @@
+nohup: ignoring input
+/storage/scratch/0994359/hetero-conv-matching/.venv/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
+  backends.update(_get_backends("networkx.backends"))
+/storage/scratch/0994359/hetero-conv-matching/.venv/lib64/python3.9/site-packages/dgl/transforms/functional.py:1366: DGLWarning: share_ndata argument has been renamed to copy_ndata.
+  dgl_warning("share_ndata argument has been renamed to copy_ndata.")
+Epoch 1/500, Loss: 56.1325
+Epoch 2/500, Loss: 52.7971
+Epoch 3/500, Loss: 48.7754
+Epoch 4/500, Loss: 46.8932
+Epoch 5/500, Loss: 46.2564
+Epoch 6/500, Loss: 45.8526
+Epoch 7/500, Loss: 45.5718
+Epoch 8/500, Loss: 45.3306
+Epoch 9/500, Loss: 45.1559
+Epoch 10/500, Loss: 45.0030
+Epoch 11/500, Loss: 44.8518
+Epoch 12/500, Loss: 44.7150
+Epoch 13/500, Loss: 44.5982
+Epoch 14/500, Loss: 44.4789
+Epoch 15/500, Loss: 44.3441
+Epoch 16/500, Loss: 44.2544
+Epoch 17/500, Loss: 44.1528
+Epoch 18/500, Loss: 44.0594
+Epoch 19/500, Loss: 43.9876
+Epoch 20/500, Loss: 43.8762
+Epoch 21/500, Loss: 43.8022
+Epoch 22/500, Loss: 43.7076
+Epoch 23/500, Loss: 43.6374
+Epoch 24/500, Loss: 43.5583
+Epoch 25/500, Loss: 43.5087
+Epoch 26/500, Loss: 43.4483
+Epoch 27/500, Loss: 43.3679
+Epoch 28/500, Loss: 43.3242
+Epoch 29/500, Loss: 43.2348
+Epoch 30/500, Loss: 43.1590
+Epoch 31/500, Loss: 43.0900
+Epoch 32/500, Loss: 43.0660
+Epoch 33/500, Loss: 43.0087
+Epoch 34/500, Loss: 42.9631
+Epoch 35/500, Loss: 42.8944
+Epoch 36/500, Loss: 42.8255
+Epoch 37/500, Loss: 42.7492
+Epoch 38/500, Loss: 42.7211
+Epoch 39/500, Loss: 42.6739
+Epoch 40/500, Loss: 42.6200
+Epoch 41/500, Loss: 42.6064
+Epoch 42/500, Loss: 42.5533
+Epoch 43/500, Loss: 42.5004
+Epoch 44/500, Loss: 42.4349
+Epoch 45/500, Loss: 42.3896
+Epoch 46/500, Loss: 42.3980
+Epoch 47/500, Loss: 42.3912
+Epoch 48/500, Loss: 42.3402
+Epoch 49/500, Loss: 42.2882
+Epoch 50/500, Loss: 42.2823
+Epoch 51/500, Loss: 42.2500
+Epoch 52/500, Loss: 42.2084
+Epoch 53/500, Loss: 42.1978
+Epoch 54/500, Loss: 42.1599
+Epoch 55/500, Loss: 42.1229
+Epoch 56/500, Loss: 42.0967
+Epoch 57/500, Loss: 42.0788
+Epoch 58/500, Loss: 42.0422
+Epoch 59/500, Loss: 42.0650
+Epoch 60/500, Loss: 42.0262
+Epoch 61/500, Loss: 41.9829
+Epoch 62/500, Loss: 41.9426
+Epoch 63/500, Loss: 41.9259
+Epoch 64/500, Loss: 41.9286
+Epoch 65/500, Loss: 41.8846
+Epoch 66/500, Loss: 41.8836
+Epoch 67/500, Loss: 41.8275
+Epoch 68/500, Loss: 41.8274
+Epoch 69/500, Loss: 41.8167
+Epoch 70/500, Loss: 41.8215
+Epoch 71/500, Loss: 41.7665
+Epoch 72/500, Loss: 41.7658
+Epoch 73/500, Loss: 41.7323
+Epoch 74/500, Loss: 41.7152
+Epoch 75/500, Loss: 41.6766
+Epoch 76/500, Loss: 41.6784
+Epoch 77/500, Loss: 41.6578
+Epoch 78/500, Loss: 41.6803
+Epoch 79/500, Loss: 41.6828
+Epoch 80/500, Loss: 41.6322
+Epoch 81/500, Loss: 41.6324
+Epoch 82/500, Loss: 41.5867
+Epoch 83/500, Loss: 41.5963
+Epoch 84/500, Loss: 41.5878
+Epoch 85/500, Loss: 41.5508
+Epoch 86/500, Loss: 41.5442
+Epoch 87/500, Loss: 41.5060
+Epoch 88/500, Loss: 41.5436
+Epoch 89/500, Loss: 41.5352
+Epoch 90/500, Loss: 41.5324
+Epoch 91/500, Loss: 41.4880
+Epoch 92/500, Loss: 41.4509
+Epoch 93/500, Loss: 41.4674
+Epoch 94/500, Loss: 41.4501
+Epoch 95/500, Loss: 41.4449
+Epoch 96/500, Loss: 41.4351
+Epoch 97/500, Loss: 41.4452
+Epoch 98/500, Loss: 41.4112
+Epoch 99/500, Loss: 41.4293
+Epoch 100/500, Loss: 41.3938
+Epoch 101/500, Loss: 41.3994
+Epoch 102/500, Loss: 41.3875
+Epoch 103/500, Loss: 41.4193
+Epoch 104/500, Loss: 41.3799
+Epoch 105/500, Loss: 41.3644
+Epoch 106/500, Loss: 41.3246
+Epoch 107/500, Loss: 41.3270
+Epoch 108/500, Loss: 41.3241
+Epoch 109/500, Loss: 41.3415
+Epoch 110/500, Loss: 41.3129
+Epoch 111/500, Loss: 41.2959
+Epoch 112/500, Loss: 41.3115
+Epoch 113/500, Loss: 41.3526
+Epoch 114/500, Loss: 41.3333
+Epoch 115/500, Loss: 41.2647
+Epoch 116/500, Loss: 41.2586
+Epoch 117/500, Loss: 41.2579
+Epoch 118/500, Loss: 41.2763
+Epoch 119/500, Loss: 41.2372
+Epoch 120/500, Loss: 41.2631
+Epoch 121/500, Loss: 41.2267
+Epoch 122/500, Loss: 41.2055
+Epoch 123/500, Loss: 41.2243
+Epoch 124/500, Loss: 41.2738
+Epoch 125/500, Loss: 41.2633
+Epoch 126/500, Loss: 41.2239
+Epoch 127/500, Loss: 41.2602
+Epoch 128/500, Loss: 41.2312
+Epoch 129/500, Loss: 41.2102
+Epoch 130/500, Loss: 41.1959
+Epoch 131/500, Loss: 41.2182
+Epoch 132/500, Loss: 41.2141
+Epoch 133/500, Loss: 41.1848
+Epoch 134/500, Loss: 41.2246
+Epoch 135/500, Loss: 41.2296
+Epoch 136/500, Loss: 41.2324
+Epoch 137/500, Loss: 41.1855
+Epoch 138/500, Loss: 41.1797
+Epoch 139/500, Loss: 41.1673
+Epoch 140/500, Loss: 41.2170
+Epoch 141/500, Loss: 41.1978
+Epoch 142/500, Loss: 41.1578
+Epoch 143/500, Loss: 41.1349
+Epoch 144/500, Loss: 41.0862
+Epoch 145/500, Loss: 41.0881
+Epoch 146/500, Loss: 41.0707
+Epoch 147/500, Loss: 41.0896
+Epoch 148/500, Loss: 41.1073
+Epoch 149/500, Loss: 41.1175
+Epoch 150/500, Loss: 41.1095
+Epoch 151/500, Loss: 41.0848
+Epoch 152/500, Loss: 41.0990
+Epoch 153/500, Loss: 41.0886
+Epoch 154/500, Loss: 41.0928
+Epoch 155/500, Loss: 41.0910
+Epoch 156/500, Loss: 41.1069
+Epoch 157/500, Loss: 41.0830
+Epoch 158/500, Loss: 41.0510
+Epoch 159/500, Loss: 41.0915
+Epoch 160/500, Loss: 41.0540
+Epoch 161/500, Loss: 41.0451
+Epoch 162/500, Loss: 41.0262
+Epoch 163/500, Loss: 41.0562
+Epoch 164/500, Loss: 41.0646
+Epoch 165/500, Loss: 41.0267
+Epoch 166/500, Loss: 41.0629
+Epoch 167/500, Loss: 41.0576
+Epoch 168/500, Loss: 41.0273
+Epoch 169/500, Loss: 41.0548
+Epoch 170/500, Loss: 41.0539
+Epoch 171/500, Loss: 41.0301
+Epoch 172/500, Loss: 41.0329
+Epoch 173/500, Loss: 41.0354
+Epoch 174/500, Loss: 41.0279
+Epoch 175/500, Loss: 40.9958
+Epoch 176/500, Loss: 41.0049
+Epoch 177/500, Loss: 40.9940
+Epoch 178/500, Loss: 40.9943
+Epoch 179/500, Loss: 40.9948
+Epoch 180/500, Loss: 41.0101
+Epoch 181/500, Loss: 40.9952
+Epoch 182/500, Loss: 40.9885
+Epoch 183/500, Loss: 40.9641
+Epoch 184/500, Loss: 40.9718
+Epoch 185/500, Loss: 40.9683
+Epoch 186/500, Loss: 40.9611
+Epoch 187/500, Loss: 40.9474
+Epoch 188/500, Loss: 40.9702
+Epoch 189/500, Loss: 40.9843
+Epoch 190/500, Loss: 40.9834
+Epoch 191/500, Loss: 40.9888
+Epoch 192/500, Loss: 40.9675
+Epoch 193/500, Loss: 40.9690
+Epoch 194/500, Loss: 40.9857
+Epoch 195/500, Loss: 40.9568
+Epoch 196/500, Loss: 40.9294
+Epoch 197/500, Loss: 40.9373
+Epoch 198/500, Loss: 40.9570
+Epoch 199/500, Loss: 40.9781
+Epoch 200/500, Loss: 40.9865
+Epoch 201/500, Loss: 41.0292
+Epoch 202/500, Loss: 40.9945
+Epoch 203/500, Loss: 40.9424
+Epoch 204/500, Loss: 40.9441
+Epoch 205/500, Loss: 40.9387
+Epoch 206/500, Loss: 40.9328
+Epoch 207/500, Loss: 40.9422
+Epoch 208/500, Loss: 40.9130
+Epoch 209/500, Loss: 40.8969
+Epoch 210/500, Loss: 40.9270
+Epoch 211/500, Loss: 40.9136
+Epoch 212/500, Loss: 40.8977
+Epoch 213/500, Loss: 40.9137
+Epoch 214/500, Loss: 40.8957
+Epoch 215/500, Loss: 40.8868
+Epoch 216/500, Loss: 40.9245
+Epoch 217/500, Loss: 40.9395
+Epoch 218/500, Loss: 40.9113
+Epoch 219/500, Loss: 40.9240
+Epoch 220/500, Loss: 40.9221
+Epoch 221/500, Loss: 40.9189
+Epoch 222/500, Loss: 40.9085
+Epoch 223/500, Loss: 40.8896
+Epoch 224/500, Loss: 40.8884
+Epoch 225/500, Loss: 40.9077
+Epoch 226/500, Loss: 40.9038
+Epoch 227/500, Loss: 40.9118
+Epoch 228/500, Loss: 40.8826
+Epoch 229/500, Loss: 40.8666
+Epoch 230/500, Loss: 40.8703
+Epoch 231/500, Loss: 40.8757
+Epoch 232/500, Loss: 40.8805
+Epoch 233/500, Loss: 40.8824
+Epoch 234/500, Loss: 40.9074
+Epoch 235/500, Loss: 40.9228
+Epoch 236/500, Loss: 40.9109
+Epoch 237/500, Loss: 40.8780
+Epoch 238/500, Loss: 40.8678
+Epoch 239/500, Loss: 40.8780
+Epoch 240/500, Loss: 40.8904
+Epoch 241/500, Loss: 40.9002
+Epoch 242/500, Loss: 40.8926
+Epoch 243/500, Loss: 40.8798
+Epoch 244/500, Loss: 40.8646
+Epoch 245/500, Loss: 40.8541
+Epoch 246/500, Loss: 40.8584
+Epoch 247/500, Loss: 40.8444
+Epoch 248/500, Loss: 40.8716
+Epoch 249/500, Loss: 40.8809
+Epoch 250/500, Loss: 40.8643
+Epoch 251/500, Loss: 40.8620
+Epoch 252/500, Loss: 40.8662
+Epoch 253/500, Loss: 40.8707
+Epoch 254/500, Loss: 40.8601
+Epoch 255/500, Loss: 40.8699
+Epoch 256/500, Loss: 40.8558
+Epoch 257/500, Loss: 40.8612
+Epoch 258/500, Loss: 40.8888
+Epoch 259/500, Loss: 40.8573
+Epoch 260/500, Loss: 40.8443
+Epoch 261/500, Loss: 40.8395
+Epoch 262/500, Loss: 40.8609
+Epoch 263/500, Loss: 40.8484
+Epoch 264/500, Loss: 40.8396
+Epoch 265/500, Loss: 40.8273
+Epoch 266/500, Loss: 40.8422
+Epoch 267/500, Loss: 40.8448
+Epoch 268/500, Loss: 40.8581
+Epoch 269/500, Loss: 40.8384
+Epoch 270/500, Loss: 40.8076
+Epoch 271/500, Loss: 40.8112
+Epoch 272/500, Loss: 40.8094
+Epoch 273/500, Loss: 40.8471
+Epoch 274/500, Loss: 40.8497
+Epoch 275/500, Loss: 40.8502
+Epoch 276/500, Loss: 40.8062
+Epoch 277/500, Loss: 40.8121
+Epoch 278/500, Loss: 40.8273
+Epoch 279/500, Loss: 40.8558
+Epoch 280/500, Loss: 40.8395
+Epoch 281/500, Loss: 40.8233
+Epoch 282/500, Loss: 40.7985
+Epoch 283/500, Loss: 40.8126
+Epoch 284/500, Loss: 40.8051
+Epoch 285/500, Loss: 40.7803
+Epoch 286/500, Loss: 40.7713
+Epoch 287/500, Loss: 40.7807
+Epoch 288/500, Loss: 40.7913
+Epoch 289/500, Loss: 40.7664
+Epoch 290/500, Loss: 40.7866
+Epoch 291/500, Loss: 40.8004
+Epoch 292/500, Loss: 40.8147
+Epoch 293/500, Loss: 40.8403
+Epoch 294/500, Loss: 40.8218
+Epoch 295/500, Loss: 40.8025
+Epoch 296/500, Loss: 40.8006
+Epoch 297/500, Loss: 40.7891
+Epoch 298/500, Loss: 40.8127
+Epoch 299/500, Loss: 40.7993
+Epoch 300/500, Loss: 40.8016
+Epoch 301/500, Loss: 40.8163
+Epoch 302/500, Loss: 40.7913
+Epoch 303/500, Loss: 40.7772
+Epoch 304/500, Loss: 40.7620
+Epoch 305/500, Loss: 40.7617
+Epoch 306/500, Loss: 40.7773
+Epoch 307/500, Loss: 40.8015
+Epoch 308/500, Loss: 40.8095
+Epoch 309/500, Loss: 40.7870
+Epoch 310/500, Loss: 40.7801
+Epoch 311/500, Loss: 40.7863
+Epoch 312/500, Loss: 40.7925
+Epoch 313/500, Loss: 40.7785
+Epoch 314/500, Loss: 40.7654
+Epoch 315/500, Loss: 40.7517
+Epoch 316/500, Loss: 40.7556
+Epoch 317/500, Loss: 40.7694
+Epoch 318/500, Loss: 40.7832
+Epoch 319/500, Loss: 40.7637
+Epoch 320/500, Loss: 40.8130
+Epoch 321/500, Loss: 40.8115
+Epoch 322/500, Loss: 40.8287
+Epoch 323/500, Loss: 40.7964
+Epoch 324/500, Loss: 40.7907
+Epoch 325/500, Loss: 40.7663
+Epoch 326/500, Loss: 40.7850
+Epoch 327/500, Loss: 40.7922
+Epoch 328/500, Loss: 40.7951
+Epoch 329/500, Loss: 40.7847
+Epoch 330/500, Loss: 40.7484
+Epoch 331/500, Loss: 40.7793
+Epoch 332/500, Loss: 40.7855
+Epoch 333/500, Loss: 40.7483
+Epoch 334/500, Loss: 40.7587
+Epoch 335/500, Loss: 40.7691
+Epoch 336/500, Loss: 40.7680
+Epoch 337/500, Loss: 40.7702
+Epoch 338/500, Loss: 40.7810
+Epoch 339/500, Loss: 40.7753
+Epoch 340/500, Loss: 40.7788
+Epoch 341/500, Loss: 40.7727
+Epoch 342/500, Loss: 40.7940
+Epoch 343/500, Loss: 40.7754
+Epoch 344/500, Loss: 40.7618
+Epoch 345/500, Loss: 40.7525
+Epoch 346/500, Loss: 40.7557
+Epoch 347/500, Loss: 40.7908
+Epoch 348/500, Loss: 40.7799
+Epoch 349/500, Loss: 40.7791
+Epoch 350/500, Loss: 40.7721
+Epoch 351/500, Loss: 40.7619
+Epoch 352/500, Loss: 40.7650
+Epoch 353/500, Loss: 40.7633
+Epoch 354/500, Loss: 40.7433
+Epoch 355/500, Loss: 40.7536
+Epoch 356/500, Loss: 40.7782
+Epoch 357/500, Loss: 40.7873
+Epoch 358/500, Loss: 40.7832
+Epoch 359/500, Loss: 40.7702
+Epoch 360/500, Loss: 40.7808
+Epoch 361/500, Loss: 40.7733
+Epoch 362/500, Loss: 40.7518
+Epoch 363/500, Loss: 40.7748
+Epoch 364/500, Loss: 40.7814
+Epoch 365/500, Loss: 40.7573
+Epoch 366/500, Loss: 40.7527
+Epoch 367/500, Loss: 40.7761
+Epoch 368/500, Loss: 40.7502
+Epoch 369/500, Loss: 40.7715
+Epoch 370/500, Loss: 40.7709
+Epoch 371/500, Loss: 40.7546
+Epoch 372/500, Loss: 40.7213
+Epoch 373/500, Loss: 40.7547
+Epoch 374/500, Loss: 40.7754
+Epoch 375/500, Loss: 40.7596
+Epoch 376/500, Loss: 40.7355
+Epoch 377/500, Loss: 40.7478
+Epoch 378/500, Loss: 40.7618
+Epoch 379/500, Loss: 40.7680
+Epoch 380/500, Loss: 40.7599
+Epoch 381/500, Loss: 40.7724
+Epoch 382/500, Loss: 40.7817
+Epoch 383/500, Loss: 40.7933
+Epoch 384/500, Loss: 40.7817
+Epoch 385/500, Loss: 40.7488
+Epoch 386/500, Loss: 40.7491
+Epoch 387/500, Loss: 40.7358
+Epoch 388/500, Loss: 40.7530
+Epoch 389/500, Loss: 40.7384
+Epoch 390/500, Loss: 40.7312
+Epoch 391/500, Loss: 40.7274
+Epoch 392/500, Loss: 40.7575
+Epoch 393/500, Loss: 40.7371
+Epoch 394/500, Loss: 40.7477
+Epoch 395/500, Loss: 40.7522
+Epoch 396/500, Loss: 40.7505
+Epoch 397/500, Loss: 40.7228
+Epoch 398/500, Loss: 40.7170
+Epoch 399/500, Loss: 40.7682
+Epoch 400/500, Loss: 40.7894
+Epoch 401/500, Loss: 40.7833
+Epoch 402/500, Loss: 40.7551
+Epoch 403/500, Loss: 40.7434
+Epoch 404/500, Loss: 40.7626
+Epoch 405/500, Loss: 40.7536
+Epoch 406/500, Loss: 40.7650
+Epoch 407/500, Loss: 40.7667
+Epoch 408/500, Loss: 40.7330
+Epoch 409/500, Loss: 40.7336
+Epoch 410/500, Loss: 40.7311
+Epoch 411/500, Loss: 40.7320
+Epoch 412/500, Loss: 40.7030
+Epoch 413/500, Loss: 40.7280
+Epoch 414/500, Loss: 40.7297
+Epoch 415/500, Loss: 40.7401
+Epoch 416/500, Loss: 40.7429
+Epoch 417/500, Loss: 40.7190
+Epoch 418/500, Loss: 40.7334
+Epoch 419/500, Loss: 40.7418
+Epoch 420/500, Loss: 40.7541
+Epoch 421/500, Loss: 40.7483
+Epoch 422/500, Loss: 40.7343
+Epoch 423/500, Loss: 40.7586
+Epoch 424/500, Loss: 40.7433
+Epoch 425/500, Loss: 40.7654
+Epoch 426/500, Loss: 40.7367
+Epoch 427/500, Loss: 40.7313
+Epoch 428/500, Loss: 40.7688
+Epoch 429/500, Loss: 40.7379
+Epoch 430/500, Loss: 40.7379
+Epoch 431/500, Loss: 40.7550
+Epoch 432/500, Loss: 40.7286
+Epoch 433/500, Loss: 40.7231
+Epoch 434/500, Loss: 40.7304
+Epoch 435/500, Loss: 40.7387
+Epoch 436/500, Loss: 40.7511
+Epoch 437/500, Loss: 40.7690
+Epoch 438/500, Loss: 40.7522
+Epoch 439/500, Loss: 40.7484
+Epoch 440/500, Loss: 40.7455
+Epoch 441/500, Loss: 40.7384
+Epoch 442/500, Loss: 40.7243
+Epoch 443/500, Loss: 40.7391
+Epoch 444/500, Loss: 40.7424
+Epoch 445/500, Loss: 40.7424
+Epoch 446/500, Loss: 40.7372
+Epoch 447/500, Loss: 40.7437
+Epoch 448/500, Loss: 40.7093
+Epoch 449/500, Loss: 40.7270
+Epoch 450/500, Loss: 40.7537
+Epoch 451/500, Loss: 40.7514
+Epoch 452/500, Loss: 40.7512
+Epoch 453/500, Loss: 40.7540
+Epoch 454/500, Loss: 40.7350
+Epoch 455/500, Loss: 40.7295
+Epoch 456/500, Loss: 40.7337
+Epoch 457/500, Loss: 40.7325
+Epoch 458/500, Loss: 40.7067
+Epoch 459/500, Loss: 40.7287
+Epoch 460/500, Loss: 40.7022
+Epoch 461/500, Loss: 40.7073
+Epoch 462/500, Loss: 40.7565
+Epoch 463/500, Loss: 40.7617
+Epoch 464/500, Loss: 40.7371
+Epoch 465/500, Loss: 40.7275
+Epoch 466/500, Loss: 40.7158
+Epoch 467/500, Loss: 40.7113
+Epoch 468/500, Loss: 40.7197
+Epoch 469/500, Loss: 40.7589
+Epoch 470/500, Loss: 40.7269
+Epoch 471/500, Loss: 40.7172
+Epoch 472/500, Loss: 40.7177
+Epoch 473/500, Loss: 40.7283
+Epoch 474/500, Loss: 40.7394
+Epoch 475/500, Loss: 40.7372
+Epoch 476/500, Loss: 40.7250
+Epoch 477/500, Loss: 40.7609
+Epoch 478/500, Loss: 40.7278
+Epoch 479/500, Loss: 40.7168
+Epoch 480/500, Loss: 40.7248
+Epoch 481/500, Loss: 40.7493
+Epoch 482/500, Loss: 40.7320
+Epoch 483/500, Loss: 40.7320
+Epoch 484/500, Loss: 40.7059
+Epoch 485/500, Loss: 40.7001
+Epoch 486/500, Loss: 40.7147
+Epoch 487/500, Loss: 40.7017
+Epoch 488/500, Loss: 40.7038
+Epoch 489/500, Loss: 40.7256
+Epoch 490/500, Loss: 40.7235
+Epoch 491/500, Loss: 40.7164
+Epoch 492/500, Loss: 40.7249
+Epoch 493/500, Loss: 40.7226
+Epoch 494/500, Loss: 40.7096
+Epoch 495/500, Loss: 40.6832
+Epoch 496/500, Loss: 40.6781
+Epoch 497/500, Loss: 40.7071
+Epoch 498/500, Loss: 40.7252
+Epoch 499/500, Loss: 40.7302
+Epoch 500/500, Loss: 40.7158
+Epoch 1/500, Loss: 5.6261
+Epoch 2/500, Loss: 4.2798
+Epoch 3/500, Loss: 4.1314
+Epoch 4/500, Loss: 3.9900
+Epoch 5/500, Loss: 3.9900
+Epoch 6/500, Loss: 3.9900
+Epoch 7/500, Loss: 3.8577
+Epoch 8/500, Loss: 3.8577
+Epoch 9/500, Loss: 3.8577
+Epoch 10/500, Loss: 3.8577
+Epoch 11/500, Loss: 3.8577
+Epoch 12/500, Loss: 3.8577
+Epoch 13/500, Loss: 3.8577
+Epoch 14/500, Loss: 3.8577
+Epoch 15/500, Loss: 3.8577
+Epoch 16/500, Loss: 3.8577
+Epoch 17/500, Loss: 3.8577
+Epoch 18/500, Loss: 3.8577
+Epoch 19/500, Loss: 3.8577
+Epoch 20/500, Loss: 3.8577
+Epoch 21/500, Loss: 3.8577
+Epoch 22/500, Loss: 3.8577
+Epoch 23/500, Loss: 3.8577
+Epoch 24/500, Loss: 3.8577
+Epoch 25/500, Loss: 3.8577
+Epoch 26/500, Loss: 3.8577
+Epoch 27/500, Loss: 3.8577
+Epoch 28/500, Loss: 3.8577
+Epoch 29/500, Loss: 3.8577
+Epoch 30/500, Loss: 3.8577
+Epoch 31/500, Loss: 3.8577
+Epoch 32/500, Loss: 3.8577
+Epoch 33/500, Loss: 3.8577
+Epoch 34/500, Loss: 3.8577
+Epoch 35/500, Loss: 3.8577
+Epoch 36/500, Loss: 3.8577
+Epoch 37/500, Loss: 3.8577
+Epoch 38/500, Loss: 3.8577
+Epoch 39/500, Loss: 3.8577
+Epoch 40/500, Loss: 3.8577
+Epoch 41/500, Loss: 3.8577
+Epoch 42/500, Loss: 3.8577
+Epoch 43/500, Loss: 3.8577
+Epoch 44/500, Loss: 3.8577
+Epoch 45/500, Loss: 3.8577
+Epoch 46/500, Loss: 3.8577
+Epoch 47/500, Loss: 3.8577
+Epoch 48/500, Loss: 3.8577
+Epoch 49/500, Loss: 3.8577
+Epoch 50/500, Loss: 3.8577
+Epoch 51/500, Loss: 3.8577
+Epoch 52/500, Loss: 3.8577
+Epoch 53/500, Loss: 3.8577
+Epoch 54/500, Loss: 3.8577
+Epoch 55/500, Loss: 3.8577
+Epoch 56/500, Loss: 3.8577
+Epoch 57/500, Loss: 3.8577
+Epoch 58/500, Loss: 3.8577
+Epoch 59/500, Loss: 3.8577
+Epoch 60/500, Loss: 3.8577
+Epoch 61/500, Loss: 3.8577
+Epoch 62/500, Loss: 3.8577
+Epoch 63/500, Loss: 3.8577
+Epoch 64/500, Loss: 3.8577
+Epoch 65/500, Loss: 3.8577
+Epoch 66/500, Loss: 3.8577
+Epoch 67/500, Loss: 3.8577
+Epoch 68/500, Loss: 3.8577
+Epoch 69/500, Loss: 3.8577
+Epoch 70/500, Loss: 3.8577
+Epoch 71/500, Loss: 3.8577
+Epoch 72/500, Loss: 3.8577
+Epoch 73/500, Loss: 3.8577
+Epoch 74/500, Loss: 3.8577
+Epoch 75/500, Loss: 3.8577
+Epoch 76/500, Loss: 3.8577
+Epoch 77/500, Loss: 3.8577
+Epoch 78/500, Loss: 3.8577
+Epoch 79/500, Loss: 3.8577
+Epoch 80/500, Loss: 3.8577
+Epoch 81/500, Loss: 3.8577
+Epoch 82/500, Loss: 3.8577
+Epoch 83/500, Loss: 3.8577
+Epoch 84/500, Loss: 3.8577
+Epoch 85/500, Loss: 3.8577
+Epoch 86/500, Loss: 3.8577
+Epoch 87/500, Loss: 3.8577
+Epoch 88/500, Loss: 3.8577
+Epoch 89/500, Loss: 3.8577
+Epoch 90/500, Loss: 3.8577
+Epoch 91/500, Loss: 3.8577
+Epoch 92/500, Loss: 3.8577
+Epoch 93/500, Loss: 3.8577
+Epoch 94/500, Loss: 3.8577
+Epoch 95/500, Loss: 3.8577
+Epoch 96/500, Loss: 3.8577
+Epoch 97/500, Loss: 3.8577
+Epoch 98/500, Loss: 3.8577
+Epoch 99/500, Loss: 3.8577
+Epoch 100/500, Loss: 3.8577
+Epoch 101/500, Loss: 3.8577
+Epoch 102/500, Loss: 3.8577
+Epoch 103/500, Loss: 3.8577
+Epoch 104/500, Loss: 3.8577
+Epoch 105/500, Loss: 3.8577
+Epoch 106/500, Loss: 3.8577
+Epoch 107/500, Loss: 3.8577
+Epoch 108/500, Loss: 3.8577
+Epoch 109/500, Loss: 3.8577
+Epoch 110/500, Loss: 3.8577
+Epoch 111/500, Loss: 3.8577
+Epoch 112/500, Loss: 3.8577
+Epoch 113/500, Loss: 3.8577
+Epoch 114/500, Loss: 3.8577
+Epoch 115/500, Loss: 3.8577
+Epoch 116/500, Loss: 3.8577
+Epoch 117/500, Loss: 3.8577
+Epoch 118/500, Loss: 3.8577
+Epoch 119/500, Loss: 3.8577
+Epoch 120/500, Loss: 3.8577
+Epoch 121/500, Loss: 3.8577
+Epoch 122/500, Loss: 3.8577
+Epoch 123/500, Loss: 3.8577
+Epoch 124/500, Loss: 3.8577
+Epoch 125/500, Loss: 3.8577
+Epoch 126/500, Loss: 3.8577
+Epoch 127/500, Loss: 3.8577
+Epoch 128/500, Loss: 3.8577
+Epoch 129/500, Loss: 3.8577
+Epoch 130/500, Loss: 3.8577
+Epoch 131/500, Loss: 3.8577
+Epoch 132/500, Loss: 3.8577
+Epoch 133/500, Loss: 3.8577
+Epoch 134/500, Loss: 3.8577
+Epoch 135/500, Loss: 3.8577
+Epoch 136/500, Loss: 3.8577
+Epoch 137/500, Loss: 3.8577
+Epoch 138/500, Loss: 3.8577
+Epoch 139/500, Loss: 3.8577
+Epoch 140/500, Loss: 3.8577
+Epoch 141/500, Loss: 3.8577
+Epoch 142/500, Loss: 3.8577
+Epoch 143/500, Loss: 3.8577
+Epoch 144/500, Loss: 3.8577
+Epoch 145/500, Loss: 3.8577
+Epoch 146/500, Loss: 3.8577
+Epoch 147/500, Loss: 3.8577
+Epoch 148/500, Loss: 3.8577
+Epoch 149/500, Loss: 3.8577
+Epoch 150/500, Loss: 3.8577
+Epoch 151/500, Loss: 3.8577
+Epoch 152/500, Loss: 3.8577
+Epoch 153/500, Loss: 3.8577
+Epoch 154/500, Loss: 3.8577
+Epoch 155/500, Loss: 3.8577
+Epoch 156/500, Loss: 3.8577
+Epoch 157/500, Loss: 3.8577
+Epoch 158/500, Loss: 3.8577
+Epoch 159/500, Loss: 3.8577
+Epoch 160/500, Loss: 3.8577
+Epoch 161/500, Loss: 3.8577
+Epoch 162/500, Loss: 3.8577
+Epoch 163/500, Loss: 3.8577
+Epoch 164/500, Loss: 3.8577
+Epoch 165/500, Loss: 3.8577
+Epoch 166/500, Loss: 3.8577
+Epoch 167/500, Loss: 3.8577
+Epoch 168/500, Loss: 3.8577
+Epoch 169/500, Loss: 3.8577
+Epoch 170/500, Loss: 3.8577
+Epoch 171/500, Loss: 3.8577
+Epoch 172/500, Loss: 3.8577
+Epoch 173/500, Loss: 3.8577
+Epoch 174/500, Loss: 3.8577
+Epoch 175/500, Loss: 3.8577
+Epoch 176/500, Loss: 3.8577
+Epoch 177/500, Loss: 3.8577
+Epoch 178/500, Loss: 3.8577
+Epoch 179/500, Loss: 3.8577
+Epoch 180/500, Loss: 3.8577
+Epoch 181/500, Loss: 3.8577
+Epoch 182/500, Loss: 3.8577
+Epoch 183/500, Loss: 3.8577
+Epoch 184/500, Loss: 3.8577
+Epoch 185/500, Loss: 3.8577
+Epoch 186/500, Loss: 3.8577
+Epoch 187/500, Loss: 3.8577
+Epoch 188/500, Loss: 3.8577
+Epoch 189/500, Loss: 3.8577
+Epoch 190/500, Loss: 3.8577
+Epoch 191/500, Loss: 3.8577
+Epoch 192/500, Loss: 3.8577
+Epoch 193/500, Loss: 3.8577
+Epoch 194/500, Loss: 3.8577
+Epoch 195/500, Loss: 3.8577
+Epoch 196/500, Loss: 3.8577
+Epoch 197/500, Loss: 3.8577
+Epoch 198/500, Loss: 3.8577
+Epoch 199/500, Loss: 3.9900
+Epoch 200/500, Loss: 3.9900
+Epoch 201/500, Loss: 3.8577
+Epoch 202/500, Loss: 3.8577
+Epoch 203/500, Loss: 3.8577
+Epoch 204/500, Loss: 3.8577
+Epoch 205/500, Loss: 3.8577
+Epoch 206/500, Loss: 3.8577
+Epoch 207/500, Loss: 3.8577
+Epoch 208/500, Loss: 3.8577
+Epoch 209/500, Loss: 3.7387
+Epoch 210/500, Loss: 3.7387
+Epoch 211/500, Loss: 3.6636
+Epoch 212/500, Loss: 3.6636
+Epoch 213/500, Loss: 3.6636
+Epoch 214/500, Loss: 3.6636
+Epoch 215/500, Loss: 3.6636
+Epoch 216/500, Loss: 3.6636
+Epoch 217/500, Loss: 3.6636
+Epoch 218/500, Loss: 3.6636
+Epoch 219/500, Loss: 3.6636
+Epoch 220/500, Loss: 3.6636
+Epoch 221/500, Loss: 3.6636
+Epoch 222/500, Loss: 3.6636
+Epoch 223/500, Loss: 3.6636
+Epoch 224/500, Loss: 3.6636
+Epoch 225/500, Loss: 3.6636
+Epoch 226/500, Loss: 3.6636
+Epoch 227/500, Loss: 3.6636
+Epoch 228/500, Loss: 3.6636
+Epoch 229/500, Loss: 3.6636
+Epoch 230/500, Loss: 3.6636
+Epoch 231/500, Loss: 3.6636
+Epoch 232/500, Loss: 3.6636
+Epoch 233/500, Loss: 3.6636
+Epoch 234/500, Loss: 3.6636
+Epoch 235/500, Loss: 3.6636
+Epoch 236/500, Loss: 3.6636
+Epoch 237/500, Loss: 3.6636
+Epoch 238/500, Loss: 3.6636
+Epoch 239/500, Loss: 3.6636
+Epoch 240/500, Loss: 3.6636
+Epoch 241/500, Loss: 3.6636
+Epoch 242/500, Loss: 3.6636
+Epoch 243/500, Loss: 3.6636
+Epoch 244/500, Loss: 3.6636
+Epoch 245/500, Loss: 3.6636
+Epoch 246/500, Loss: 3.6636
+Epoch 247/500, Loss: 3.6636
+Epoch 248/500, Loss: 3.6636
+Epoch 249/500, Loss: 3.6636
+Epoch 250/500, Loss: 3.6636
+Epoch 251/500, Loss: 3.6636
+Epoch 252/500, Loss: 3.6636
+Epoch 253/500, Loss: 3.6636
+Epoch 254/500, Loss: 3.6636
+Epoch 255/500, Loss: 3.6636
+Epoch 256/500, Loss: 3.6636
+Epoch 257/500, Loss: 3.6636
+Epoch 258/500, Loss: 3.6636
+Epoch 259/500, Loss: 3.6636
+Epoch 260/500, Loss: 3.6636
+Epoch 261/500, Loss: 3.6636
+Epoch 262/500, Loss: 3.6636
+Epoch 263/500, Loss: 3.6636
+Epoch 264/500, Loss: 3.6636
+Epoch 265/500, Loss: 3.6636
+Epoch 266/500, Loss: 3.6636
+Epoch 267/500, Loss: 3.6636
+Epoch 268/500, Loss: 3.6636
+Epoch 269/500, Loss: 3.6636
+Epoch 270/500, Loss: 3.6636
+Epoch 271/500, Loss: 3.6636
+Epoch 272/500, Loss: 3.6636
+Epoch 273/500, Loss: 3.6636
+Epoch 274/500, Loss: 3.6636
+Epoch 275/500, Loss: 3.6636
+Epoch 276/500, Loss: 3.6636
+Epoch 277/500, Loss: 3.6636
+Epoch 278/500, Loss: 3.6636
+Epoch 279/500, Loss: 3.6636
+Epoch 280/500, Loss: 3.6636
+Epoch 281/500, Loss: 3.6636
+Epoch 282/500, Loss: 3.6636
+Epoch 283/500, Loss: 3.6636
+Epoch 284/500, Loss: 3.6636
+Epoch 285/500, Loss: 3.6636
+Epoch 286/500, Loss: 3.6636
+Epoch 287/500, Loss: 3.6636
+Epoch 288/500, Loss: 3.6636
+Epoch 289/500, Loss: 3.6636
+Epoch 290/500, Loss: 3.6636
+Epoch 291/500, Loss: 3.6636
+Epoch 292/500, Loss: 3.6636
+Epoch 293/500, Loss: 3.6636
+Epoch 294/500, Loss: 3.6636
+Epoch 295/500, Loss: 3.6636
+Epoch 296/500, Loss: 3.6636
+Epoch 297/500, Loss: 3.6636
+Epoch 298/500, Loss: 3.6636
+Epoch 299/500, Loss: 3.6636
+Epoch 300/500, Loss: 3.6636
+Epoch 301/500, Loss: 3.6636
+Epoch 302/500, Loss: 3.6636
+Epoch 303/500, Loss: 3.6636
+Epoch 304/500, Loss: 3.6636
+Epoch 305/500, Loss: 3.6636
+Epoch 306/500, Loss: 3.6636
+Epoch 307/500, Loss: 3.6636
+Epoch 308/500, Loss: 3.6636
+Epoch 309/500, Loss: 3.6636
+Epoch 310/500, Loss: 3.6636
+Epoch 311/500, Loss: 3.6636
+Epoch 312/500, Loss: 3.6636
+Epoch 313/500, Loss: 3.6636
+Epoch 314/500, Loss: 3.6636
+Epoch 315/500, Loss: 3.6636
+Epoch 316/500, Loss: 3.6636
+Epoch 317/500, Loss: 3.6636
+Epoch 318/500, Loss: 3.6636
+Epoch 319/500, Loss: 3.6636
+Epoch 320/500, Loss: 3.6636
+Epoch 321/500, Loss: 3.6636
+Epoch 322/500, Loss: 3.6636
+Epoch 323/500, Loss: 3.6636
+Epoch 324/500, Loss: 3.6636
+Epoch 325/500, Loss: 3.6636
+Epoch 326/500, Loss: 3.6636
+Epoch 327/500, Loss: 3.6636
+Epoch 328/500, Loss: 3.6636
+Epoch 329/500, Loss: 3.6636
+Epoch 330/500, Loss: 3.6636
+Epoch 331/500, Loss: 3.6636
+Epoch 332/500, Loss: 3.6636
+Epoch 333/500, Loss: 3.6636
+Epoch 334/500, Loss: 3.6636
+Epoch 335/500, Loss: 3.6636
+Epoch 336/500, Loss: 3.6636
+Epoch 337/500, Loss: 3.6636
+Epoch 338/500, Loss: 3.6636
+Epoch 339/500, Loss: 3.6636
+Epoch 340/500, Loss: 3.6636
+Epoch 341/500, Loss: 3.6636
+Epoch 342/500, Loss: 3.6636
+Epoch 343/500, Loss: 3.6636
+Epoch 344/500, Loss: 3.6636
+Epoch 345/500, Loss: 3.6636
+Epoch 346/500, Loss: 3.6636
+Epoch 347/500, Loss: 3.6636
+Epoch 348/500, Loss: 3.6636
+Epoch 349/500, Loss: 3.6636
+Epoch 350/500, Loss: 3.6636
+Epoch 351/500, Loss: 3.6636
+Epoch 352/500, Loss: 3.6636
+Epoch 353/500, Loss: 3.6636
+Epoch 354/500, Loss: 3.6636
+Epoch 355/500, Loss: 3.6636
+Epoch 356/500, Loss: 3.6636
+Epoch 357/500, Loss: 3.6636
+Epoch 358/500, Loss: 3.6636
+Epoch 359/500, Loss: 3.6636
+Epoch 360/500, Loss: 3.6636
+Epoch 361/500, Loss: 3.6636
+Epoch 362/500, Loss: 3.6636
+Epoch 363/500, Loss: 3.6636
+Epoch 364/500, Loss: 3.6636
+Epoch 365/500, Loss: 3.6636
+Epoch 366/500, Loss: 3.6636
+Epoch 367/500, Loss: 3.6636
+Epoch 368/500, Loss: 3.6636
+Epoch 369/500, Loss: 3.6636
+Epoch 370/500, Loss: 3.6636
+Epoch 371/500, Loss: 3.6636
+Epoch 372/500, Loss: 3.6636
+Epoch 373/500, Loss: 3.6636
+Epoch 374/500, Loss: 3.6636
+Epoch 375/500, Loss: 3.6636
+Epoch 376/500, Loss: 3.6636
+Epoch 377/500, Loss: 3.6636
+Epoch 378/500, Loss: 3.6636
+Epoch 379/500, Loss: 3.6636
+Epoch 380/500, Loss: 3.6636
+Epoch 381/500, Loss: 3.6636
+Epoch 382/500, Loss: 3.6636
+Epoch 383/500, Loss: 3.6636
+Epoch 384/500, Loss: 3.6636
+Epoch 385/500, Loss: 3.6636
+Epoch 386/500, Loss: 3.6636
+Epoch 387/500, Loss: 3.6636
+Epoch 388/500, Loss: 3.6636
+Epoch 389/500, Loss: 3.6636
+Epoch 390/500, Loss: 3.6636
+Epoch 391/500, Loss: 3.6636
+Epoch 392/500, Loss: 3.6636
+Epoch 393/500, Loss: 3.6636
+Epoch 394/500, Loss: 3.6636
+Epoch 395/500, Loss: 3.6636
+Epoch 396/500, Loss: 3.6636
+Epoch 397/500, Loss: 3.6636
+Epoch 398/500, Loss: 3.6636
+Epoch 399/500, Loss: 3.6636
+Epoch 400/500, Loss: 3.6636
+Epoch 401/500, Loss: 3.6636
+Epoch 402/500, Loss: 3.6636
+Epoch 403/500, Loss: 3.6636
+Epoch 404/500, Loss: 3.6636
+Epoch 405/500, Loss: 3.6636
+Epoch 406/500, Loss: 3.6636
+Epoch 407/500, Loss: 3.6636
+Epoch 408/500, Loss: 3.6636
+Epoch 409/500, Loss: 3.6636
+Epoch 410/500, Loss: 3.6636
+Epoch 411/500, Loss: 3.6636
+Epoch 412/500, Loss: 3.6636
+Epoch 413/500, Loss: 3.6636
+Epoch 414/500, Loss: 3.6636
+Epoch 415/500, Loss: 3.6636
+Epoch 416/500, Loss: 3.6636
+Epoch 417/500, Loss: 3.6636
+Epoch 418/500, Loss: 3.6636
+Epoch 419/500, Loss: 3.6636
+Epoch 420/500, Loss: 3.6636
+Epoch 421/500, Loss: 3.6636
+Epoch 422/500, Loss: 3.6636
+Epoch 423/500, Loss: 3.6636
+Epoch 424/500, Loss: 3.6636
+Epoch 425/500, Loss: 3.6636
+Epoch 426/500, Loss: 3.6636
+Epoch 427/500, Loss: 3.6636
+Epoch 428/500, Loss: 3.6636
+Epoch 429/500, Loss: 3.6636
+Epoch 430/500, Loss: 3.6636
+Epoch 431/500, Loss: 3.6636
+Epoch 432/500, Loss: 3.6636
+Epoch 433/500, Loss: 3.6636
+Epoch 434/500, Loss: 3.6636
+Epoch 435/500, Loss: 3.6636
+Epoch 436/500, Loss: 3.6636
+Epoch 437/500, Loss: 3.6636
+Epoch 438/500, Loss: 3.6636
+Epoch 439/500, Loss: 3.6636
+Epoch 440/500, Loss: 3.6636
+Epoch 441/500, Loss: 3.6636
+Epoch 442/500, Loss: 3.6636
+Epoch 443/500, Loss: 3.6636
+Epoch 444/500, Loss: 3.6636
+Epoch 445/500, Loss: 3.6636
+Epoch 446/500, Loss: 3.6636
+Epoch 447/500, Loss: 3.6636
+Epoch 448/500, Loss: 3.6636
+Epoch 449/500, Loss: 3.6636
+Epoch 450/500, Loss: 3.6636
+Epoch 451/500, Loss: 3.6636
+Epoch 452/500, Loss: 3.6636
+Epoch 453/500, Loss: 3.6636
+Epoch 454/500, Loss: 3.6636
+Epoch 455/500, Loss: 3.6636
+Epoch 456/500, Loss: 3.6636
+Epoch 457/500, Loss: 3.6636
+Epoch 458/500, Loss: 3.6636
+Epoch 459/500, Loss: 3.6636
+Epoch 460/500, Loss: 3.6636
+Epoch 461/500, Loss: 3.6636
+Epoch 462/500, Loss: 3.6636
+Epoch 463/500, Loss: 3.6636
+Epoch 464/500, Loss: 3.6636
+Epoch 465/500, Loss: 3.6636
+Epoch 466/500, Loss: 3.6636
+Epoch 467/500, Loss: 3.6636
+Epoch 468/500, Loss: 3.6636
+Epoch 469/500, Loss: 3.6636
+Epoch 470/500, Loss: 3.6636
+Epoch 471/500, Loss: 3.6636
+Epoch 472/500, Loss: 3.6636
+Epoch 473/500, Loss: 3.6636
+Epoch 474/500, Loss: 3.6636
+Epoch 475/500, Loss: 3.6636
+Epoch 476/500, Loss: 3.6636
+Epoch 477/500, Loss: 3.6636
+Epoch 478/500, Loss: 3.6636
+Epoch 479/500, Loss: 3.6636
+Epoch 480/500, Loss: 3.6636
+Epoch 481/500, Loss: 3.6636
+Epoch 482/500, Loss: 3.6636
+Epoch 483/500, Loss: 3.6636
+Epoch 484/500, Loss: 3.6636
+Epoch 485/500, Loss: 3.6636
+Epoch 486/500, Loss: 3.6636
+Epoch 487/500, Loss: 3.6636
+Epoch 488/500, Loss: 3.6636
+Epoch 489/500, Loss: 3.6636
+Epoch 490/500, Loss: 3.6636
+Epoch 491/500, Loss: 3.6636
+Epoch 492/500, Loss: 3.6636
+Epoch 493/500, Loss: 3.6636
+Epoch 494/500, Loss: 3.6636
+Epoch 495/500, Loss: 3.6636
+Epoch 496/500, Loss: 3.6636
+Epoch 497/500, Loss: 3.6636
+Epoch 498/500, Loss: 3.6636
+Epoch 499/500, Loss: 3.6636
+Epoch 500/500, Loss: 3.6636
+Epoch 1/500, Loss: 192.3309
+Epoch 2/500, Loss: 174.5508
+Epoch 3/500, Loss: 170.4730
+Epoch 4/500, Loss: 169.1486
+Epoch 5/500, Loss: 168.3668
+Epoch 6/500, Loss: 167.6739
+Epoch 7/500, Loss: 167.0894
+Epoch 8/500, Loss: 166.6283
+Epoch 9/500, Loss: 166.0896
+Epoch 10/500, Loss: 165.5834
+Epoch 11/500, Loss: 165.2079
+Epoch 12/500, Loss: 164.7903
+Epoch 13/500, Loss: 164.3732
+Epoch 14/500, Loss: 163.9376
+Epoch 15/500, Loss: 163.5564
+Epoch 16/500, Loss: 163.1253
+Epoch 17/500, Loss: 162.7444
+Epoch 18/500, Loss: 162.3995
+Epoch 19/500, Loss: 162.0768
+Epoch 20/500, Loss: 161.6947
+Epoch 21/500, Loss: 161.2869
+Epoch 22/500, Loss: 160.9626
+Epoch 23/500, Loss: 160.5597
+Epoch 24/500, Loss: 160.2607
+Epoch 25/500, Loss: 159.8512
+Epoch 26/500, Loss: 159.6114
+Epoch 27/500, Loss: 159.3527
+Epoch 28/500, Loss: 159.0550
+Epoch 29/500, Loss: 158.7071
+Epoch 30/500, Loss: 158.3688
+Epoch 31/500, Loss: 158.1798
+Epoch 32/500, Loss: 157.7766
+Epoch 33/500, Loss: 157.6215
+Epoch 34/500, Loss: 157.3920
+Epoch 35/500, Loss: 157.0875
+Epoch 36/500, Loss: 156.8822
+Epoch 37/500, Loss: 156.6465
+Epoch 38/500, Loss: 156.5087
+Epoch 39/500, Loss: 156.2636
+Epoch 40/500, Loss: 155.9397
+Epoch 41/500, Loss: 155.7273
+Epoch 42/500, Loss: 155.5746
+Epoch 43/500, Loss: 155.4426
+Epoch 44/500, Loss: 155.2275
+Epoch 45/500, Loss: 155.1739
+Epoch 46/500, Loss: 154.8902
+Epoch 47/500, Loss: 154.7362
+Epoch 48/500, Loss: 154.5573
+Epoch 49/500, Loss: 154.4907
+Epoch 50/500, Loss: 154.3576
+Epoch 51/500, Loss: 154.0573
+Epoch 52/500, Loss: 153.9765
+Epoch 53/500, Loss: 153.8167
+Epoch 54/500, Loss: 153.8008
+Epoch 55/500, Loss: 153.6398
+Epoch 56/500, Loss: 153.4449
+Epoch 57/500, Loss: 153.3338
+Epoch 58/500, Loss: 153.2865
+Epoch 59/500, Loss: 153.1232
+Epoch 60/500, Loss: 153.1056
+Epoch 61/500, Loss: 152.9362
+Epoch 62/500, Loss: 152.8569
+Epoch 63/500, Loss: 152.8189
+Epoch 64/500, Loss: 152.6815
+Epoch 65/500, Loss: 152.5563
+Epoch 66/500, Loss: 152.5152
+Epoch 67/500, Loss: 152.4232
+Epoch 68/500, Loss: 152.3338
+Epoch 69/500, Loss: 152.1584
+Epoch 70/500, Loss: 152.1820
+Epoch 71/500, Loss: 151.9836
+Epoch 72/500, Loss: 152.0129
+Epoch 73/500, Loss: 151.7748
+Epoch 74/500, Loss: 151.7111
+Epoch 75/500, Loss: 151.7587
+Epoch 76/500, Loss: 151.6983
+Epoch 77/500, Loss: 151.4986
+Epoch 78/500, Loss: 151.4805
+Epoch 79/500, Loss: 151.5982
+Epoch 80/500, Loss: 151.4722
+Epoch 81/500, Loss: 151.2253
+Epoch 82/500, Loss: 151.1806
+Epoch 83/500, Loss: 151.2107
+Epoch 84/500, Loss: 151.1679
+Epoch 85/500, Loss: 151.1211
+Epoch 86/500, Loss: 151.0422
+Epoch 87/500, Loss: 151.1049
+Epoch 88/500, Loss: 150.9007
+Epoch 89/500, Loss: 150.9332
+Epoch 90/500, Loss: 150.8326
+Epoch 91/500, Loss: 150.7893
+Epoch 92/500, Loss: 150.8331
+Epoch 93/500, Loss: 150.7170
+Epoch 94/500, Loss: 150.7146
+Epoch 95/500, Loss: 150.5209
+Epoch 96/500, Loss: 150.4364
+Epoch 97/500, Loss: 150.5616
+Epoch 98/500, Loss: 150.4859
+Epoch 99/500, Loss: 150.4719
+Epoch 100/500, Loss: 150.4246
+Epoch 101/500, Loss: 150.2959
+Epoch 102/500, Loss: 150.1746
+Epoch 103/500, Loss: 150.3531
+Epoch 104/500, Loss: 150.1883
+Epoch 105/500, Loss: 150.2326
+Epoch 106/500, Loss: 150.2711
+Epoch 107/500, Loss: 150.0806
+Epoch 108/500, Loss: 150.0092
+Epoch 109/500, Loss: 150.0710
+Epoch 110/500, Loss: 149.8425
+Epoch 111/500, Loss: 149.9904
+Epoch 112/500, Loss: 149.9521
+Epoch 113/500, Loss: 149.8461
+Epoch 114/500, Loss: 149.9722
+Epoch 115/500, Loss: 149.7823
+Epoch 116/500, Loss: 149.8394
+Epoch 117/500, Loss: 149.7147
+Epoch 118/500, Loss: 149.6984
+Epoch 119/500, Loss: 149.6709
+Epoch 120/500, Loss: 149.7226
+Epoch 121/500, Loss: 149.5804
+Epoch 122/500, Loss: 149.5395
+Epoch 123/500, Loss: 149.5725
+Epoch 124/500, Loss: 149.6050
+Epoch 125/500, Loss: 149.5231
+Epoch 126/500, Loss: 149.5095
+Epoch 127/500, Loss: 149.5086
+Epoch 128/500, Loss: 149.4646
+Epoch 129/500, Loss: 149.3879
+Epoch 130/500, Loss: 149.3341
+Epoch 131/500, Loss: 149.3016
+Epoch 132/500, Loss: 149.3631
+Epoch 133/500, Loss: 149.3290
+Epoch 134/500, Loss: 149.2082
+Epoch 135/500, Loss: 149.2976
+Epoch 136/500, Loss: 149.2153
+Epoch 137/500, Loss: 149.1752
+Epoch 138/500, Loss: 149.2623
+Epoch 139/500, Loss: 149.1558
+Epoch 140/500, Loss: 149.2616
+Epoch 141/500, Loss: 149.0952
+Epoch 142/500, Loss: 149.0375
+Epoch 143/500, Loss: 148.9828
+Epoch 144/500, Loss: 149.0283
+Epoch 145/500, Loss: 149.0787
+Epoch 146/500, Loss: 149.1359
+Epoch 147/500, Loss: 149.0799
+Epoch 148/500, Loss: 149.0348
+Epoch 149/500, Loss: 148.9593
+Epoch 150/500, Loss: 148.8186
+Epoch 151/500, Loss: 148.9280
+Epoch 152/500, Loss: 149.0419
+Epoch 153/500, Loss: 148.9269
+Epoch 154/500, Loss: 148.8870
+Epoch 155/500, Loss: 148.8852
+Epoch 156/500, Loss: 148.8248
+Epoch 157/500, Loss: 148.7558
+Epoch 158/500, Loss: 148.6439
+Epoch 159/500, Loss: 148.7144
+Epoch 160/500, Loss: 148.8257
+Epoch 161/500, Loss: 148.8106
+Epoch 162/500, Loss: 148.8026
+Epoch 163/500, Loss: 148.7356
+Epoch 164/500, Loss: 148.6579
+Epoch 165/500, Loss: 148.9065
+Epoch 166/500, Loss: 148.7641
+Epoch 167/500, Loss: 148.6719
+Epoch 168/500, Loss: 148.5218
+Epoch 169/500, Loss: 148.6277
+Epoch 170/500, Loss: 148.5793
+Epoch 171/500, Loss: 148.5959
+Epoch 172/500, Loss: 148.7148
+Epoch 173/500, Loss: 148.5471
+Epoch 174/500, Loss: 148.4847
+Epoch 175/500, Loss: 148.4353
+Epoch 176/500, Loss: 148.4768
+Epoch 177/500, Loss: 148.5020
+Epoch 178/500, Loss: 148.3777
+Epoch 179/500, Loss: 148.3217
+Epoch 180/500, Loss: 148.5072
+Epoch 181/500, Loss: 148.5316
+Epoch 182/500, Loss: 148.4142
+Epoch 183/500, Loss: 148.3576
+Epoch 184/500, Loss: 148.3058
+Epoch 185/500, Loss: 148.2884
+Epoch 186/500, Loss: 148.3596
+Epoch 187/500, Loss: 148.3743
+Epoch 188/500, Loss: 148.4831
+Epoch 189/500, Loss: 148.4690
+Epoch 190/500, Loss: 148.4110
+Epoch 191/500, Loss: 148.3889
+Epoch 192/500, Loss: 148.2513
+Epoch 193/500, Loss: 148.3842
+Epoch 194/500, Loss: 148.3519
+Epoch 195/500, Loss: 148.4177
+Epoch 196/500, Loss: 148.3984
+Epoch 197/500, Loss: 148.4023
+Epoch 198/500, Loss: 148.2900
+Epoch 199/500, Loss: 148.2284
+Epoch 200/500, Loss: 148.2807
+Epoch 201/500, Loss: 148.2530
+Epoch 202/500, Loss: 148.2179
+Epoch 203/500, Loss: 148.2007
+Epoch 204/500, Loss: 148.1883
+Epoch 205/500, Loss: 148.0306
+Epoch 206/500, Loss: 148.0691
+Epoch 207/500, Loss: 148.1109
+Epoch 208/500, Loss: 148.1358
+Epoch 209/500, Loss: 148.1856
+Epoch 210/500, Loss: 148.1480
+Epoch 211/500, Loss: 148.1507
+Epoch 212/500, Loss: 148.1916
+Epoch 213/500, Loss: 148.1295
+Epoch 214/500, Loss: 148.2223
+Epoch 215/500, Loss: 148.2720
+Epoch 216/500, Loss: 148.1600
+Epoch 217/500, Loss: 148.0853
+Epoch 218/500, Loss: 148.0380
+Epoch 219/500, Loss: 148.0570
+Epoch 220/500, Loss: 148.0340
+Epoch 221/500, Loss: 147.9762
+Epoch 222/500, Loss: 147.9849
+Epoch 223/500, Loss: 148.0607
+Epoch 224/500, Loss: 148.0480
+Epoch 225/500, Loss: 147.9583
+Epoch 226/500, Loss: 147.9537
+Epoch 227/500, Loss: 147.9943
+Epoch 228/500, Loss: 147.8724
+Epoch 229/500, Loss: 147.8878
+Epoch 230/500, Loss: 147.8796
+Epoch 231/500, Loss: 147.9173
+Epoch 232/500, Loss: 147.8050
+Epoch 233/500, Loss: 147.8912
+Epoch 234/500, Loss: 147.8276
+Epoch 235/500, Loss: 147.8372
+Epoch 236/500, Loss: 147.9001
+Epoch 237/500, Loss: 147.8347
+Epoch 238/500, Loss: 147.7801
+Epoch 239/500, Loss: 147.8555
+Epoch 240/500, Loss: 147.7676
+Epoch 241/500, Loss: 147.8124
+Epoch 242/500, Loss: 147.8996
+Epoch 243/500, Loss: 147.8839
+Epoch 244/500, Loss: 147.8279
+Epoch 245/500, Loss: 147.8842
+Epoch 246/500, Loss: 147.8830
+Epoch 247/500, Loss: 147.8230
+Epoch 248/500, Loss: 147.7302
+Epoch 249/500, Loss: 147.8024
+Epoch 250/500, Loss: 147.8472
+Epoch 251/500, Loss: 147.7879
+Epoch 252/500, Loss: 147.8135
+Epoch 253/500, Loss: 147.7861
+Epoch 254/500, Loss: 147.7467
+Epoch 255/500, Loss: 147.8269
+Epoch 256/500, Loss: 147.7091
+Epoch 257/500, Loss: 147.6805
+Epoch 258/500, Loss: 147.6941
+Epoch 259/500, Loss: 147.7233
+Epoch 260/500, Loss: 147.7016
+Epoch 261/500, Loss: 147.7825
+Epoch 262/500, Loss: 147.6687
+Epoch 263/500, Loss: 147.6442
+Epoch 264/500, Loss: 147.7705
+Epoch 265/500, Loss: 147.6735
+Epoch 266/500, Loss: 147.6947
+Epoch 267/500, Loss: 147.6256
+Epoch 268/500, Loss: 147.7317
+Epoch 269/500, Loss: 147.8028
+Epoch 270/500, Loss: 147.7161
+Epoch 271/500, Loss: 147.6097
+Epoch 272/500, Loss: 147.5110
+Epoch 273/500, Loss: 147.7174
+Epoch 274/500, Loss: 147.5919
+Epoch 275/500, Loss: 147.4711
+Epoch 276/500, Loss: 147.5747
+Epoch 277/500, Loss: 147.5208
+Epoch 278/500, Loss: 147.5357
+Epoch 279/500, Loss: 147.5274
+Epoch 280/500, Loss: 147.5331
+Epoch 281/500, Loss: 147.6745
+Epoch 282/500, Loss: 147.7374
+Epoch 283/500, Loss: 147.7339
+Epoch 284/500, Loss: 147.6951
+Epoch 285/500, Loss: 147.4482
+Epoch 286/500, Loss: 147.4825
+Epoch 287/500, Loss: 147.6649
+Epoch 288/500, Loss: 147.5308
+Epoch 289/500, Loss: 147.5251
+Epoch 290/500, Loss: 147.5628
+Epoch 291/500, Loss: 147.4708
+Epoch 292/500, Loss: 147.5189
+Epoch 293/500, Loss: 147.4968
+Epoch 294/500, Loss: 147.5252
+Epoch 295/500, Loss: 147.5145
+Epoch 296/500, Loss: 147.5846
+Epoch 297/500, Loss: 147.5746
+Epoch 298/500, Loss: 147.4492
+Epoch 299/500, Loss: 147.3246
+Epoch 300/500, Loss: 147.4061
+Epoch 301/500, Loss: 147.4857
+Epoch 302/500, Loss: 147.4529
+Epoch 303/500, Loss: 147.3776
+Epoch 304/500, Loss: 147.4397
+Epoch 305/500, Loss: 147.4262
+Epoch 306/500, Loss: 147.5277
+Epoch 307/500, Loss: 147.4211
+Epoch 308/500, Loss: 147.4420
+Epoch 309/500, Loss: 147.4063
+Epoch 310/500, Loss: 147.3586
+Epoch 311/500, Loss: 147.4248
+Epoch 312/500, Loss: 147.3929
+Epoch 313/500, Loss: 147.5365
+Epoch 314/500, Loss: 147.4520
+Epoch 315/500, Loss: 147.4907
+Epoch 316/500, Loss: 147.5119
+Epoch 317/500, Loss: 147.4272
+Epoch 318/500, Loss: 147.5143
+Epoch 319/500, Loss: 147.5798
+Epoch 320/500, Loss: 147.5076
+Epoch 321/500, Loss: 147.3513
+Epoch 322/500, Loss: 147.3961
+Epoch 323/500, Loss: 147.4377
+Epoch 324/500, Loss: 147.3744
+Epoch 325/500, Loss: 147.2526
+Epoch 326/500, Loss: 147.3793
+Epoch 327/500, Loss: 147.4121
+Epoch 328/500, Loss: 147.3279
+Epoch 329/500, Loss: 147.2671
+Epoch 330/500, Loss: 147.2775
+Epoch 331/500, Loss: 147.3703
+Epoch 332/500, Loss: 147.3692
+Epoch 333/500, Loss: 147.3296
+Epoch 334/500, Loss: 147.3439
+Epoch 335/500, Loss: 147.4231
+Epoch 336/500, Loss: 147.2788
+Epoch 337/500, Loss: 147.1919
+Epoch 338/500, Loss: 147.2393
+Epoch 339/500, Loss: 147.2772
+Epoch 340/500, Loss: 147.2882
+Epoch 341/500, Loss: 147.1852
+Epoch 342/500, Loss: 147.2880
+Epoch 343/500, Loss: 147.2685
+Epoch 344/500, Loss: 147.2546
+Epoch 345/500, Loss: 147.2136
+Epoch 346/500, Loss: 147.2208
+Epoch 347/500, Loss: 147.1888
+Epoch 348/500, Loss: 147.1978
+Epoch 349/500, Loss: 147.2236
+Epoch 350/500, Loss: 147.1594
+Epoch 351/500, Loss: 147.1955
+Epoch 352/500, Loss: 147.3233
+Epoch 353/500, Loss: 147.3444
+Epoch 354/500, Loss: 147.2407
+Epoch 355/500, Loss: 147.1496
+Epoch 356/500, Loss: 147.2052
+Epoch 357/500, Loss: 147.1138
+Epoch 358/500, Loss: 147.1011
+Epoch 359/500, Loss: 147.2292
+Epoch 360/500, Loss: 147.1784
+Epoch 361/500, Loss: 147.1282
+Epoch 362/500, Loss: 147.1577
+Epoch 363/500, Loss: 147.2447
+Epoch 364/500, Loss: 147.2763
+Epoch 365/500, Loss: 147.1995
+Epoch 366/500, Loss: 147.1244
+Epoch 367/500, Loss: 147.2439
+Epoch 368/500, Loss: 147.2225
+Epoch 369/500, Loss: 147.1757
+Epoch 370/500, Loss: 147.2893
+Epoch 371/500, Loss: 147.1527
+Epoch 372/500, Loss: 147.1069
+Epoch 373/500, Loss: 147.0342
+Epoch 374/500, Loss: 147.0671
+Epoch 375/500, Loss: 147.1351
+Epoch 376/500, Loss: 147.0920
+Epoch 377/500, Loss: 147.1557
+Epoch 378/500, Loss: 147.0300
+Epoch 379/500, Loss: 147.1017
+Epoch 380/500, Loss: 147.1703
+Epoch 381/500, Loss: 147.0333
+Epoch 382/500, Loss: 147.0946
+Epoch 383/500, Loss: 147.1129
+Epoch 384/500, Loss: 147.1759
+Epoch 385/500, Loss: 147.2064
+Epoch 386/500, Loss: 147.2551
+Epoch 387/500, Loss: 147.1362
+Epoch 388/500, Loss: 147.0577
+Epoch 389/500, Loss: 147.1485
+Epoch 390/500, Loss: 147.0846
+Epoch 391/500, Loss: 146.9106
+Epoch 392/500, Loss: 147.0089
+Epoch 393/500, Loss: 147.0978
+Epoch 394/500, Loss: 147.1078
+Epoch 395/500, Loss: 147.1134
+Epoch 396/500, Loss: 147.0674
+Epoch 397/500, Loss: 147.2134
+Epoch 398/500, Loss: 147.1616
+Epoch 399/500, Loss: 147.0923
+Epoch 400/500, Loss: 147.0830
+Epoch 401/500, Loss: 147.1803
+Epoch 402/500, Loss: 147.2819
+Epoch 403/500, Loss: 147.0853
+Epoch 404/500, Loss: 147.1666
+Epoch 405/500, Loss: 147.1079
+Epoch 406/500, Loss: 147.0254
+Epoch 407/500, Loss: 146.9616
+Epoch 408/500, Loss: 146.9378
+Epoch 409/500, Loss: 146.9653
+Epoch 410/500, Loss: 146.9347
+Epoch 411/500, Loss: 146.9216
+Epoch 412/500, Loss: 147.0516
+Epoch 413/500, Loss: 147.1231
+Epoch 414/500, Loss: 147.1054
+Epoch 415/500, Loss: 147.0563
+Epoch 416/500, Loss: 147.0060
+Epoch 417/500, Loss: 146.9344
+Epoch 418/500, Loss: 146.9379
+Epoch 419/500, Loss: 147.0076
+Epoch 420/500, Loss: 147.0390
+Epoch 421/500, Loss: 146.9712
+Epoch 422/500, Loss: 146.9257
+Epoch 423/500, Loss: 146.9461
+Epoch 424/500, Loss: 146.9642
+Epoch 425/500, Loss: 146.9304
+Epoch 426/500, Loss: 146.9727
+Epoch 427/500, Loss: 147.0754
+Epoch 428/500, Loss: 147.0451
+Epoch 429/500, Loss: 147.1539
+Epoch 430/500, Loss: 147.1234
+Epoch 431/500, Loss: 147.1788
+Epoch 432/500, Loss: 147.0065
+Epoch 433/500, Loss: 146.9136
+Epoch 434/500, Loss: 146.9186
+Epoch 435/500, Loss: 146.9523
+Epoch 436/500, Loss: 146.9660
+Epoch 437/500, Loss: 146.8829
+Epoch 438/500, Loss: 146.9278
+Epoch 439/500, Loss: 147.0082
+Epoch 440/500, Loss: 146.8767
+Epoch 441/500, Loss: 146.9310
+Epoch 442/500, Loss: 146.8969
+Epoch 443/500, Loss: 146.9121
+Epoch 444/500, Loss: 146.8677
+Epoch 445/500, Loss: 146.8838
+Epoch 446/500, Loss: 146.9653
+Epoch 447/500, Loss: 146.8924
+Epoch 448/500, Loss: 146.9469
+Epoch 449/500, Loss: 146.9691
+Epoch 450/500, Loss: 146.8962
+Epoch 451/500, Loss: 146.8446
+Epoch 452/500, Loss: 146.9928
+Epoch 453/500, Loss: 146.9980
+Epoch 454/500, Loss: 146.9922
+Epoch 455/500, Loss: 146.9602
+Epoch 456/500, Loss: 146.9025
+Epoch 457/500, Loss: 146.9629
+Epoch 458/500, Loss: 146.8598
+Epoch 459/500, Loss: 146.9563
+Epoch 460/500, Loss: 146.9454
+Epoch 461/500, Loss: 146.8112
+Epoch 462/500, Loss: 146.8302
+Epoch 463/500, Loss: 147.0122
+Epoch 464/500, Loss: 147.0060
+Epoch 465/500, Loss: 146.9113
+Epoch 466/500, Loss: 146.7774
+Epoch 467/500, Loss: 146.7470
+Epoch 468/500, Loss: 146.8315
+Epoch 469/500, Loss: 146.7922
+Epoch 470/500, Loss: 146.8592
+Epoch 471/500, Loss: 146.8740
+Epoch 472/500, Loss: 146.9253
+Epoch 473/500, Loss: 146.9285
+Epoch 474/500, Loss: 146.8773
+Epoch 475/500, Loss: 146.8398
+Epoch 476/500, Loss: 146.9653
+Epoch 477/500, Loss: 146.9133
+Epoch 478/500, Loss: 146.8700
+Epoch 479/500, Loss: 146.7091
+Epoch 480/500, Loss: 146.7498
+Epoch 481/500, Loss: 146.7379
+Epoch 482/500, Loss: 146.7667
+Epoch 483/500, Loss: 146.8825
+Epoch 484/500, Loss: 146.8519
+Epoch 485/500, Loss: 146.7681
+Epoch 486/500, Loss: 146.8348
+Epoch 487/500, Loss: 146.8444
+Epoch 488/500, Loss: 146.8274
+Epoch 489/500, Loss: 146.7503
+Epoch 490/500, Loss: 146.8925
+Epoch 491/500, Loss: 147.0235
+Epoch 492/500, Loss: 146.9633
+Epoch 493/500, Loss: 146.8149
+Epoch 494/500, Loss: 146.8136
+Epoch 495/500, Loss: 146.8508
+Epoch 496/500, Loss: 146.8917
+Epoch 497/500, Loss: 146.8241
+Epoch 498/500, Loss: 146.7675
+Epoch 499/500, Loss: 146.8510
+Epoch 500/500, Loss: 146.7946
+Epoch 1/500, Loss: 195.9839
+Epoch 2/500, Loss: 194.0653
+Epoch 3/500, Loss: 194.0407
+Epoch 4/500, Loss: 194.0397
+Epoch 5/500, Loss: 194.0396
+Epoch 6/500, Loss: 194.0394
+Epoch 7/500, Loss: 194.0390
+Epoch 8/500, Loss: 194.0385
+Epoch 9/500, Loss: 194.0381
+Epoch 10/500, Loss: 194.0374
+Epoch 11/500, Loss: 194.0357
+Epoch 12/500, Loss: 194.0328
+Epoch 13/500, Loss: 194.0260
+Epoch 14/500, Loss: 194.0097
+Epoch 15/500, Loss: 193.9641
+Epoch 16/500, Loss: 193.7643
+Epoch 17/500, Loss: 193.0584
+Epoch 18/500, Loss: 192.3215
+Epoch 19/500, Loss: 192.0072
+Epoch 20/500, Loss: 191.6035
+Epoch 21/500, Loss: 191.5727
+Epoch 22/500, Loss: 191.0331
+Epoch 23/500, Loss: 191.2231
+Epoch 24/500, Loss: 190.2396
+Epoch 25/500, Loss: 189.8843
+Epoch 26/500, Loss: 190.5155
+Epoch 27/500, Loss: 189.7011
+Epoch 28/500, Loss: 190.2456
+Epoch 29/500, Loss: 189.2429
+Epoch 30/500, Loss: 188.9279
+Epoch 31/500, Loss: 189.2884
+Epoch 32/500, Loss: 188.7710
+Epoch 33/500, Loss: 188.2557
+Epoch 34/500, Loss: 188.4202
+Epoch 35/500, Loss: 187.3669
+Epoch 36/500, Loss: 188.2397
+Epoch 37/500, Loss: 186.7732
+Epoch 38/500, Loss: 187.5899
+Epoch 39/500, Loss: 186.0304
+Epoch 40/500, Loss: 187.0227
+Epoch 41/500, Loss: 184.9085
+Epoch 42/500, Loss: 193.2432
+Epoch 43/500, Loss: 189.7317
+Epoch 44/500, Loss: 186.2841
+Epoch 45/500, Loss: 187.1237
+Epoch 46/500, Loss: 185.4972
+Epoch 47/500, Loss: 184.7998
+Epoch 48/500, Loss: 184.7499
+Epoch 49/500, Loss: 184.7554
+Epoch 50/500, Loss: 184.3643
+Epoch 51/500, Loss: 183.1515
+Epoch 52/500, Loss: 183.5631
+Epoch 53/500, Loss: 182.5925
+Epoch 54/500, Loss: 182.2701
+Epoch 55/500, Loss: 181.7335
+Epoch 56/500, Loss: 182.2039
+Epoch 57/500, Loss: 182.9303
+Epoch 58/500, Loss: 181.7858
+Epoch 59/500, Loss: 182.3928
+Epoch 60/500, Loss: 180.3144
+Epoch 61/500, Loss: 180.3282
+Epoch 62/500, Loss: 181.7593
+Epoch 63/500, Loss: 180.2546
+Epoch 64/500, Loss: 184.1221
+Epoch 65/500, Loss: 184.2480
+Epoch 66/500, Loss: 183.4641
+Epoch 67/500, Loss: 182.8235
+Epoch 68/500, Loss: 182.3685
+Epoch 69/500, Loss: 180.7534
+Epoch 70/500, Loss: 181.6157
+Epoch 71/500, Loss: 181.7998
+Epoch 72/500, Loss: 182.1731
+Epoch 73/500, Loss: 181.5767
+Epoch 74/500, Loss: 182.5870
+Epoch 75/500, Loss: 180.5439
+Epoch 76/500, Loss: 180.0516
+Epoch 77/500, Loss: 179.6838
+Epoch 78/500, Loss: 179.3990
+Epoch 79/500, Loss: 179.2637
+Epoch 80/500, Loss: 180.7240
+Epoch 81/500, Loss: 180.2025
+Epoch 82/500, Loss: 179.2126
+Epoch 83/500, Loss: 178.8727
+Epoch 84/500, Loss: 179.7244
+Epoch 85/500, Loss: 180.1171
+Epoch 86/500, Loss: 179.6177
+Epoch 87/500, Loss: 178.6138
+Epoch 88/500, Loss: 178.9975
+Epoch 89/500, Loss: 180.0954
+Epoch 90/500, Loss: 178.3505
+Epoch 91/500, Loss: 178.5647
+Epoch 92/500, Loss: 179.0860
+Epoch 93/500, Loss: 178.5679
+Epoch 94/500, Loss: 180.0933
+Epoch 95/500, Loss: 178.1514
+Epoch 96/500, Loss: 181.6539
+Epoch 97/500, Loss: 178.4072
+Epoch 98/500, Loss: 178.9727
+Epoch 99/500, Loss: 177.6753
+Epoch 100/500, Loss: 184.1515
+Epoch 101/500, Loss: 178.3412
+Epoch 102/500, Loss: 179.0338
+Epoch 103/500, Loss: 177.9472
+Epoch 104/500, Loss: 178.2481
+Epoch 105/500, Loss: 177.6099
+Epoch 106/500, Loss: 177.6598
+Epoch 107/500, Loss: 179.2296
+Epoch 108/500, Loss: 178.1029
+Epoch 109/500, Loss: 179.6646
+Epoch 110/500, Loss: 179.6565
+Epoch 111/500, Loss: 178.4278
+Epoch 112/500, Loss: 179.7169
+Epoch 113/500, Loss: 178.3562
+Epoch 114/500, Loss: 177.2225
+Epoch 115/500, Loss: 177.4128
+Epoch 116/500, Loss: 177.8023
+Epoch 117/500, Loss: 177.4117
+Epoch 118/500, Loss: 176.9904
+Epoch 119/500, Loss: 177.3356
+Epoch 120/500, Loss: 177.2193
+Epoch 121/500, Loss: 177.0914
+Epoch 122/500, Loss: 176.1214
+Epoch 123/500, Loss: 178.0487
+Epoch 124/500, Loss: 177.2985
+Epoch 125/500, Loss: 177.9321
+Epoch 126/500, Loss: 176.0575
+Epoch 127/500, Loss: 179.0603
+Epoch 128/500, Loss: 178.6481
+Epoch 129/500, Loss: 177.6080
+Epoch 130/500, Loss: 176.4142
+Epoch 131/500, Loss: 177.0062
+Epoch 132/500, Loss: 177.3918
+Epoch 133/500, Loss: 177.4870
+Epoch 134/500, Loss: 176.4059
+Epoch 135/500, Loss: 176.4951
+Epoch 136/500, Loss: 175.5895
+Epoch 137/500, Loss: 176.1928
+Epoch 138/500, Loss: 176.4356
+Epoch 139/500, Loss: 177.5358
+Epoch 140/500, Loss: 177.4042
+Epoch 141/500, Loss: 176.6042
+Epoch 142/500, Loss: 176.0590
+Epoch 143/500, Loss: 177.0177
+Epoch 144/500, Loss: 175.5658
+Epoch 145/500, Loss: 176.5200
+Epoch 146/500, Loss: 175.2165
+Epoch 147/500, Loss: 174.2796
+Epoch 148/500, Loss: 175.0349
+Epoch 149/500, Loss: 174.6778
+Epoch 150/500, Loss: 174.4560
+Epoch 151/500, Loss: 174.0024
+Epoch 152/500, Loss: 173.9272
+Epoch 153/500, Loss: 173.4570
+Epoch 154/500, Loss: 176.6215
+Epoch 155/500, Loss: 174.2465
+Epoch 156/500, Loss: 176.9620
+Epoch 157/500, Loss: 177.3896
+Epoch 158/500, Loss: 174.8840
+Epoch 159/500, Loss: 173.7518
+Epoch 160/500, Loss: 175.8914
+Epoch 161/500, Loss: 172.3028
+Epoch 162/500, Loss: 174.3960
+Epoch 163/500, Loss: 173.0935
+Epoch 164/500, Loss: 172.1926
+Epoch 165/500, Loss: 173.1059
+Epoch 166/500, Loss: 171.6059
+Epoch 167/500, Loss: 171.9722
+Epoch 168/500, Loss: 170.9055
+Epoch 169/500, Loss: 170.9907
+Epoch 170/500, Loss: 171.7178
+Epoch 171/500, Loss: 170.9547
+Epoch 172/500, Loss: 168.8787
+Epoch 173/500, Loss: 168.7302
+Epoch 174/500, Loss: 168.7004
+Epoch 175/500, Loss: 169.8682
+Epoch 176/500, Loss: 170.3623
+Epoch 177/500, Loss: 170.2768
+Epoch 178/500, Loss: 168.3936
+Epoch 179/500, Loss: 168.3779
+Epoch 180/500, Loss: 167.5653
+Epoch 181/500, Loss: 169.4936
+Epoch 182/500, Loss: 167.9250
+Epoch 183/500, Loss: 167.5200
+Epoch 184/500, Loss: 167.5918
+Epoch 185/500, Loss: 168.4112
+Epoch 186/500, Loss: 167.5127
+Epoch 187/500, Loss: 168.2896
+Epoch 188/500, Loss: 170.1636
+Epoch 189/500, Loss: 168.2297
+Epoch 190/500, Loss: 167.4908
+Epoch 191/500, Loss: 168.9197
+Epoch 192/500, Loss: 167.9418
+Epoch 193/500, Loss: 166.6664
+Epoch 194/500, Loss: 166.4384
+Epoch 195/500, Loss: 167.3865
+Epoch 196/500, Loss: 167.7420
+Epoch 197/500, Loss: 166.5226
+Epoch 198/500, Loss: 167.9416
+Epoch 199/500, Loss: 168.5812
+Epoch 200/500, Loss: 166.4483
+Epoch 201/500, Loss: 165.9838
+Epoch 202/500, Loss: 165.6359
+Epoch 203/500, Loss: 165.6661
+Epoch 204/500, Loss: 165.6297
+Epoch 205/500, Loss: 166.9367
+Epoch 206/500, Loss: 167.0413
+Epoch 207/500, Loss: 170.1178
+Epoch 208/500, Loss: 167.6815
+Epoch 209/500, Loss: 166.7450
+Epoch 210/500, Loss: 166.3883
+Epoch 211/500, Loss: 166.3034
+Epoch 212/500, Loss: 165.9896
+Epoch 213/500, Loss: 165.5008
+Epoch 214/500, Loss: 165.2038
+Epoch 215/500, Loss: 165.0671
+Epoch 216/500, Loss: 165.1118
+Epoch 217/500, Loss: 165.2187
+Epoch 218/500, Loss: 165.9933
+Epoch 219/500, Loss: 166.3765
+Epoch 220/500, Loss: 167.2866
+Epoch 221/500, Loss: 166.3897
+Epoch 222/500, Loss: 166.1111
+Epoch 223/500, Loss: 166.7856
+Epoch 224/500, Loss: 165.7328
+Epoch 225/500, Loss: 165.5004
+Epoch 226/500, Loss: 165.1748
+Epoch 227/500, Loss: 165.1479
+Epoch 228/500, Loss: 165.5239
+Epoch 229/500, Loss: 165.9150
+Epoch 230/500, Loss: 165.6081
+Epoch 231/500, Loss: 166.0495
+Epoch 232/500, Loss: 165.7562
+Epoch 233/500, Loss: 166.9743
+Epoch 234/500, Loss: 166.1782
+Epoch 235/500, Loss: 165.2462
+Epoch 236/500, Loss: 164.8120
+Epoch 237/500, Loss: 164.6135
+Epoch 238/500, Loss: 164.6427
+Epoch 239/500, Loss: 164.8757
+Epoch 240/500, Loss: 164.6977
+Epoch 241/500, Loss: 164.5977
+Epoch 242/500, Loss: 165.6760
+Epoch 243/500, Loss: 165.6533
+Epoch 244/500, Loss: 164.7172
+Epoch 245/500, Loss: 164.4881
+Epoch 246/500, Loss: 164.3214
+Epoch 247/500, Loss: 164.4060
+Epoch 248/500, Loss: 164.6504
+Epoch 249/500, Loss: 164.6988
+Epoch 250/500, Loss: 164.5321
+Epoch 251/500, Loss: 165.1461
+Epoch 252/500, Loss: 166.2133
+Epoch 253/500, Loss: 165.4828
+Epoch 254/500, Loss: 165.4517
+Epoch 255/500, Loss: 164.9465
+Epoch 256/500, Loss: 164.6887
+Epoch 257/500, Loss: 165.1789
+Epoch 258/500, Loss: 165.0818
+Epoch 259/500, Loss: 165.4224
+Epoch 260/500, Loss: 165.2621
+Epoch 261/500, Loss: 165.4240
+Epoch 262/500, Loss: 165.0774
+Epoch 263/500, Loss: 164.7300
+Epoch 264/500, Loss: 164.3590
+Epoch 265/500, Loss: 164.3514
+Epoch 266/500, Loss: 164.3808
+Epoch 267/500, Loss: 164.3804
+Epoch 268/500, Loss: 165.0784
+Epoch 269/500, Loss: 164.1312
+Epoch 270/500, Loss: 164.1781
+Epoch 271/500, Loss: 165.8124
+Epoch 272/500, Loss: 164.8925
+Epoch 273/500, Loss: 165.4685
+Epoch 274/500, Loss: 166.0706
+Epoch 275/500, Loss: 164.7616
+Epoch 276/500, Loss: 164.2703
+Epoch 277/500, Loss: 163.8303
+Epoch 278/500, Loss: 163.7441
+Epoch 279/500, Loss: 164.5534
+Epoch 280/500, Loss: 164.3900
+Epoch 281/500, Loss: 164.6293
+Epoch 282/500, Loss: 164.4698
+Epoch 283/500, Loss: 164.5716
+Epoch 284/500, Loss: 164.7788
+Epoch 285/500, Loss: 165.5175
+Epoch 286/500, Loss: 165.2856
+Epoch 287/500, Loss: 165.1851
+Epoch 288/500, Loss: 165.4576
+Epoch 289/500, Loss: 165.2422
+Epoch 290/500, Loss: 164.8766
+Epoch 291/500, Loss: 164.9245
+Epoch 292/500, Loss: 164.7273
+Epoch 293/500, Loss: 164.7415
+Epoch 294/500, Loss: 164.8837
+Epoch 295/500, Loss: 164.8195
+Epoch 296/500, Loss: 164.7452
+Epoch 297/500, Loss: 164.0631
+Epoch 298/500, Loss: 163.8466
+Epoch 299/500, Loss: 163.8024
+Epoch 300/500, Loss: 163.7666
+Epoch 301/500, Loss: 163.7110
+Epoch 302/500, Loss: 163.5914
+Epoch 303/500, Loss: 163.9620
+Epoch 304/500, Loss: 164.1888
+Epoch 305/500, Loss: 164.0687
+Epoch 306/500, Loss: 164.7493
+Epoch 307/500, Loss: 165.0917
+Epoch 308/500, Loss: 164.0586
+Epoch 309/500, Loss: 164.0225
+Epoch 310/500, Loss: 165.1341
+Epoch 311/500, Loss: 164.0104
+Epoch 312/500, Loss: 164.3627
+Epoch 313/500, Loss: 165.1902
+Epoch 314/500, Loss: 163.9435
+Epoch 315/500, Loss: 164.8113
+Epoch 316/500, Loss: 165.7479
+Epoch 317/500, Loss: 165.4400
+Epoch 318/500, Loss: 164.6562
+Epoch 319/500, Loss: 164.3317
+Epoch 320/500, Loss: 164.9579
+Epoch 321/500, Loss: 164.1203
+Epoch 322/500, Loss: 163.9614
+Epoch 323/500, Loss: 164.1143
+Epoch 324/500, Loss: 164.1432
+Epoch 325/500, Loss: 163.7260
+Epoch 326/500, Loss: 164.0953
+Epoch 327/500, Loss: 164.0069
+Epoch 328/500, Loss: 164.7292
+Epoch 329/500, Loss: 164.9801
+Epoch 330/500, Loss: 164.0560
+Epoch 331/500, Loss: 163.7527
+Epoch 332/500, Loss: 163.8806
+Epoch 333/500, Loss: 163.5549
+Epoch 334/500, Loss: 163.3379
+Epoch 335/500, Loss: 164.2743
+Epoch 336/500, Loss: 163.6266
+Epoch 337/500, Loss: 163.1404
+Epoch 338/500, Loss: 163.7247
+Epoch 339/500, Loss: 163.4194
+Epoch 340/500, Loss: 163.4301
+Epoch 341/500, Loss: 163.2781
+Epoch 342/500, Loss: 163.3159
+Epoch 343/500, Loss: 163.5942
+Epoch 344/500, Loss: 163.5846
+Epoch 345/500, Loss: 163.6266
+Epoch 346/500, Loss: 163.4031
+Epoch 347/500, Loss: 163.2795
+Epoch 348/500, Loss: 163.1032
+Epoch 349/500, Loss: 163.4780
+Epoch 350/500, Loss: 163.5962
+Epoch 351/500, Loss: 163.3330
+Epoch 352/500, Loss: 163.4199
+Epoch 353/500, Loss: 163.7848
+Epoch 354/500, Loss: 163.4454
+Epoch 355/500, Loss: 164.1471
+Epoch 356/500, Loss: 164.4517
+Epoch 357/500, Loss: 164.3494
+Epoch 358/500, Loss: 164.0039
+Epoch 359/500, Loss: 164.0627
+Epoch 360/500, Loss: 164.0759
+Epoch 361/500, Loss: 164.2490
+Epoch 362/500, Loss: 164.5556
+Epoch 363/500, Loss: 164.6121
+Epoch 364/500, Loss: 164.0574
+Epoch 365/500, Loss: 163.7593
+Epoch 366/500, Loss: 163.9028
+Epoch 367/500, Loss: 163.3462
+Epoch 368/500, Loss: 163.3682
+Epoch 369/500, Loss: 163.2911
+Epoch 370/500, Loss: 163.2741
+Epoch 371/500, Loss: 163.4715
+Epoch 372/500, Loss: 163.3661
+Epoch 373/500, Loss: 163.9206
+Epoch 374/500, Loss: 163.2402
+Epoch 375/500, Loss: 163.7349
+Epoch 376/500, Loss: 164.0217
+Epoch 377/500, Loss: 163.3371
+Epoch 378/500, Loss: 163.6302
+Epoch 379/500, Loss: 163.5043
+Epoch 380/500, Loss: 163.4366
+Epoch 381/500, Loss: 163.5391
+Epoch 382/500, Loss: 163.9019
+Epoch 383/500, Loss: 163.6429
+Epoch 384/500, Loss: 163.4367
+Epoch 385/500, Loss: 163.6661
+Epoch 386/500, Loss: 163.5507
+Epoch 387/500, Loss: 163.7902
+Epoch 388/500, Loss: 163.5516
+Epoch 389/500, Loss: 163.8271
+Epoch 390/500, Loss: 163.6674
+Epoch 391/500, Loss: 163.4390
+Epoch 392/500, Loss: 163.9425
+Epoch 393/500, Loss: 163.9000
+Epoch 394/500, Loss: 164.0679
+Epoch 395/500, Loss: 163.9401
+Epoch 396/500, Loss: 164.0621
+Epoch 397/500, Loss: 164.7720
+Epoch 398/500, Loss: 164.9132
+Epoch 399/500, Loss: 164.2091
+Epoch 400/500, Loss: 163.8265
+Epoch 401/500, Loss: 164.6265
+Epoch 402/500, Loss: 163.8558
+Epoch 403/500, Loss: 163.5322
+Epoch 404/500, Loss: 163.5943
+Epoch 405/500, Loss: 163.3821
+Epoch 406/500, Loss: 163.3253
+Epoch 407/500, Loss: 163.0663
+Epoch 408/500, Loss: 163.3371
+Epoch 409/500, Loss: 162.8581
+Epoch 410/500, Loss: 162.7961
+Epoch 411/500, Loss: 162.9531
+Epoch 412/500, Loss: 163.2826
+Epoch 413/500, Loss: 163.1471
+Epoch 414/500, Loss: 162.9463
+Epoch 415/500, Loss: 163.4020
+Epoch 416/500, Loss: 164.1438
+Epoch 417/500, Loss: 163.6137
+Epoch 418/500, Loss: 162.9709
+Epoch 419/500, Loss: 162.8121
+Epoch 420/500, Loss: 163.5168
+Epoch 421/500, Loss: 164.5611
+Epoch 422/500, Loss: 163.3664
+Epoch 423/500, Loss: 163.0479
+Epoch 424/500, Loss: 163.0662
+Epoch 425/500, Loss: 163.3418
+Epoch 426/500, Loss: 163.2560
+Epoch 427/500, Loss: 163.8677
+Epoch 428/500, Loss: 163.3709
+Epoch 429/500, Loss: 163.5437
+Epoch 430/500, Loss: 163.5031
+Epoch 431/500, Loss: 162.9151
+Epoch 432/500, Loss: 162.9607
+Epoch 433/500, Loss: 163.0949
+Epoch 434/500, Loss: 163.3356
+Epoch 435/500, Loss: 163.9562
+Epoch 436/500, Loss: 163.3616
+Epoch 437/500, Loss: 163.3765
+Epoch 438/500, Loss: 163.5236
+Epoch 439/500, Loss: 162.8442
+Epoch 440/500, Loss: 163.4761
+Epoch 441/500, Loss: 163.2918
+Epoch 442/500, Loss: 162.7326
+Epoch 443/500, Loss: 162.7241
+Epoch 444/500, Loss: 163.0753
+Epoch 445/500, Loss: 163.0073
+Epoch 446/500, Loss: 162.6288
+Epoch 447/500, Loss: 162.5373
+Epoch 448/500, Loss: 162.9008
+Epoch 449/500, Loss: 163.7625
+Epoch 450/500, Loss: 164.1889
+Epoch 451/500, Loss: 163.9481
+Epoch 452/500, Loss: 164.5677
+Epoch 453/500, Loss: 164.2159
+Epoch 454/500, Loss: 164.1160
+Epoch 455/500, Loss: 164.3747
+Epoch 456/500, Loss: 164.3259
+Epoch 457/500, Loss: 163.1131
+Epoch 458/500, Loss: 163.1828
+Epoch 459/500, Loss: 162.8477
+Epoch 460/500, Loss: 163.1577
+Epoch 461/500, Loss: 162.8746
+Epoch 462/500, Loss: 163.4718
+Epoch 463/500, Loss: 162.6197
+Epoch 464/500, Loss: 162.6465
+Epoch 465/500, Loss: 163.3052
+Epoch 466/500, Loss: 162.8470
+Epoch 467/500, Loss: 163.0917
+Epoch 468/500, Loss: 163.2639
+Epoch 469/500, Loss: 163.9020
+Epoch 470/500, Loss: 163.5919
+Epoch 471/500, Loss: 164.0746
+Epoch 472/500, Loss: 165.5872
+Epoch 473/500, Loss: 164.4961
+Epoch 474/500, Loss: 163.4161
+Epoch 475/500, Loss: 163.6521
+Epoch 476/500, Loss: 163.8539
+Epoch 477/500, Loss: 163.0562
+Epoch 478/500, Loss: 163.0380
+Epoch 479/500, Loss: 163.0313
+Epoch 480/500, Loss: 162.7552
+Epoch 481/500, Loss: 162.6058
+Epoch 482/500, Loss: 162.5836
+Epoch 483/500, Loss: 162.6810
+Epoch 484/500, Loss: 162.5712
+Epoch 485/500, Loss: 163.2289
+Epoch 486/500, Loss: 162.8365
+Epoch 487/500, Loss: 163.6593
+Epoch 488/500, Loss: 162.9246
+Epoch 489/500, Loss: 163.1402
+Epoch 490/500, Loss: 163.1148
+Epoch 491/500, Loss: 162.8118
+Epoch 492/500, Loss: 162.5937
+Epoch 493/500, Loss: 162.7522
+Epoch 494/500, Loss: 163.5075
+Epoch 495/500, Loss: 163.4450
+Epoch 496/500, Loss: 163.3377
+Epoch 497/500, Loss: 163.1896
+Epoch 498/500, Loss: 163.3919
+Epoch 499/500, Loss: 162.8417
+Epoch 500/500, Loss: 163.2189
+Epoch 1/500, Loss: 195.5108
+Epoch 2/500, Loss: 190.7264
+Epoch 3/500, Loss: 180.5315
+Epoch 4/500, Loss: 175.7607
+Epoch 5/500, Loss: 173.6115
+Epoch 6/500, Loss: 172.0475
+Epoch 7/500, Loss: 170.8724
+Epoch 8/500, Loss: 169.7785
+Epoch 9/500, Loss: 168.7873
+Epoch 10/500, Loss: 167.8801
+Epoch 11/500, Loss: 167.0862
+Epoch 12/500, Loss: 166.2480
+Epoch 13/500, Loss: 165.3585
+Epoch 14/500, Loss: 164.7022
+Epoch 15/500, Loss: 163.8677
+Epoch 16/500, Loss: 163.1301
+Epoch 17/500, Loss: 162.6025
+Epoch 18/500, Loss: 161.8331
+Epoch 19/500, Loss: 161.3443
+Epoch 20/500, Loss: 160.5328
+Epoch 21/500, Loss: 159.8144
+Epoch 22/500, Loss: 159.4853
+Epoch 23/500, Loss: 158.8688
+Epoch 24/500, Loss: 158.4780
+Epoch 25/500, Loss: 158.0008
+Epoch 26/500, Loss: 157.4262
+Epoch 27/500, Loss: 157.0746
+Epoch 28/500, Loss: 156.5101
+Epoch 29/500, Loss: 156.1881
+Epoch 30/500, Loss: 155.8723
+Epoch 31/500, Loss: 155.4616
+Epoch 32/500, Loss: 155.2664
+Epoch 33/500, Loss: 155.0210
+Epoch 34/500, Loss: 154.6054
+Epoch 35/500, Loss: 154.2689
+Epoch 36/500, Loss: 154.0407
+Epoch 37/500, Loss: 153.7698
+Epoch 38/500, Loss: 153.5262
+Epoch 39/500, Loss: 153.1584
+Epoch 40/500, Loss: 153.1758
+Epoch 41/500, Loss: 152.9272
+Epoch 42/500, Loss: 152.6776
+Epoch 43/500, Loss: 152.3213
+Epoch 44/500, Loss: 152.1551
+Epoch 45/500, Loss: 152.1321
+Epoch 46/500, Loss: 151.8259
+Epoch 47/500, Loss: 151.7323
+Epoch 48/500, Loss: 151.6654
+Epoch 49/500, Loss: 151.5414
+Epoch 50/500, Loss: 151.2561
+Epoch 51/500, Loss: 151.0525
+Epoch 52/500, Loss: 150.9606
+Epoch 53/500, Loss: 151.0344
+Epoch 54/500, Loss: 150.9057
+Epoch 55/500, Loss: 150.7034
+Epoch 56/500, Loss: 150.5051
+Epoch 57/500, Loss: 150.4761
+Epoch 58/500, Loss: 150.2131
+Epoch 59/500, Loss: 150.2988
+Epoch 60/500, Loss: 150.3022
+Epoch 61/500, Loss: 150.1988
+Epoch 62/500, Loss: 149.9894
+Epoch 63/500, Loss: 149.9147
+Epoch 64/500, Loss: 149.7465
+Epoch 65/500, Loss: 149.7067
+Epoch 66/500, Loss: 149.5611
+Epoch 67/500, Loss: 149.5125
+Epoch 68/500, Loss: 149.4886
+Epoch 69/500, Loss: 149.4198
+Epoch 70/500, Loss: 149.3938
+Epoch 71/500, Loss: 149.3939
+Epoch 72/500, Loss: 149.2612
+Epoch 73/500, Loss: 149.2365
+Epoch 74/500, Loss: 149.2326
+Epoch 75/500, Loss: 149.1266
+Epoch 76/500, Loss: 149.0292
+Epoch 77/500, Loss: 148.9195
+Epoch 78/500, Loss: 148.9319
+Epoch 79/500, Loss: 148.7355
+Epoch 80/500, Loss: 148.7547
+Epoch 81/500, Loss: 148.5787
+Epoch 82/500, Loss: 148.6593
+Epoch 83/500, Loss: 148.8351
+Epoch 84/500, Loss: 148.7089
+Epoch 85/500, Loss: 148.4109
+Epoch 86/500, Loss: 148.3582
+Epoch 87/500, Loss: 148.4217
+Epoch 88/500, Loss: 148.3510
+Epoch 89/500, Loss: 148.4295
+Epoch 90/500, Loss: 148.2780
+Epoch 91/500, Loss: 148.3785
+Epoch 92/500, Loss: 148.3703
+Epoch 93/500, Loss: 148.3885
+Epoch 94/500, Loss: 148.1939
+Epoch 95/500, Loss: 148.0597
+Epoch 96/500, Loss: 148.0800
+Epoch 97/500, Loss: 148.0963
+Epoch 98/500, Loss: 148.0280
+Epoch 99/500, Loss: 148.0040
+Epoch 100/500, Loss: 147.8809
+Epoch 101/500, Loss: 147.8465
+Epoch 102/500, Loss: 147.9730
+Epoch 103/500, Loss: 147.9762
+Epoch 104/500, Loss: 148.0609
+Epoch 105/500, Loss: 147.8116
+Epoch 106/500, Loss: 147.8613
+Epoch 107/500, Loss: 147.6284
+Epoch 108/500, Loss: 147.8013
+Epoch 109/500, Loss: 147.8158
+Epoch 110/500, Loss: 147.7141
+Epoch 111/500, Loss: 147.5929
+Epoch 112/500, Loss: 147.5091
+Epoch 113/500, Loss: 147.5013
+Epoch 114/500, Loss: 147.4813
+Epoch 115/500, Loss: 147.6532
+Epoch 116/500, Loss: 147.4704
+Epoch 117/500, Loss: 147.3887
+Epoch 118/500, Loss: 147.3707
+Epoch 119/500, Loss: 147.4406
+Epoch 120/500, Loss: 147.4540
+Epoch 121/500, Loss: 147.4680
+Epoch 122/500, Loss: 147.2944
+Epoch 123/500, Loss: 147.3228
+Epoch 124/500, Loss: 147.3315
+Epoch 125/500, Loss: 147.3064
+Epoch 126/500, Loss: 147.1674
+Epoch 127/500, Loss: 147.2955
+Epoch 128/500, Loss: 147.4151
+Epoch 129/500, Loss: 147.2826
+Epoch 130/500, Loss: 147.1648
+Epoch 131/500, Loss: 147.3752
+Epoch 132/500, Loss: 147.2821
+Epoch 133/500, Loss: 147.1862
+Epoch 134/500, Loss: 147.0933
+Epoch 135/500, Loss: 147.3170
+Epoch 136/500, Loss: 147.1490
+Epoch 137/500, Loss: 147.1277
+Epoch 138/500, Loss: 147.1099
+Epoch 139/500, Loss: 147.1517
+Epoch 140/500, Loss: 146.9994
+Epoch 141/500, Loss: 146.9735
+Epoch 142/500, Loss: 147.1548
+Epoch 143/500, Loss: 147.1967
+Epoch 144/500, Loss: 147.1043
+Epoch 145/500, Loss: 146.9984
+Epoch 146/500, Loss: 147.0470
+Epoch 147/500, Loss: 147.0297
+Epoch 148/500, Loss: 147.0465
+Epoch 149/500, Loss: 147.0540
+Epoch 150/500, Loss: 146.9118
+Epoch 151/500, Loss: 146.9151
+Epoch 152/500, Loss: 146.9225
+Epoch 153/500, Loss: 147.0204
+Epoch 154/500, Loss: 146.8602
+Epoch 155/500, Loss: 146.9227
+Epoch 156/500, Loss: 146.7837
+Epoch 157/500, Loss: 146.8030
+Epoch 158/500, Loss: 146.9294
+Epoch 159/500, Loss: 146.9178
+Epoch 160/500, Loss: 146.9468
+Epoch 161/500, Loss: 146.8401
+Epoch 162/500, Loss: 146.8627
+Epoch 163/500, Loss: 146.9790
+Epoch 164/500, Loss: 146.9023
+Epoch 165/500, Loss: 146.8080
+Epoch 166/500, Loss: 146.8813
+Epoch 167/500, Loss: 146.6959
+Epoch 168/500, Loss: 146.7538
+Epoch 169/500, Loss: 146.6246
+Epoch 170/500, Loss: 147.0216
+Epoch 171/500, Loss: 146.8249
+Epoch 172/500, Loss: 146.6222
+Epoch 173/500, Loss: 146.8358
+Epoch 174/500, Loss: 146.9023
+Epoch 175/500, Loss: 146.6080
+Epoch 176/500, Loss: 146.6540
+Epoch 177/500, Loss: 146.6926
+Epoch 178/500, Loss: 146.6526
+Epoch 179/500, Loss: 146.6132
+Epoch 180/500, Loss: 146.7127
+Epoch 181/500, Loss: 146.4654
+Epoch 182/500, Loss: 146.4176
+Epoch 183/500, Loss: 146.4401
+Epoch 184/500, Loss: 146.5804
+Epoch 185/500, Loss: 146.7294
+Epoch 186/500, Loss: 146.5001
+Epoch 187/500, Loss: 146.5628
+Epoch 188/500, Loss: 146.7307
+Epoch 189/500, Loss: 146.5459
+Epoch 190/500, Loss: 146.5631
+Epoch 191/500, Loss: 146.4370
+Epoch 192/500, Loss: 146.5276
+Epoch 193/500, Loss: 146.4782
+Epoch 194/500, Loss: 146.6569
+Epoch 195/500, Loss: 146.6354
+Epoch 196/500, Loss: 146.5963
+Epoch 197/500, Loss: 146.5456
+Epoch 198/500, Loss: 146.7370
+Epoch 199/500, Loss: 146.6558
+Epoch 200/500, Loss: 146.3905
+Epoch 201/500, Loss: 146.6503
+Epoch 202/500, Loss: 146.4856
+Epoch 203/500, Loss: 146.3766
+Epoch 204/500, Loss: 146.4651
+Epoch 205/500, Loss: 146.5822
+Epoch 206/500, Loss: 146.3830
+Epoch 207/500, Loss: 146.4624
+Epoch 208/500, Loss: 146.3716
+Epoch 209/500, Loss: 146.3512
+Epoch 210/500, Loss: 146.4480
+Epoch 211/500, Loss: 146.4289
+Epoch 212/500, Loss: 146.6025
+Epoch 213/500, Loss: 146.5162
+Epoch 214/500, Loss: 146.6060
+Epoch 215/500, Loss: 146.4479
+Epoch 216/500, Loss: 146.4420
+Epoch 217/500, Loss: 146.5137
+Epoch 218/500, Loss: 146.3428
+Epoch 219/500, Loss: 146.3772
+Epoch 220/500, Loss: 146.5722
+Epoch 221/500, Loss: 146.2819
+Epoch 222/500, Loss: 146.3015
+Epoch 223/500, Loss: 146.3810
+Epoch 224/500, Loss: 146.1684
+Epoch 225/500, Loss: 146.5924
+Epoch 226/500, Loss: 146.7768
+Epoch 227/500, Loss: 146.5508
+Epoch 228/500, Loss: 146.4121
+Epoch 229/500, Loss: 146.5776
+Epoch 230/500, Loss: 146.4770
+Epoch 231/500, Loss: 146.5368
+Epoch 232/500, Loss: 146.5290
+Epoch 233/500, Loss: 146.4461
+Epoch 234/500, Loss: 146.3016
+Epoch 235/500, Loss: 146.1813
+Epoch 236/500, Loss: 146.1134
+Epoch 237/500, Loss: 146.1214
+Epoch 238/500, Loss: 146.3307
+Epoch 239/500, Loss: 146.2706
+Epoch 240/500, Loss: 146.4369
+Epoch 241/500, Loss: 146.3292
+Epoch 242/500, Loss: 146.2524
+Epoch 243/500, Loss: 146.2815
+Epoch 244/500, Loss: 146.0964
+Epoch 245/500, Loss: 146.2241
+Epoch 246/500, Loss: 146.1765
+Epoch 247/500, Loss: 146.3138
+Epoch 248/500, Loss: 146.2381
+Epoch 249/500, Loss: 146.1961
+Epoch 250/500, Loss: 146.2210
+Epoch 251/500, Loss: 146.2242
+Epoch 252/500, Loss: 146.4315
+Epoch 253/500, Loss: 146.3145
+Epoch 254/500, Loss: 146.2232
+Epoch 255/500, Loss: 146.1501
+Epoch 256/500, Loss: 146.1153
+Epoch 257/500, Loss: 146.5000
+Epoch 258/500, Loss: 146.3197
+Epoch 259/500, Loss: 146.4389
+Epoch 260/500, Loss: 146.4305
+Epoch 261/500, Loss: 146.2837
+Epoch 262/500, Loss: 146.1393
+Epoch 263/500, Loss: 146.2314
+Epoch 264/500, Loss: 146.1385
+Epoch 265/500, Loss: 146.0915
+Epoch 266/500, Loss: 146.2842
+Epoch 267/500, Loss: 146.1774
+Epoch 268/500, Loss: 146.1500
+Epoch 269/500, Loss: 146.1798
+Epoch 270/500, Loss: 146.2243
+Epoch 271/500, Loss: 146.1752
+Epoch 272/500, Loss: 146.2410
+Epoch 273/500, Loss: 146.1602
+Epoch 274/500, Loss: 146.3769
+Epoch 275/500, Loss: 146.2818
+Epoch 276/500, Loss: 146.1522
+Epoch 277/500, Loss: 146.3379
+Epoch 278/500, Loss: 146.1672
+Epoch 279/500, Loss: 146.0551
+Epoch 280/500, Loss: 146.2142
+Epoch 281/500, Loss: 146.1841
+Epoch 282/500, Loss: 146.2381
+Epoch 283/500, Loss: 146.3440
+Epoch 284/500, Loss: 146.1503
+Epoch 285/500, Loss: 146.2230
+Epoch 286/500, Loss: 146.2970
+Epoch 287/500, Loss: 146.1231
+Epoch 288/500, Loss: 146.2615
+Epoch 289/500, Loss: 146.1448
+Epoch 290/500, Loss: 146.1164
+Epoch 291/500, Loss: 146.1110
+Epoch 292/500, Loss: 145.9553
+Epoch 293/500, Loss: 145.9790
+Epoch 294/500, Loss: 146.0627
+Epoch 295/500, Loss: 145.9081
+Epoch 296/500, Loss: 146.0150
+Epoch 297/500, Loss: 146.1720
+Epoch 298/500, Loss: 146.1969
+Epoch 299/500, Loss: 146.2063
+Epoch 300/500, Loss: 146.1156
+Epoch 301/500, Loss: 146.2368
+Epoch 302/500, Loss: 146.0531
+Epoch 303/500, Loss: 146.0202
+Epoch 304/500, Loss: 145.9970
+Epoch 305/500, Loss: 146.0315
+Epoch 306/500, Loss: 146.1306
+Epoch 307/500, Loss: 146.1982
+Epoch 308/500, Loss: 146.2568
+Epoch 309/500, Loss: 146.1927
+Epoch 310/500, Loss: 146.0902
+Epoch 311/500, Loss: 145.9754
+Epoch 312/500, Loss: 145.9471
+Epoch 313/500, Loss: 145.9774
+Epoch 314/500, Loss: 146.0649
+Epoch 315/500, Loss: 146.1962
+Epoch 316/500, Loss: 146.0778
+Epoch 317/500, Loss: 146.1527
+Epoch 318/500, Loss: 146.0260
+Epoch 319/500, Loss: 146.0788
+Epoch 320/500, Loss: 146.1665
+Epoch 321/500, Loss: 145.9733
+Epoch 322/500, Loss: 145.9137
+Epoch 323/500, Loss: 145.9223
+Epoch 324/500, Loss: 146.0062
+Epoch 325/500, Loss: 146.1400
+Epoch 326/500, Loss: 146.0811
+Epoch 327/500, Loss: 145.9388
+Epoch 328/500, Loss: 146.0473
+Epoch 329/500, Loss: 146.0224
+Epoch 330/500, Loss: 146.0993
+Epoch 331/500, Loss: 146.1070
+Epoch 332/500, Loss: 146.1091
+Epoch 333/500, Loss: 146.1267
+Epoch 334/500, Loss: 146.0437
+Epoch 335/500, Loss: 146.1235
+Epoch 336/500, Loss: 146.0420
+Epoch 337/500, Loss: 146.1544
+Epoch 338/500, Loss: 146.0128
+Epoch 339/500, Loss: 145.9094
+Epoch 340/500, Loss: 145.9286
+Epoch 341/500, Loss: 145.9298
+Epoch 342/500, Loss: 146.0654
+Epoch 343/500, Loss: 145.9352
+Epoch 344/500, Loss: 145.8682
+Epoch 345/500, Loss: 145.9128
+Epoch 346/500, Loss: 146.0040
+Epoch 347/500, Loss: 145.9836
+Epoch 348/500, Loss: 145.8621
+Epoch 349/500, Loss: 145.9581
+Epoch 350/500, Loss: 146.1024
+Epoch 351/500, Loss: 146.2609
+Epoch 352/500, Loss: 146.0486
+Epoch 353/500, Loss: 146.1074
+Epoch 354/500, Loss: 146.1394
+Epoch 355/500, Loss: 145.8434
+Epoch 356/500, Loss: 145.8468
+Epoch 357/500, Loss: 145.8372
+Epoch 358/500, Loss: 145.8893
+Epoch 359/500, Loss: 145.9463
+Epoch 360/500, Loss: 145.8961
+Epoch 361/500, Loss: 145.8293
+Epoch 362/500, Loss: 145.9377
+Epoch 363/500, Loss: 145.8777
+Epoch 364/500, Loss: 145.9031
+Epoch 365/500, Loss: 145.9162
+Epoch 366/500, Loss: 146.1313
+Epoch 367/500, Loss: 146.0251
+Epoch 368/500, Loss: 146.0358
+Epoch 369/500, Loss: 145.8899
+Epoch 370/500, Loss: 145.7998
+Epoch 371/500, Loss: 145.9033
+Epoch 372/500, Loss: 145.9821
+Epoch 373/500, Loss: 145.9244
+Epoch 374/500, Loss: 145.9722
+Epoch 375/500, Loss: 146.1040
+Epoch 376/500, Loss: 145.8446
+Epoch 377/500, Loss: 145.8013
+Epoch 378/500, Loss: 145.9209
+Epoch 379/500, Loss: 145.9005
+Epoch 380/500, Loss: 146.0161
+Epoch 381/500, Loss: 146.0210
+Epoch 382/500, Loss: 145.9304
+Epoch 383/500, Loss: 146.0290
+Epoch 384/500, Loss: 145.9136
+Epoch 385/500, Loss: 146.0109
+Epoch 386/500, Loss: 145.9476
+Epoch 387/500, Loss: 145.9648
+Epoch 388/500, Loss: 146.0213
+Epoch 389/500, Loss: 146.0131
+Epoch 390/500, Loss: 146.0770
+Epoch 391/500, Loss: 145.9866
+Epoch 392/500, Loss: 145.9335
+Epoch 393/500, Loss: 145.9238
+Epoch 394/500, Loss: 145.8697
+Epoch 395/500, Loss: 145.8134
+Epoch 396/500, Loss: 146.0761
+Epoch 397/500, Loss: 146.0488
+Epoch 398/500, Loss: 145.9039
+Epoch 399/500, Loss: 145.8939
+Epoch 400/500, Loss: 145.8643
+Epoch 401/500, Loss: 145.8552
+Epoch 402/500, Loss: 145.8977
+Epoch 403/500, Loss: 145.8591
+Epoch 404/500, Loss: 145.8634
+Epoch 405/500, Loss: 145.9115
+Epoch 406/500, Loss: 145.8369
+Epoch 407/500, Loss: 145.8347
+Epoch 408/500, Loss: 145.9206
+Epoch 409/500, Loss: 145.8781
+Epoch 410/500, Loss: 145.8572
+Epoch 411/500, Loss: 145.7674
+Epoch 412/500, Loss: 145.8621
+Epoch 413/500, Loss: 145.9542
+Epoch 414/500, Loss: 145.8820
+Epoch 415/500, Loss: 145.9950
+Epoch 416/500, Loss: 145.9529
+Epoch 417/500, Loss: 146.0671
+Epoch 418/500, Loss: 145.9143
+Epoch 419/500, Loss: 145.8202
+Epoch 420/500, Loss: 145.9686
+Epoch 421/500, Loss: 145.9034
+Epoch 422/500, Loss: 145.9431
+Epoch 423/500, Loss: 145.8753
+Epoch 424/500, Loss: 145.8466
+Epoch 425/500, Loss: 145.8068
+Epoch 426/500, Loss: 145.8121
+Epoch 427/500, Loss: 145.8837
+Epoch 428/500, Loss: 145.6874
+Epoch 429/500, Loss: 145.7541
+Epoch 430/500, Loss: 145.8880
+Epoch 431/500, Loss: 145.8073
+Epoch 432/500, Loss: 145.8249
+Epoch 433/500, Loss: 145.8240
+Epoch 434/500, Loss: 145.8722
+Epoch 435/500, Loss: 145.7638
+Epoch 436/500, Loss: 145.8350
+Epoch 437/500, Loss: 146.0578
+Epoch 438/500, Loss: 146.1223
+Epoch 439/500, Loss: 146.0319
+Epoch 440/500, Loss: 146.0178
+Epoch 441/500, Loss: 145.9969
+Epoch 442/500, Loss: 145.8371
+Epoch 443/500, Loss: 145.7598
+Epoch 444/500, Loss: 145.7658
+Epoch 445/500, Loss: 145.7161
+Epoch 446/500, Loss: 145.7781
+Epoch 447/500, Loss: 145.8332
+Epoch 448/500, Loss: 145.9164
+Epoch 449/500, Loss: 145.8477
+Epoch 450/500, Loss: 145.7020
+Epoch 451/500, Loss: 145.8241
+Epoch 452/500, Loss: 145.8410
+Epoch 453/500, Loss: 145.7507
+Epoch 454/500, Loss: 145.7647
+Epoch 455/500, Loss: 145.9668
+Epoch 456/500, Loss: 145.8833
+Epoch 457/500, Loss: 145.8092
+Epoch 458/500, Loss: 145.7897
+Epoch 459/500, Loss: 145.7666
+Epoch 460/500, Loss: 145.7339
+Epoch 461/500, Loss: 145.8451
+Epoch 462/500, Loss: 145.7455
+Epoch 463/500, Loss: 145.8444
+Epoch 464/500, Loss: 145.9549
+Epoch 465/500, Loss: 146.1374
+Epoch 466/500, Loss: 145.9903
+Epoch 467/500, Loss: 145.9416
+Epoch 468/500, Loss: 145.8347
+Epoch 469/500, Loss: 145.8062
+Epoch 470/500, Loss: 145.9378
+Epoch 471/500, Loss: 145.8993
+Epoch 472/500, Loss: 145.9131
+Epoch 473/500, Loss: 145.8005
+Epoch 474/500, Loss: 145.6832
+Epoch 475/500, Loss: 145.7037
+Epoch 476/500, Loss: 145.8297
+Epoch 477/500, Loss: 145.8017
+Epoch 478/500, Loss: 145.8378
+Epoch 479/500, Loss: 145.8294
+Epoch 480/500, Loss: 145.7687
+Epoch 481/500, Loss: 145.7810
+Epoch 482/500, Loss: 145.6430
+Epoch 483/500, Loss: 145.8071
+Epoch 484/500, Loss: 145.8057
+Epoch 485/500, Loss: 145.8114
+Epoch 486/500, Loss: 145.9546
+Epoch 487/500, Loss: 145.8642
+Epoch 488/500, Loss: 145.7370
+Epoch 489/500, Loss: 145.6989
+Epoch 490/500, Loss: 145.7266
+Epoch 491/500, Loss: 145.7290
+Epoch 492/500, Loss: 145.8248
+Epoch 493/500, Loss: 145.8971
+Epoch 494/500, Loss: 145.7873
+Epoch 495/500, Loss: 145.7480
+Epoch 496/500, Loss: 145.7894
+Epoch 497/500, Loss: 145.6908
+Epoch 498/500, Loss: 145.6416
+Epoch 499/500, Loss: 145.7418
+Epoch 500/500, Loss: 145.9146
+Epoch 1/500, Loss: 110.0338
+Epoch 2/500, Loss: 108.0389
+Epoch 3/500, Loss: 107.2577
+Epoch 4/500, Loss: 106.0316
+Epoch 5/500, Loss: 104.9659
+Epoch 6/500, Loss: 103.9777
+Epoch 7/500, Loss: 103.3683
+Epoch 8/500, Loss: 102.6461
+Epoch 9/500, Loss: 101.8603
+Epoch 10/500, Loss: 101.1596
+Epoch 11/500, Loss: 100.5832
+Epoch 12/500, Loss: 99.9367
+Epoch 13/500, Loss: 99.5767
+Epoch 14/500, Loss: 98.8710
+Epoch 15/500, Loss: 98.6592
+Epoch 16/500, Loss: 97.9572
+Epoch 17/500, Loss: 97.4892
+Epoch 18/500, Loss: 96.8840
+Epoch 19/500, Loss: 96.4874
+Epoch 20/500, Loss: 96.0225
+Epoch 21/500, Loss: 95.6250
+Epoch 22/500, Loss: 94.9821
+Epoch 23/500, Loss: 94.9299
+Epoch 24/500, Loss: 94.2115
+Epoch 25/500, Loss: 93.9659
+Epoch 26/500, Loss: 93.3980
+Epoch 27/500, Loss: 92.8342
+Epoch 28/500, Loss: 92.5361
+Epoch 29/500, Loss: 92.2382
+Epoch 30/500, Loss: 92.0457
+Epoch 31/500, Loss: 91.6381
+Epoch 32/500, Loss: 91.3706
+Epoch 33/500, Loss: 91.0128
+Epoch 34/500, Loss: 90.5507
+Epoch 35/500, Loss: 90.3449
+Epoch 36/500, Loss: 90.1606
+Epoch 37/500, Loss: 90.1682
+Epoch 38/500, Loss: 89.6965
+Epoch 39/500, Loss: 89.5528
+Epoch 40/500, Loss: 89.2972
+Epoch 41/500, Loss: 89.0410
+Epoch 42/500, Loss: 88.8851
+Epoch 43/500, Loss: 88.3836
+Epoch 44/500, Loss: 88.5236
+Epoch 45/500, Loss: 88.2031
+Epoch 46/500, Loss: 88.0847
+Epoch 47/500, Loss: 87.9484
+Epoch 48/500, Loss: 87.8652
+Epoch 49/500, Loss: 87.4891
+Epoch 50/500, Loss: 87.4483
+Epoch 51/500, Loss: 87.2420
+Epoch 52/500, Loss: 86.9826
+Epoch 53/500, Loss: 87.0252
+Epoch 54/500, Loss: 86.8015
+Epoch 55/500, Loss: 86.7384
+Epoch 56/500, Loss: 86.7883
+Epoch 57/500, Loss: 86.4720
+Epoch 58/500, Loss: 86.4214
+Epoch 59/500, Loss: 86.0578
+Epoch 60/500, Loss: 86.0409
+Epoch 61/500, Loss: 85.9224
+Epoch 62/500, Loss: 86.0788
+Epoch 63/500, Loss: 85.7871
+Epoch 64/500, Loss: 85.6932
+Epoch 65/500, Loss: 85.5389
+Epoch 66/500, Loss: 85.4230
+Epoch 67/500, Loss: 85.4950
+Epoch 68/500, Loss: 85.4283
+Epoch 69/500, Loss: 85.5315
+Epoch 70/500, Loss: 85.3560
+Epoch 71/500, Loss: 85.2118
+Epoch 72/500, Loss: 85.1836
+Epoch 73/500, Loss: 84.9204
+Epoch 74/500, Loss: 85.1527
+Epoch 75/500, Loss: 85.0564
+Epoch 76/500, Loss: 84.8913
+Epoch 77/500, Loss: 84.8947
+Epoch 78/500, Loss: 84.7733
+Epoch 79/500, Loss: 84.6186
+Epoch 80/500, Loss: 84.7624
+Epoch 81/500, Loss: 84.6664
+Epoch 82/500, Loss: 84.5384
+Epoch 83/500, Loss: 84.6031
+Epoch 84/500, Loss: 84.7562
+Epoch 85/500, Loss: 84.6710
+Epoch 86/500, Loss: 84.3715
+Epoch 87/500, Loss: 84.4671
+Epoch 88/500, Loss: 84.4661
+Epoch 89/500, Loss: 84.3394
+Epoch 90/500, Loss: 84.3279
+Epoch 91/500, Loss: 84.3958
+Epoch 92/500, Loss: 84.4668
+Epoch 93/500, Loss: 84.1728
+Epoch 94/500, Loss: 84.1376
+Epoch 95/500, Loss: 84.0502
+Epoch 96/500, Loss: 84.0054
+Epoch 97/500, Loss: 83.9450
+Epoch 98/500, Loss: 83.9232
+Epoch 99/500, Loss: 83.9283
+Epoch 100/500, Loss: 83.9938
+Epoch 101/500, Loss: 83.8434
+Epoch 102/500, Loss: 84.0032
+Epoch 103/500, Loss: 83.9638
+Epoch 104/500, Loss: 84.1659
+Epoch 105/500, Loss: 83.9351
+Epoch 106/500, Loss: 83.9333
+Epoch 107/500, Loss: 83.8812
+Epoch 108/500, Loss: 83.8325
+Epoch 109/500, Loss: 83.7750
+Epoch 110/500, Loss: 83.6401
+Epoch 111/500, Loss: 83.5677
+Epoch 112/500, Loss: 83.4669
+Epoch 113/500, Loss: 83.5281
+Epoch 114/500, Loss: 83.5459
+Epoch 115/500, Loss: 83.4861
+Epoch 116/500, Loss: 83.4298
+Epoch 117/500, Loss: 83.5371
+Epoch 118/500, Loss: 83.5644
+Epoch 119/500, Loss: 83.3115
+Epoch 120/500, Loss: 83.3390
+Epoch 121/500, Loss: 83.3317
+Epoch 122/500, Loss: 83.3936
+Epoch 123/500, Loss: 83.3684
+Epoch 124/500, Loss: 83.3326
+Epoch 125/500, Loss: 83.2973
+Epoch 126/500, Loss: 83.1835
+Epoch 127/500, Loss: 83.2284
+Epoch 128/500, Loss: 83.1121
+Epoch 129/500, Loss: 83.2334
+Epoch 130/500, Loss: 83.2691
+Epoch 131/500, Loss: 83.3242
+Epoch 132/500, Loss: 83.2785
+Epoch 133/500, Loss: 83.0925
+Epoch 134/500, Loss: 83.3321
+Epoch 135/500, Loss: 83.3513
+Epoch 136/500, Loss: 83.0925
+Epoch 137/500, Loss: 83.1091
+Epoch 138/500, Loss: 83.1502
+Epoch 139/500, Loss: 82.9126
+Epoch 140/500, Loss: 83.0104
+Epoch 141/500, Loss: 83.0472
+Epoch 142/500, Loss: 83.0174
+Epoch 143/500, Loss: 83.2357
+Epoch 144/500, Loss: 83.3156
+Epoch 145/500, Loss: 83.1509
+Epoch 146/500, Loss: 83.2951
+Epoch 147/500, Loss: 83.3093
+Epoch 148/500, Loss: 83.1138
+Epoch 149/500, Loss: 82.9234
+Epoch 150/500, Loss: 83.0207
+Epoch 151/500, Loss: 82.9077
+Epoch 152/500, Loss: 82.8868
+Epoch 153/500, Loss: 82.8465
+Epoch 154/500, Loss: 82.8980
+Epoch 155/500, Loss: 82.8275
+Epoch 156/500, Loss: 83.2352
+Epoch 157/500, Loss: 82.8939
+Epoch 158/500, Loss: 82.7736
+Epoch 159/500, Loss: 82.6959
+Epoch 160/500, Loss: 82.7702
+Epoch 161/500, Loss: 82.7981
+Epoch 162/500, Loss: 82.8547
+Epoch 163/500, Loss: 82.9009
+Epoch 164/500, Loss: 82.7632
+Epoch 165/500, Loss: 82.6833
+Epoch 166/500, Loss: 82.7503
+Epoch 167/500, Loss: 82.7933
+Epoch 168/500, Loss: 82.6539
+Epoch 169/500, Loss: 82.5293
+Epoch 170/500, Loss: 82.5687
+Epoch 171/500, Loss: 82.6848
+Epoch 172/500, Loss: 82.8061
+Epoch 173/500, Loss: 82.6796
+Epoch 174/500, Loss: 82.6803
+Epoch 175/500, Loss: 82.7244
+Epoch 176/500, Loss: 82.8025
+Epoch 177/500, Loss: 82.6793
+Epoch 178/500, Loss: 82.8904
+Epoch 179/500, Loss: 82.5281
+Epoch 180/500, Loss: 82.5347
+Epoch 181/500, Loss: 82.5921
+Epoch 182/500, Loss: 82.5376
+Epoch 183/500, Loss: 82.4951
+Epoch 184/500, Loss: 82.6908
+Epoch 185/500, Loss: 82.6275
+Epoch 186/500, Loss: 82.6827
+Epoch 187/500, Loss: 82.5281
+Epoch 188/500, Loss: 82.5565
+Epoch 189/500, Loss: 82.4947
+Epoch 190/500, Loss: 82.5729
+Epoch 191/500, Loss: 82.6590
+Epoch 192/500, Loss: 82.5314
+Epoch 193/500, Loss: 82.4712
+Epoch 194/500, Loss: 82.5134
+Epoch 195/500, Loss: 82.6376
+Epoch 196/500, Loss: 82.6209
+Epoch 197/500, Loss: 82.6104
+Epoch 198/500, Loss: 82.7421
+Epoch 199/500, Loss: 82.4771
+Epoch 200/500, Loss: 82.5076
+Epoch 201/500, Loss: 82.6284
+Epoch 202/500, Loss: 82.6862
+Epoch 203/500, Loss: 82.6659
+Epoch 204/500, Loss: 82.5569
+Epoch 205/500, Loss: 82.5440
+Epoch 206/500, Loss: 82.3981
+Epoch 207/500, Loss: 82.3164
+Epoch 208/500, Loss: 82.5545
+Epoch 209/500, Loss: 82.4825
+Epoch 210/500, Loss: 82.4722
+Epoch 211/500, Loss: 82.4448
+Epoch 212/500, Loss: 82.4081
+Epoch 213/500, Loss: 82.4949
+Epoch 214/500, Loss: 82.4930
+Epoch 215/500, Loss: 82.3685
+Epoch 216/500, Loss: 82.3050
+Epoch 217/500, Loss: 82.5432
+Epoch 218/500, Loss: 82.3070
+Epoch 219/500, Loss: 82.3730
+Epoch 220/500, Loss: 82.4432
+Epoch 221/500, Loss: 82.5219
+Epoch 222/500, Loss: 82.6338
+Epoch 223/500, Loss: 82.5369
+Epoch 224/500, Loss: 82.6825
+Epoch 225/500, Loss: 82.3967
+Epoch 226/500, Loss: 82.3412
+Epoch 227/500, Loss: 82.3657
+Epoch 228/500, Loss: 82.4756
+Epoch 229/500, Loss: 82.4083
+Epoch 230/500, Loss: 82.4291
+Epoch 231/500, Loss: 82.3824
+Epoch 232/500, Loss: 82.3637
+Epoch 233/500, Loss: 82.3978
+Epoch 234/500, Loss: 82.4060
+Epoch 235/500, Loss: 82.5785
+Epoch 236/500, Loss: 82.3653
+Epoch 237/500, Loss: 82.3654
+Epoch 238/500, Loss: 82.3988
+Epoch 239/500, Loss: 82.4067
+Epoch 240/500, Loss: 82.3710
+Epoch 241/500, Loss: 82.6772
+Epoch 242/500, Loss: 82.6339
+Epoch 243/500, Loss: 82.5519
+Epoch 244/500, Loss: 82.3588
+Epoch 245/500, Loss: 82.3586
+Epoch 246/500, Loss: 82.3680
+Epoch 247/500, Loss: 82.3595
+Epoch 248/500, Loss: 82.2262
+Epoch 249/500, Loss: 82.3737
+Epoch 250/500, Loss: 82.2649
+Epoch 251/500, Loss: 82.2634
+Epoch 252/500, Loss: 82.2557
+Epoch 253/500, Loss: 82.1533
+Epoch 254/500, Loss: 82.3007
+Epoch 255/500, Loss: 82.3900
+Epoch 256/500, Loss: 82.3993
+Epoch 257/500, Loss: 82.1867
+Epoch 258/500, Loss: 82.1755
+Epoch 259/500, Loss: 82.1710
+Epoch 260/500, Loss: 82.1910
+Epoch 261/500, Loss: 82.2068
+Epoch 262/500, Loss: 82.1840
+Epoch 263/500, Loss: 82.4213
+Epoch 264/500, Loss: 82.3073
+Epoch 265/500, Loss: 82.3790
+Epoch 266/500, Loss: 82.2623
+Epoch 267/500, Loss: 82.2022
+Epoch 268/500, Loss: 82.1836
+Epoch 269/500, Loss: 82.3383
+Epoch 270/500, Loss: 82.3408
+Epoch 271/500, Loss: 82.4591
+Epoch 272/500, Loss: 82.3735
+Epoch 273/500, Loss: 82.2717
+Epoch 274/500, Loss: 82.1955
+Epoch 275/500, Loss: 82.1848
+Epoch 276/500, Loss: 82.1684
+Epoch 277/500, Loss: 82.2225
+Epoch 278/500, Loss: 82.1264
+Epoch 279/500, Loss: 82.2752
+Epoch 280/500, Loss: 82.3794
+Epoch 281/500, Loss: 82.2872
+Epoch 282/500, Loss: 82.1280
+Epoch 283/500, Loss: 82.1283
+Epoch 284/500, Loss: 82.1172
+Epoch 285/500, Loss: 82.4029
+Epoch 286/500, Loss: 82.3194
+Epoch 287/500, Loss: 82.2873
+Epoch 288/500, Loss: 82.2474
+Epoch 289/500, Loss: 82.3076
+Epoch 290/500, Loss: 82.2204
+Epoch 291/500, Loss: 82.1214
+Epoch 292/500, Loss: 82.2377
+Epoch 293/500, Loss: 82.2103
+Epoch 294/500, Loss: 82.4362
+Epoch 295/500, Loss: 82.2163
+Epoch 296/500, Loss: 82.1717
+Epoch 297/500, Loss: 82.3104
+Epoch 298/500, Loss: 82.2671
+Epoch 299/500, Loss: 82.2204
+Epoch 300/500, Loss: 82.1667
+Epoch 301/500, Loss: 82.1547
+Epoch 302/500, Loss: 82.1308
+Epoch 303/500, Loss: 82.2720
+Epoch 304/500, Loss: 82.1149
+Epoch 305/500, Loss: 82.1254
+Epoch 306/500, Loss: 82.1916
+Epoch 307/500, Loss: 82.0661
+Epoch 308/500, Loss: 82.0842
+/storage/scratch/0994359/hetero-conv-matching/Coarsener/HeteroCoarsener.py:438: UserWarning: torch.searchsorted(): boundary tensor is non-contiguous, this will lower the performance due to extra data copy when converting non-contiguous tensor to contiguous, please use contiguous boundary tensor if possible. This message will only appear once per program. (Triggered internally at ../aten/src/ATen/native/BucketizationUtils.h:38.)
+  indices = torch.searchsorted(sorted_mapping[:, 0], query_nodes)
+Epoch 309/500, Loss: 82.3015
+Epoch 310/500, Loss: 82.2339
+Epoch 311/500, Loss: 82.2236
+Epoch 312/500, Loss: 82.2169
+Epoch 313/500, Loss: 82.1787
+Epoch 314/500, Loss: 82.0537
+Epoch 315/500, Loss: 82.0804
+Epoch 316/500, Loss: 82.1509
+Epoch 317/500, Loss: 82.2453
+Epoch 318/500, Loss: 82.1603
+Epoch 319/500, Loss: 82.2109
+Epoch 320/500, Loss: 82.2239
+Epoch 321/500, Loss: 82.1927
+Epoch 322/500, Loss: 82.3232
+Epoch 323/500, Loss: 82.2733
+Epoch 324/500, Loss: 82.3096
+Epoch 325/500, Loss: 82.1523
+Epoch 326/500, Loss: 82.2268
+Epoch 327/500, Loss: 82.2456
+Epoch 328/500, Loss: 82.3102
+Epoch 329/500, Loss: 82.1504
+Epoch 330/500, Loss: 82.2137
+Epoch 331/500, Loss: 82.0916
+Epoch 332/500, Loss: 82.1331
+Epoch 333/500, Loss: 82.2122
+Epoch 334/500, Loss: 82.1422
+Epoch 335/500, Loss: 82.0918
+Epoch 336/500, Loss: 82.0974
+Epoch 337/500, Loss: 82.1306
+Epoch 338/500, Loss: 82.0878
+Epoch 339/500, Loss: 82.0830
+Epoch 340/500, Loss: 82.0994
+Epoch 341/500, Loss: 82.1642
+Epoch 342/500, Loss: 82.0885
+Epoch 343/500, Loss: 82.0563
+Epoch 344/500, Loss: 82.0713
+Epoch 345/500, Loss: 82.0515
+Epoch 346/500, Loss: 82.0787
+Epoch 347/500, Loss: 82.0721
+Epoch 348/500, Loss: 82.0238
+Epoch 349/500, Loss: 82.1137
+Epoch 350/500, Loss: 82.1822
+Epoch 351/500, Loss: 82.2298
+Epoch 352/500, Loss: 82.1065
+Epoch 353/500, Loss: 82.1674
+Epoch 354/500, Loss: 82.3243
+Epoch 355/500, Loss: 82.1585
+Epoch 356/500, Loss: 82.1815
+Epoch 357/500, Loss: 82.1998
+Epoch 358/500, Loss: 82.2449
+Epoch 359/500, Loss: 82.1738
+Epoch 360/500, Loss: 82.1508
+Epoch 361/500, Loss: 82.2070
+Epoch 362/500, Loss: 82.2654
+Epoch 363/500, Loss: 82.3202
+Epoch 364/500, Loss: 82.1173
+Epoch 365/500, Loss: 82.1647
+Epoch 366/500, Loss: 82.1112
+Epoch 367/500, Loss: 82.1449
+Epoch 368/500, Loss: 82.0771
+Epoch 369/500, Loss: 82.0838
+Epoch 370/500, Loss: 82.1670
+Epoch 371/500, Loss: 82.1644
+Epoch 372/500, Loss: 82.2092
+Epoch 373/500, Loss: 82.1680
+Epoch 374/500, Loss: 82.1030
+Epoch 375/500, Loss: 82.0305
+Epoch 376/500, Loss: 82.0286
+Epoch 377/500, Loss: 82.1339
+Epoch 378/500, Loss: 82.2228
+Epoch 379/500, Loss: 82.2265
+Epoch 380/500, Loss: 82.1416
+Epoch 381/500, Loss: 82.0946
+Epoch 382/500, Loss: 82.0185
+Epoch 383/500, Loss: 82.1343
+Epoch 384/500, Loss: 82.1057
+Epoch 385/500, Loss: 82.0392
+Epoch 386/500, Loss: 82.1452
+Epoch 387/500, Loss: 82.2244
+Epoch 388/500, Loss: 82.2255
+Epoch 389/500, Loss: 82.2091
+Epoch 390/500, Loss: 82.1607
+Epoch 391/500, Loss: 82.0439
+Epoch 392/500, Loss: 82.1555
+Epoch 393/500, Loss: 82.0393
+Epoch 394/500, Loss: 82.0603
+Epoch 395/500, Loss: 82.0380
+Epoch 396/500, Loss: 81.9865
+Epoch 397/500, Loss: 81.9930
+Epoch 398/500, Loss: 82.0678
+Epoch 399/500, Loss: 81.9674
+Epoch 400/500, Loss: 81.9840
+Epoch 401/500, Loss: 81.9117
+Epoch 402/500, Loss: 82.0166
+Epoch 403/500, Loss: 81.9197
+Epoch 404/500, Loss: 82.1504
+Epoch 405/500, Loss: 82.2409
+Epoch 406/500, Loss: 82.1136
+Epoch 407/500, Loss: 82.0983
+Epoch 408/500, Loss: 82.1311
+Epoch 409/500, Loss: 82.2227
+Epoch 410/500, Loss: 82.2218
+Epoch 411/500, Loss: 82.0275
+Epoch 412/500, Loss: 82.0158
+Epoch 413/500, Loss: 82.1003
+Epoch 414/500, Loss: 81.9610
+Epoch 415/500, Loss: 82.0367
+Epoch 416/500, Loss: 82.0035
+Epoch 417/500, Loss: 82.0481
+Epoch 418/500, Loss: 82.0902
+Epoch 419/500, Loss: 82.0743
+Epoch 420/500, Loss: 81.9995
+Epoch 421/500, Loss: 82.1697
+Epoch 422/500, Loss: 82.0974
+Epoch 423/500, Loss: 82.0547
+Epoch 424/500, Loss: 82.1494
+Epoch 425/500, Loss: 82.0111
+Epoch 426/500, Loss: 82.0092
+Epoch 427/500, Loss: 82.0205
+Epoch 428/500, Loss: 82.0397
+Epoch 429/500, Loss: 82.0889
+Epoch 430/500, Loss: 82.0126
+Epoch 431/500, Loss: 82.0256
+Epoch 432/500, Loss: 82.0973
+Epoch 433/500, Loss: 82.1353
+Epoch 434/500, Loss: 82.0039
+Epoch 435/500, Loss: 82.0382
+Epoch 436/500, Loss: 82.0449
+Epoch 437/500, Loss: 82.0252
+Epoch 438/500, Loss: 81.9815
+Epoch 439/500, Loss: 82.1083
+Epoch 440/500, Loss: 82.0353
+Epoch 441/500, Loss: 82.1523
+Epoch 442/500, Loss: 82.1038
+Epoch 443/500, Loss: 82.1548
+Epoch 444/500, Loss: 82.0553
+Epoch 445/500, Loss: 82.0785
+Epoch 446/500, Loss: 82.0997
+Epoch 447/500, Loss: 82.0894
+Epoch 448/500, Loss: 82.0426
+Epoch 449/500, Loss: 82.1358
+Epoch 450/500, Loss: 82.0347
+Epoch 451/500, Loss: 81.9913
+Epoch 452/500, Loss: 82.0066
+Epoch 453/500, Loss: 82.1438
+Epoch 454/500, Loss: 82.0245
+Epoch 455/500, Loss: 82.2200
+Epoch 456/500, Loss: 82.0271
+Epoch 457/500, Loss: 82.0698
+Epoch 458/500, Loss: 82.0738
+Epoch 459/500, Loss: 81.9968
+Epoch 460/500, Loss: 81.9904
+Epoch 461/500, Loss: 82.0258
+Epoch 462/500, Loss: 82.1618
+Epoch 463/500, Loss: 81.9767
+Epoch 464/500, Loss: 82.0224
+Epoch 465/500, Loss: 82.1214
+Epoch 466/500, Loss: 82.0947
+Epoch 467/500, Loss: 82.0106
+Epoch 468/500, Loss: 81.9877
+Epoch 469/500, Loss: 82.0150
+Epoch 470/500, Loss: 82.0714
+Epoch 471/500, Loss: 82.1157
+Epoch 472/500, Loss: 82.0109
+Epoch 473/500, Loss: 81.9772
+Epoch 474/500, Loss: 82.1136
+Epoch 475/500, Loss: 82.1678
+Epoch 476/500, Loss: 82.0796
+Epoch 477/500, Loss: 82.0865
+Epoch 478/500, Loss: 82.0938
+Epoch 479/500, Loss: 82.0881
+Epoch 480/500, Loss: 82.0015
+Epoch 481/500, Loss: 82.1405
+Epoch 482/500, Loss: 82.1025
+Epoch 483/500, Loss: 82.0574
+Epoch 484/500, Loss: 81.9886
+Epoch 485/500, Loss: 82.0477
+Epoch 486/500, Loss: 81.9678
+Epoch 487/500, Loss: 82.0518
+Epoch 488/500, Loss: 82.0193
+Epoch 489/500, Loss: 81.9254
+Epoch 490/500, Loss: 82.1620
+Epoch 491/500, Loss: 82.1078
+Epoch 492/500, Loss: 82.0270
+Epoch 493/500, Loss: 82.0196
+Epoch 494/500, Loss: 82.0900
+Epoch 495/500, Loss: 82.0273
+Epoch 496/500, Loss: 81.9954
+Epoch 497/500, Loss: 81.9399
+Epoch 498/500, Loss: 81.9850
+Epoch 499/500, Loss: 82.0829
+Epoch 500/500, Loss: 81.9287
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 0, ratio: 1.0
+0.0038273116962645433
+step: 1, ratio: 0.9998086344151867
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 2, ratio: 0.9998086344151867
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 3, ratio: 0.9996172688303735
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 4, ratio: 0.9993493570116351
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 5, ratio: 0.9991579914268218
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 6, ratio: 0.9988518064911206
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 7, ratio: 0.9986604409063075
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 8, ratio: 0.9984308022045315
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 9, ratio: 0.998162890385793
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 10, ratio: 0.9979715248009798
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 11, ratio: 0.9977036129822413
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 12, ratio: 0.9975505205143906
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 13, ratio: 0.9973591549295775
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 14, ratio: 0.9971677893447642
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 15, ratio: 0.9969381506429884
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 16, ratio: 0.9966702388242499
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 17, ratio: 0.9964406001224739
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 18, ratio: 0.9962109614206981
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 19, ratio: 0.995904776484997
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 20, ratio: 0.995675137783221
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 21, ratio: 0.9954072259644825
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 22, ratio: 0.9952158603796694
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 23, ratio: 0.9950244947948561
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 24, ratio: 0.9948331292100429
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 25, ratio: 0.9945652173913043
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 26, ratio: 0.9942590324556032
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 27, ratio: 0.993952847519902
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 28, ratio: 0.9937232088181261
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 29, ratio: 0.9935701163502756
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 30, ratio: 0.9932639314145744
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 31, ratio: 0.9930342927127985
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 32, ratio: 0.99276638089406
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 33, ratio: 0.9925367421922842
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 34, ratio: 0.9922688303735456
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 35, ratio: 0.9920391916717698
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 36, ratio: 0.9917712798530313
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 37, ratio: 0.9915416411512553
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 38, ratio: 0.9913120024494795
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 39, ratio: 0.9911206368646662
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 40, ratio: 0.9908527250459277
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 41, ratio: 0.9906613594611146
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 42, ratio: 0.990393447642376
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 43, ratio: 0.9902020820575628
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 44, ratio: 0.9899341702388242
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 45, ratio: 0.989742804654011
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 46, ratio: 0.9895131659522352
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 47, ratio: 0.9893218003674219
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 48, ratio: 0.9890538885486834
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 49, ratio: 0.9888242498469075
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 50, ratio: 0.9885946111451317
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 51, ratio: 0.9883266993263932
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 52, ratio: 0.9880587875076546
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 53, ratio: 0.9878291488058788
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 54, ratio: 0.9876377832210655
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 55, ratio: 0.9874081445192896
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 56, ratio: 0.9871019595835885
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 57, ratio: 0.9868723208818126
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 58, ratio: 0.9866426821800367
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 59, ratio: 0.9864513165952236
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 60, ratio: 0.9862216778934476
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 61, ratio: 0.9859920391916718
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 62, ratio: 0.9857241273729332
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 63, ratio: 0.9854562155541947
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 64, ratio: 0.9852265768524189
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 65, ratio: 0.9850734843845683
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 66, ratio: 0.9848438456827924
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 67, ratio: 0.9846142069810165
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 68, ratio: 0.9844228413962033
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 69, ratio: 0.9841932026944274
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 70, ratio: 0.9839635639926516
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 71, ratio: 0.9837721984078384
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 72, ratio: 0.9835042865890998
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 73, ratio: 0.9832363747703613
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 74, ratio: 0.9830067360685855
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 75, ratio: 0.9827005511328842
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 76, ratio: 0.9824709124311084
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 77, ratio: 0.9823178199632578
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 78, ratio: 0.9820881812614819
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 79, ratio: 0.9818202694427434
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 80, ratio: 0.9816289038579302
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 81, ratio: 0.9813609920391917
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 82, ratio: 0.9811313533374157
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 83, ratio: 0.9809399877526026
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 84, ratio: 0.9807486221677894
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 85, ratio: 0.9805955296999388
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 86, ratio: 0.9804807103490508
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 87, ratio: 0.9803276178812003
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 88, ratio: 0.9801745254133497
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 89, ratio: 0.9799448867115738
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 90, ratio: 0.9796769748928352
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 91, ratio: 0.9794090630740968
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 92, ratio: 0.9791411512553583
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 93, ratio: 0.978949785670545
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 94, ratio: 0.9787584200857318
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 95, ratio: 0.9785670545009185
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 96, ratio: 0.978413962033068
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 97, ratio: 0.9783374157991427
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 98, ratio: 0.9781460502143294
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 99, ratio: 0.9778398652786283
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 100, ratio: 0.9775719534598898
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 101, ratio: 0.9773040416411513
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 102, ratio: 0.9769978567054501
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 103, ratio: 0.9767299448867116
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 104, ratio: 0.9765003061849357
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 105, ratio: 0.9762323943661971
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 106, ratio: 0.976041028781384
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 107, ratio: 0.9758496631965707
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 108, ratio: 0.9756965707287202
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 109, ratio: 0.9754669320269442
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 110, ratio: 0.9751990202082057
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 111, ratio: 0.9750076546233926
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 112, ratio: 0.974739742804654
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 113, ratio: 0.9745866503368035
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 114, ratio: 0.9743570116350275
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 115, ratio: 0.9742804654011022
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 116, ratio: 0.9740508266993264
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 117, ratio: 0.9738211879975506
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 118, ratio: 0.9736298224127373
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 119, ratio: 0.9734001837109614
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 120, ratio: 0.973132271892223
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 121, ratio: 0.9729791794243723
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 122, ratio: 0.9727495407225965
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 123, ratio: 0.9724816289038579
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 124, ratio: 0.9722519902020821
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 125, ratio: 0.9719840783833436
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 126, ratio: 0.971716166564605
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 127, ratio: 0.9714482547458665
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 128, ratio: 0.9712186160440907
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 129, ratio: 0.9709507042253521
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 130, ratio: 0.9707210655235763
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 131, ratio: 0.9704914268218003
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 132, ratio: 0.9702617881200245
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 133, ratio: 0.9700321494182487
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 134, ratio: 0.9697259644825474
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 135, ratio: 0.9696111451316595
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 136, ratio: 0.9694580526638089
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 137, ratio: 0.9692284139620331
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 138, ratio: 0.9689987752602572
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 139, ratio: 0.9687308634415187
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 140, ratio: 0.9685777709736682
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 141, ratio: 0.9683098591549296
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 142, ratio: 0.9680419473361911
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 143, ratio: 0.9678123086344151
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 144, ratio: 0.9675826699326393
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 145, ratio: 0.9673530312308635
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 146, ratio: 0.9670851194121249
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 147, ratio: 0.9668554807103491
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 148, ratio: 0.9666258420085732
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 149, ratio: 0.966319657072872
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 150, ratio: 0.9662431108389468
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 151, ratio: 0.9660900183710961
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 152, ratio: 0.9659369259032455
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 153, ratio: 0.965783833435395
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 154, ratio: 0.9656307409675444
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 155, ratio: 0.9654011022657685
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 156, ratio: 0.9652480097979179
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 157, ratio: 0.9650949173300674
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 158, ratio: 0.9648652786282915
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 159, ratio: 0.964597366809553
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 160, ratio: 0.9643294549908145
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 161, ratio: 0.9640998162890386
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 162, ratio: 0.9638319044703001
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 163, ratio: 0.9635639926515616
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 164, ratio: 0.963296080832823
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 165, ratio: 0.9631812614819351
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 166, ratio: 0.9629898958971219
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 167, ratio: 0.9627985303123087
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 168, ratio: 0.9626071647274954
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 169, ratio: 0.9624157991426822
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 170, ratio: 0.962109614206981
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 171, ratio: 0.9618417023882425
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 172, ratio: 0.9616120636864667
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 173, ratio: 0.9613441518677281
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 174, ratio: 0.9611910593998775
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 175, ratio: 0.9609614206981016
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 176, ratio: 0.9607317819963258
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 177, ratio: 0.9604638701775873
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 178, ratio: 0.960272504592774
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 179, ratio: 0.9600428658909982
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 180, ratio: 0.9597749540722597
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 181, ratio: 0.9596218616044091
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 182, ratio: 0.9594304960195958
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 183, ratio: 0.9592391304347826
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 184, ratio: 0.9590094917330068
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 185, ratio: 0.9588946723821188
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 186, ratio: 0.9587033067973055
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 187, ratio: 0.958550214329455
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 188, ratio: 0.9583588487446417
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 189, ratio: 0.9581292100428659
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 190, ratio: 0.9578612982241274
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 191, ratio: 0.9576699326393141
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 192, ratio: 0.9574020208205756
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 193, ratio: 0.9571341090018372
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 194, ratio: 0.9569044703000612
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 195, ratio: 0.9567131047152481
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 196, ratio: 0.9565217391304348
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 197, ratio: 0.9563303735456216
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 198, ratio: 0.9560241886099204
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 199, ratio: 0.9557562767911819
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 200, ratio: 0.9554883649724434
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 201, ratio: 0.9552587262706674
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 202, ratio: 0.9550290875688916
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 203, ratio: 0.9548377219840783
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 204, ratio: 0.9546463563992652
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 205, ratio: 0.954340171463564
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 206, ratio: 0.9540722596448254
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 207, ratio: 0.9537660747091243
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 208, ratio: 0.9534216166564605
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 209, ratio: 0.9531919779546846
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 210, ratio: 0.9529623392529087
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 211, ratio: 0.9528092467850582
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 212, ratio: 0.9526178812002449
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 213, ratio: 0.9524265156154317
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 214, ratio: 0.9523116962645438
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 215, ratio: 0.9521203306797306
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 216, ratio: 0.95196723821188
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 217, ratio: 0.9517758726270668
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 218, ratio: 0.9515462339252909
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 219, ratio: 0.9512783221065524
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 220, ratio: 0.9510104102878139
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 221, ratio: 0.9508573178199633
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 222, ratio: 0.95066595223515
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 223, ratio: 0.9504363135333742
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 224, ratio: 0.9501684017146357
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 225, ratio: 0.950015309246785
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 226, ratio: 0.9498239436619719
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 227, ratio: 0.9497091243110839
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 228, ratio: 0.9496325780771586
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 229, ratio: 0.9495177587262706
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 230, ratio: 0.9494029393753828
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 231, ratio: 0.9492115737905695
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 232, ratio: 0.949058481322719
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 233, ratio: 0.948828842620943
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 234, ratio: 0.9486757501530925
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 235, ratio: 0.9484843845682792
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 236, ratio: 0.9482547458665034
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 237, ratio: 0.9480251071647275
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 238, ratio: 0.9478337415799143
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 239, ratio: 0.9476041028781383
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 240, ratio: 0.9473744641763625
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 241, ratio: 0.947106552357624
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 242, ratio: 0.9468769136558481
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 243, ratio: 0.9466855480710349
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 244, ratio: 0.946455909369259
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 245, ratio: 0.9462645437844458
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 246, ratio: 0.9461114513165952
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 247, ratio: 0.9459583588487447
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 248, ratio: 0.945805266380894
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 249, ratio: 0.9455756276791182
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 250, ratio: 0.9453842620943049
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 251, ratio: 0.9451928965094918
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 252, ratio: 0.9449632578077158
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 253, ratio: 0.94473361910594
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 254, ratio: 0.9445805266380894
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 255, ratio: 0.9444274341702388
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 256, ratio: 0.9442743417023882
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 257, ratio: 0.9441595223515004
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 258, ratio: 0.9440064298836497
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 259, ratio: 0.9437767911818739
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 260, ratio: 0.9435088793631353
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 261, ratio: 0.9433557868952848
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 262, ratio: 0.9431644213104715
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 263, ratio: 0.9430496019595835
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 264, ratio: 0.942896509491733
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 265, ratio: 0.9426668707899571
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 266, ratio: 0.9423989589712186
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 267, ratio: 0.9421693202694428
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 268, ratio: 0.9418631353337416
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 269, ratio: 0.9416334966319657
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 270, ratio: 0.9414038579301899
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 271, ratio: 0.9412124923453766
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 272, ratio: 0.9409445805266381
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 273, ratio: 0.9407149418248623
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 274, ratio: 0.9404853031230863
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 275, ratio: 0.9401791181873852
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 276, ratio: 0.9400260257195346
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 277, ratio: 0.9398346601347214
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 278, ratio: 0.9396432945499081
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 279, ratio: 0.9394902020820576
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 280, ratio: 0.9392605633802817
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 281, ratio: 0.9389543784445805
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 282, ratio: 0.9387247397428047
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 283, ratio: 0.9384568279240662
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 284, ratio: 0.9381889161053276
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 285, ratio: 0.9379210042865891
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 286, ratio: 0.9377679118187385
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 287, ratio: 0.9375765462339253
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 288, ratio: 0.9374234537660747
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 289, ratio: 0.9371938150642989
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 290, ratio: 0.9370407225964482
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 291, ratio: 0.9368493570116351
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 292, ratio: 0.9366579914268218
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 293, ratio: 0.9365431720759338
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 294, ratio: 0.9363900796080833
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 295, ratio: 0.9361604409063075
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 296, ratio: 0.9360073484384568
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 297, ratio: 0.9358159828536436
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 298, ratio: 0.9356246172688304
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 299, ratio: 0.9353949785670544
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 300, ratio: 0.9352036129822413
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 301, ratio: 0.9349739742804654
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 302, ratio: 0.9347443355786895
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 303, ratio: 0.9345146968769137
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 304, ratio: 0.9343998775260257
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 305, ratio: 0.9342085119412125
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 306, ratio: 0.9339788732394366
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 307, ratio: 0.9337875076546234
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 308, ratio: 0.9335195958358848
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 309, ratio: 0.9333665033680343
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 310, ratio: 0.9331368646662584
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 311, ratio: 0.9329072259644825
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 312, ratio: 0.9326775872627067
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 313, ratio: 0.9324479485609308
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 314, ratio: 0.9322565829761176
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 315, ratio: 0.9320269442743417
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 316, ratio: 0.9317207593386405
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 317, ratio: 0.931452847519902
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 318, ratio: 0.9311849357011635
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 319, ratio: 0.9309552969993876
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 320, ratio: 0.9307639314145744
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 321, ratio: 0.9304960195958358
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 322, ratio: 0.93026638089406
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 323, ratio: 0.9299984690753215
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 324, ratio: 0.9298071034905082
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 325, ratio: 0.9295774647887324
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 326, ratio: 0.9294243723208818
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 327, ratio: 0.9292330067360686
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 328, ratio: 0.9290033680342927
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 329, ratio: 0.9288120024494795
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 330, ratio: 0.9285823637477036
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 331, ratio: 0.9284292712798531
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 332, ratio: 0.9281996325780771
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 333, ratio: 0.9280082669932639
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 334, ratio: 0.927778628291488
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 335, ratio: 0.9276255358236375
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 336, ratio: 0.9273958971218617
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 337, ratio: 0.9271662584200857
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 338, ratio: 0.9268983466013472
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 339, ratio: 0.9266687078995713
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 340, ratio: 0.9265156154317208
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 341, ratio: 0.9262859767299448
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 342, ratio: 0.926056338028169
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 343, ratio: 0.9257884262094305
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 344, ratio: 0.9256353337415799
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 345, ratio: 0.9253291488058788
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 346, ratio: 0.9250612369871403
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 347, ratio: 0.9249081445192896
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 348, ratio: 0.9246402327005512
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 349, ratio: 0.9244488671157379
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 350, ratio: 0.9242957746478874
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 351, ratio: 0.9241426821800367
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 352, ratio: 0.9239513165952236
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 353, ratio: 0.9237982241273729
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 354, ratio: 0.9236068585425597
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 355, ratio: 0.9233389467238212
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 356, ratio: 0.9230710349050827
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 357, ratio: 0.9227648499693815
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 358, ratio: 0.9226117575015309
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 359, ratio: 0.9223438456827924
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 360, ratio: 0.9221524800979792
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 361, ratio: 0.9219228413962033
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 362, ratio: 0.9216932026944274
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 363, ratio: 0.9214635639926516
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 364, ratio: 0.9212721984078384
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 365, ratio: 0.9211191059399878
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 366, ratio: 0.9209660134721371
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 367, ratio: 0.920774647887324
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 368, ratio: 0.9205832823025107
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 369, ratio: 0.9203536436007348
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 370, ratio: 0.9202005511328842
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 371, ratio: 0.9199709124311084
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 372, ratio: 0.9197412737293326
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 373, ratio: 0.9194350887936313
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 374, ratio: 0.9192437232088181
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 375, ratio: 0.9189758113900796
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 376, ratio: 0.9187461726883037
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 377, ratio: 0.9185165339865279
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 378, ratio: 0.9182486221677894
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 379, ratio: 0.9179807103490508
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 380, ratio: 0.9177127985303123
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 381, ratio: 0.9174831598285365
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 382, ratio: 0.9172152480097979
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 383, ratio: 0.9170621555419474
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 384, ratio: 0.9168325168401714
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 385, ratio: 0.9166028781383956
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 386, ratio: 0.9162966932026945
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 387, ratio: 0.9161053276178812
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 388, ratio: 0.915913962033068
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 389, ratio: 0.9156460502143294
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 390, ratio: 0.9153781383955909
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 391, ratio: 0.9151484996938151
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 392, ratio: 0.9149188609920392
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 393, ratio: 0.9146509491733007
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 394, ratio: 0.9144213104715248
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 395, ratio: 0.9141916717697489
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 396, ratio: 0.9140385793018984
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 397, ratio: 0.9138089406001225
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 398, ratio: 0.913541028781384
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 399, ratio: 0.913426209430496
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 400, ratio: 0.9131965707287202
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 401, ratio: 0.9130052051439069
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 402, ratio: 0.9127755664421311
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 403, ratio: 0.9126607470912431
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 404, ratio: 0.9124693815064299
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 405, ratio: 0.9123545621555419
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 406, ratio: 0.9121631965707288
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 407, ratio: 0.9119335578689528
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 408, ratio: 0.911703919167177
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 409, ratio: 0.911589099816289
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 410, ratio: 0.9114742804654011
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 411, ratio: 0.9111680955296999
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 412, ratio: 0.9109384568279241
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 413, ratio: 0.9107470912431108
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 414, ratio: 0.910517452541335
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 415, ratio: 0.9103260869565217
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 416, ratio: 0.9100581751377832
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 417, ratio: 0.90986680955297
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 418, ratio: 0.9097137170851194
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 419, ratio: 0.9095223515003061
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 420, ratio: 0.9094075321494183
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 421, ratio: 0.909330985915493
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 422, ratio: 0.9092544396815677
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 423, ratio: 0.9091778934476423
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 424, ratio: 0.9090248009797918
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 425, ratio: 0.9089482547458665
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 426, ratio: 0.9088334353949785
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 427, ratio: 0.908680342927128
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 428, ratio: 0.9084889773423147
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 429, ratio: 0.9082976117575016
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 430, ratio: 0.9081445192896509
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 431, ratio: 0.9079531537048378
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 432, ratio: 0.9078000612369871
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 433, ratio: 0.9076469687691365
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 434, ratio: 0.907379056950398
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 435, ratio: 0.9071876913655849
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 436, ratio: 0.9070728720146969
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 437, ratio: 0.9068815064298836
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 438, ratio: 0.9066901408450704
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 439, ratio: 0.9065370483772198
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 440, ratio: 0.9063839559093693
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 441, ratio: 0.906192590324556
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 442, ratio: 0.9060012247397428
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 443, ratio: 0.9058098591549296
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 444, ratio: 0.9056184935701164
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 445, ratio: 0.9054271279853031
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 446, ratio: 0.9051974892835273
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 447, ratio: 0.9050443968156767
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 448, ratio: 0.9049678505817513
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 449, ratio: 0.9048530312308635
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 450, ratio: 0.9046616656460502
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 451, ratio: 0.9045085731781997
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 452, ratio: 0.9043172075933864
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 453, ratio: 0.9041258420085732
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 454, ratio: 0.9039344764237599
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 455, ratio: 0.9037813839559093
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 456, ratio: 0.9036282914880588
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 457, ratio: 0.903398652786283
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 458, ratio: 0.903169014084507
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 459, ratio: 0.9029393753827312
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 460, ratio: 0.9027480097979179
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 461, ratio: 0.9025949173300674
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 462, ratio: 0.9023652786282915
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 463, ratio: 0.9021739130434783
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 464, ratio: 0.9020208205756277
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 465, ratio: 0.9018294549908145
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 466, ratio: 0.9016380894060012
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 467, ratio: 0.9014849969381507
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 468, ratio: 0.9012936313533374
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 469, ratio: 0.9010639926515616
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 470, ratio: 0.9008726270667483
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 471, ratio: 0.9007195345988978
+0.0038273116962645433
+0.4779164115125538
+step: 472, ratio: 0.9005664421310472
+0.0038273116962645433
+0.4779164115125538
+step: 473, ratio: 0.9005281690140845
+0.0038273116962645433
+0.4779164115125538
+step: 474, ratio: 0.9004898958971219
+0.0038273116962645433
+0.4779164115125538
+step: 475, ratio: 0.9004516227801592
+0.0038273116962645433
+0.4779164115125538
+step: 476, ratio: 0.9004133496631965
+0.0038273116962645433
+0.4779164115125538
+step: 477, ratio: 0.9003750765462339
+0.0038273116962645433
+0.4779164115125538
+step: 478, ratio: 0.9003368034292712
+0.0038273116962645433
+0.4779164115125538
+step: 479, ratio: 0.9002985303123087
+0.0038273116962645433
+0.4779164115125538
+step: 480, ratio: 0.9002219840783834
+0.0038273116962645433
+0.4779164115125538
+step: 481, ratio: 0.9001837109614207
+0.0038273116962645433
+0.4779164115125538
+step: 482, ratio: 0.9001454378444581
+0.0038273116962645433
+0.4779164115125538
+step: 483, ratio: 0.9001071647274954
+0.0038273116962645433
+0.4779164115125538
+step: 484, ratio: 0.9000688916105327
+0.0038273116962645433
+0.4779164115125538
+step: 485, ratio: 0.9000306184935701
+0.0038273116962645433
+0.4779164115125538
+step: 486, ratio: 0.8999923453766074
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 487, ratio: 0.8999540722596449
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 488, ratio: 0.8998775260257196
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 489, ratio: 0.8996861604409063
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 490, ratio: 0.8994182486221678
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 491, ratio: 0.8991503368034293
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 492, ratio: 0.898958971218616
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 493, ratio: 0.8986910593998775
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 494, ratio: 0.8985379669320269
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 495, ratio: 0.8984231475811391
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 496, ratio: 0.8982317819963258
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 497, ratio: 0.8979255970606246
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 498, ratio: 0.8977342314758114
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 499, ratio: 0.8975045927740355
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 500, ratio: 0.8973515003061849
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 501, ratio: 0.8970453153704838
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 502, ratio: 0.8968539497856706
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 503, ratio: 0.896586037966932
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 504, ratio: 0.8963946723821188
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 505, ratio: 0.8961267605633803
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 506, ratio: 0.8958588487446417
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 507, ratio: 0.8957440293937539
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 508, ratio: 0.8955526638089406
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 509, ratio: 0.8954378444580526
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 510, ratio: 0.8953230251071648
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 511, ratio: 0.8952464788732394
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 512, ratio: 0.8950933864053888
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 513, ratio: 0.8949020208205756
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 514, ratio: 0.894748928352725
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 515, ratio: 0.8946723821187997
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 516, ratio: 0.8944427434170239
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 517, ratio: 0.8942131047152481
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 518, ratio: 0.8939834660134721
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 519, ratio: 0.8937155541947336
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 520, ratio: 0.893562461726883
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 521, ratio: 0.8933710961420698
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 522, ratio: 0.8931031843233312
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 523, ratio: 0.8929118187385181
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 524, ratio: 0.8927204531537049
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 525, ratio: 0.8924142682180036
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 526, ratio: 0.8922229026331905
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 527, ratio: 0.8919932639314145
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 528, ratio: 0.8917636252296387
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 529, ratio: 0.8916105327617881
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 530, ratio: 0.8913808940600122
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 531, ratio: 0.8911512553582364
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 532, ratio: 0.8909216166564605
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 533, ratio: 0.8908450704225352
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 534, ratio: 0.8905771586037967
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 535, ratio: 0.8903092467850582
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 536, ratio: 0.8900796080832823
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 537, ratio: 0.8898882424984691
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 538, ratio: 0.8896203306797306
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 539, ratio: 0.889352418860992
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 540, ratio: 0.8891993263931415
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 541, ratio: 0.8889696876913656
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 542, ratio: 0.8887017758726271
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 543, ratio: 0.8884338640538886
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 544, ratio: 0.8882042253521126
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 545, ratio: 0.8879745866503368
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 546, ratio: 0.8877066748315983
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 547, ratio: 0.8874004898958971
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 548, ratio: 0.8871325780771586
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 549, ratio: 0.8869029393753828
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 550, ratio: 0.8865967544396816
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 551, ratio: 0.8864053888548683
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 552, ratio: 0.8860992039191672
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 553, ratio: 0.885793018983466
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 554, ratio: 0.8855633802816901
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 555, ratio: 0.8852954684629516
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 556, ratio: 0.8851041028781383
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 557, ratio: 0.8849892835272505
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 558, ratio: 0.8848361910593999
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 559, ratio: 0.8846448254745867
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 560, ratio: 0.8843769136558481
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 561, ratio: 0.8840324556031843
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 562, ratio: 0.8838793631353338
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 563, ratio: 0.8836114513165952
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 564, ratio: 0.883420085731782
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 565, ratio: 0.8831904470300062
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 566, ratio: 0.8829608083282302
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 567, ratio: 0.8828077158603796
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 568, ratio: 0.8825015309246785
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 569, ratio: 0.88223361910594
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 570, ratio: 0.8820039804041642
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 571, ratio: 0.8817743417023882
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 572, ratio: 0.8815064298836497
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 573, ratio: 0.8813533374157991
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 574, ratio: 0.881047152480098
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 575, ratio: 0.8808175137783221
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 576, ratio: 0.8805496019595835
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 577, ratio: 0.8803582363747704
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 578, ratio: 0.8801285976729945
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 579, ratio: 0.8799372320881813
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 580, ratio: 0.8797075933864054
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 581, ratio: 0.8794396815676668
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 582, ratio: 0.879210042865891
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 583, ratio: 0.8789421310471525
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 584, ratio: 0.8786359461114513
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 585, ratio: 0.8784445805266381
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 586, ratio: 0.8782914880587875
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 587, ratio: 0.8780618493570116
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 588, ratio: 0.8777939375382732
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 589, ratio: 0.8776025719534599
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 590, ratio: 0.8774494794856094
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 591, ratio: 0.8772198407838334
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 592, ratio: 0.8769902020820576
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 593, ratio: 0.876837109614207
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 594, ratio: 0.8766074709124311
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 595, ratio: 0.87630128597673
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 596, ratio: 0.8760716472749541
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 597, ratio: 0.8758420085731782
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 598, ratio: 0.8756889161053276
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 599, ratio: 0.8755740967544396
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 600, ratio: 0.8753444580526638
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 601, ratio: 0.8751530924678506
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 602, ratio: 0.8749234537660747
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 603, ratio: 0.8746555419473362
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 604, ratio: 0.8744641763625229
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 605, ratio: 0.8741197183098591
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 606, ratio: 0.8738518064911206
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 607, ratio: 0.87369871402327
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 608, ratio: 0.8735073484384568
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 609, ratio: 0.8733159828536436
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 610, ratio: 0.8730480710349051
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 611, ratio: 0.8727801592161666
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 612, ratio: 0.8725887936313533
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 613, ratio: 0.8723208818126148
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 614, ratio: 0.871976423759951
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 615, ratio: 0.8717467850581752
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 616, ratio: 0.8715171463563993
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 617, ratio: 0.8712875076546234
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 618, ratio: 0.8710578689528475
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 619, ratio: 0.8708282302510717
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 620, ratio: 0.8705985915492958
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 621, ratio: 0.8703306797305572
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 622, ratio: 0.8701010410287814
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 623, ratio: 0.8698714023270055
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 624, ratio: 0.8696417636252296
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 625, ratio: 0.8694121249234538
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 626, ratio: 0.8691442131047152
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 627, ratio: 0.8689911206368647
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 628, ratio: 0.8687997550520514
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 629, ratio: 0.8684935701163503
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 630, ratio: 0.8682256582976118
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 631, ratio: 0.8679960195958358
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 632, ratio: 0.8678429271279853
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 633, ratio: 0.8675750153092467
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 634, ratio: 0.8672688303735456
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 635, ratio: 0.8670391916717698
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 636, ratio: 0.8668860992039191
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 637, ratio: 0.866579914268218
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 638, ratio: 0.8663502755664422
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 639, ratio: 0.8660823637477036
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 640, ratio: 0.8658909981628904
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 641, ratio: 0.8657379056950398
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 642, ratio: 0.8655082669932639
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 643, ratio: 0.8653169014084507
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 644, ratio: 0.8651255358236375
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 645, ratio: 0.8648958971218617
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 646, ratio: 0.8646279853031231
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 647, ratio: 0.8643983466013472
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 648, ratio: 0.8641687078995713
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 649, ratio: 0.8639390691977955
+0.7763701775872627
+0.0038273116962645433
+0.7418860992039189
+0.4779164115125538
+step: 650, ratio: 0.8637094304960196
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 651, ratio: 0.8634797917942437
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 652, ratio: 0.8632884262094305
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 653, ratio: 0.8630587875076546
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 654, ratio: 0.8627908756889161
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 655, ratio: 0.8626377832210655
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 656, ratio: 0.8624081445192896
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 657, ratio: 0.862255052051439
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 658, ratio: 0.8620254133496632
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 659, ratio: 0.8617957746478874
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 660, ratio: 0.8615661359461114
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 661, ratio: 0.8613747703612982
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 662, ratio: 0.8611451316595223
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 663, ratio: 0.8609154929577465
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 664, ratio: 0.8607241273729332
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 665, ratio: 0.86053276178812
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 666, ratio: 0.8603031230863442
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 667, ratio: 0.8600734843845683
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 668, ratio: 0.8598438456827924
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 669, ratio: 0.8596142069810165
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 670, ratio: 0.8594228413962033
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 671, ratio: 0.85923147581139
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 672, ratio: 0.8590401102265769
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 673, ratio: 0.858810471524801
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 674, ratio: 0.8586191059399878
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 675, ratio: 0.8584277403551746
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 676, ratio: 0.858159828536436
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538
+step: 677, ratio: 0.8580067360685855
+0.7763701775872627
+0.7418860992039189
+0.4779164115125538

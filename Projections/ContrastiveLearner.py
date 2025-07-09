@@ -99,12 +99,14 @@ class ContrastiveLearner(ABC):
 
             print(f"Epoch {epoch+1}/{self.epochs}, Loss: {total_loss:.4f}")
 
-    def transform(self, X1, X2=None):
+    def transform(self, X1=None, X2=None):
         self.model1.eval()
         self.model2.eval()
         with torch.no_grad():
             if X2 is None:
                 return self.model1(X1.to(self.device))
+            if X1 is None:
+                return self.model2(X2.to(self.device))
             Z1 = self.model1(X1.to(self.device))
             Z2 = self.model2(X2.to(self.device))
         return Z1, Z2

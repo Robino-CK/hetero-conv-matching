@@ -53,20 +53,21 @@ import pandas as pd
 
 def update_row_by_ratio(df, columns, ratio, column_name, value):
     # Check if row with given ratio exists
+
     if ratio in df['ratio'].values:
         # Update the existing row
-        df.loc[df['ratio'] == ratio, column_name] = value
+        df.loc[df['ratio'] == ratio, column_name] = [value]  # Ensure list is assigned
     else:
         # Create a new row with NaNs and set ratio and column value
-        new_row = pd.Series({col: None for col in columns})
+        new_row = {col: None for col in columns}
         new_row['ratio'] = ratio
-        new_row[column_name] = value
-        df = pd.concat([df, new_row.to_frame().T], ignore_index=True)
+        new_row[column_name] = value  # Can be a list
+        df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
     return df
 
 
 
-def eval( model=HeteroSGCPaper ): 
+def eval( model=HeteroSGCPaper , device='cuda:0'): 
     files = get_all_files('results/')
     print(files)
     columns = set()
@@ -77,12 +78,13 @@ def eval( model=HeteroSGCPaper ):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if "pairs" not in f:
+        if "pairs" not in f :
             continue
         try: 
+          # torch.cuda.empty_cache()
             import pickle
-        
-            device= "cuda:0"
+            print(f)
+            
             
             with open(f, 'rb') as fh:
                     
@@ -90,8 +92,8 @@ def eval( model=HeteroSGCPaper ):
             node_target_type = get_node_type(f)
             if not node_target_type:
                 continue
-            original_graph = coarsener.original_graph
-            coarsend_graph = coarsener.summarized_graph
+            original_graph = coarsener.original_graph.to(device)
+            coarsend_graph = coarsener.summarized_graph.to(device)
 
             #coarsend_graph = coarsend_graph.cpu()
             mapping = coarsener.get_mapping(node_target_type)
@@ -103,16 +105,21 @@ def eval( model=HeteroSGCPaper ):
             for i in range(5):
                 _, coar, _, loss_coar ,_,_= run_experiments(original_graph, coarsend_graph,  model,
                                                                 model_param={"hidden_dim": 64,"num_layers":4},
-                                        optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
+                                        optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
                                         num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
             #orig_short = [ o[-1] for o in orig ]
                 coar_short = [ o[-1] for o in coar ]
                 accur.append(max(coar_short))
             ratio = f.split('/')[2]
             column = f.split('/')[1]
-            df = update_row_by_ratio(df, columns, ratio, column,accur  )
             
-            df.to_csv('res_actor.csv')            
+            df = update_row_by_ratio(df, columns, ratio, column,accur  )
+            df.to_csv('res_pairs.csv')      
+            del original_graph, coarsend_graph, coarsener, labels, mapping
+            
+         #   torch.cuda.empty_cache()
+            
+                  
 
         except Exception as e:
             print('error' , e)

@@ -76,13 +76,16 @@ class MultiviewAutoencoder:
 
             print(f"Epoch {epoch+1}/{self.epochs}, Loss: {total_loss:.4f}")
 
-    def transform(self, X1, X2=None):
+    def transform(self, X1=None, X2=None):
         self.encoder1.eval()
         self.encoder2.eval()
         with torch.no_grad():
-            Z1 = self.encoder1(X1.to(self.device))
+            
             if X2 == None:
-                return Z1
+                return self.encoder1(X1.to(self.device))
+            if X1 == None:
+                return self.encoder2(X2.to(self.device))
+            Z1 = self.encoder1(X1.to(self.device))
             Z2 = self.encoder2(X2.to(self.device))
         return Z1, Z2
 

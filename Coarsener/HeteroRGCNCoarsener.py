@@ -72,7 +72,6 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
             has_feat = 'feat' in self.summarized_graph.nodes[dst_type].data
 
             # Precompute normalized degrees
-            print(etype)
             deg_out = self.original_graph.out_degrees(etype= etype)
             n_src =  self.summarized_graph.num_nodes(src_type)
             n_dst =  self.summarized_graph.num_nodes(dst_type)
@@ -161,7 +160,8 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         deg1 = deg[node1s]  # shape (L,)
         deg2 = deg[node2s]            # shape (L,)
 
-        
+        if self.ccas:
+            cache = self.ccas[etype].transform(X2=cache)
         su = cache[node1s]            # shape (L, D)
         sv = cache[node2s]
         cu = self.summarized_graph.nodes[ntype].data["node_size"][node1s].unsqueeze(1)
@@ -211,11 +211,6 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
         
         iu = infl_node[u] 
         iv = infl_node[v]
-        
-        feat_u = feat_node[u]
-        feat_v = feat_node[v]
-        
-        feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
         if self.cca_cls:
             if self.multi_relations:
                 dst_type = etype.split("to")[1]
@@ -223,9 +218,21 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 etype_around = f"{dst_type}to{src_type}"
             else:
                 etype_around = etype
-            feat_u =  self.ccas[etype_around].transform(feat_u)
-            feat_v = self.ccas[etype_around].transform(feat_v)
-            feat =  self.ccas[etype_around].transform(feat)
+            feat_node = self.ccas[etype_around].transform(X1=feat_node)
+        feat_u = feat_node[u]
+        feat_v = feat_node[v]
+        
+        feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv).unsqueeze(1)
+        # if self.cca_cls:
+        #     if self.multi_relations:
+        #         dst_type = etype.split("to")[1]
+        #         src_type = etype.split("to")[0]
+        #         etype_around = f"{dst_type}to{src_type}"
+        #     else:
+        #         etype_around = etype
+        #     feat_u =  self.ccas[etype_around].transform(feat_u)
+        #     feat_v = self.ccas[etype_around].transform(feat_v)
+        #     feat =  self.ccas[etype_around].transform(feat)
         if self.use_cos_sim:
             neigh_cost_u = F.cosine_similarity( feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)  , (feat_u / torch.sqrt(du + cu).unsqueeze(1)) , dim=1)   * iu
             neigh_cost_v = F.cosine_similarity( feat / torch.sqrt(du + dv + cu + cv).unsqueeze(1)   , (feat_v / torch.sqrt(dv + cv).unsqueeze(1)), dim=1)   * iv
@@ -471,27 +478,29 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
  
                 # compute all merged h representations in one go
                 H_merged = self._create_h_merged(src,dst, src_type, etype)
-        
+
+                H =  self.summarized_graph.nodes[src_type].data[f"h{etype}"]
+                H_cca = self.ccas[etype].transform(X2 =H)
+                
                 # gather representations
-                hu = self.summarized_graph.nodes[src_type].data[f"h{etype}"][src]  # [P, H]
-                hv = self.summarized_graph.nodes[src_type].data[f"h{etype}"][dst]  # [P, H]
+                hu_cca = H_cca[src]  # [P, H]
+                hv_cca = H_cca[dst]  # [P, H]
                 # build a dense [num_src, hidden] tensor
                 #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
-                huv = H_merged                               # [P, H]
-                feat_u = self.summarized_graph.nodes[src_type].data["feat_pca"][src]
-                feat_v = self.summarized_graph.nodes[src_type].data["feat_pca"][dst]
+                huv_cca = H_merged      
+                feat_cca =   self.ccas[etype].transform(X1 =self.summarized_graph.nodes[src_type].data["feat_pca"])                       # [P, H]
+                feat_u = feat_cca[src]
+                feat_v = feat_cca[dst]
             
                 cu = self.summarized_graph.nodes[src_type].data["node_size"][src]
 
                 cv = self.summarized_graph.nodes[src_type].data["node_size"][dst]
                 du = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][src]
                 dv = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][dst]
-                feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv ).unsqueeze(1)
-            #    print(etype)
-                feat_u,hu_cca= self.ccas[etype].transform(feat_u, hu)
-                feat_v,hv_cca= self.ccas[etype].transform(feat_v, hv)
-                feat_uv, huv_cca = self.ccas[etype].transform(feat, huv)
-                # feat_u,hu_cca = torch.from_numpy(feat_u).to(self.device), torch.from_numpy(hu_cca).to(self.device)
+                # feat_u= self.ccas[etype].transform(X1 =feat_u)
+                # feat_v= self.ccas[etype].transform(X1 =feat_v)
+                # feat_uv = self.ccas[etype].transform(X1 =feat)
+                # # feat_u,hu_cca = torch.from_numpy(feat_u).to(self.device), torch.from_numpy(hu_cca).to(self.device)
                 # feat_v,hv_cca = torch.from_numpy(feat_v).to(self.device), torch.from_numpy(hv_cca).to(self.device)
                 # feat_uv, huv_cca = torch.from_numpy(feat_uv).to(self.device), torch.from_numpy(huv_cca).to(self.device)
                 #  print("du hurensohn!!")
@@ -523,31 +532,30 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
              
             # compute all merged h representations in one go
             H_merged = self._create_h_merged(src,dst, src_type, etype)
-    
+            H =  self.summarized_graph.nodes[src_type].data[f"h{etype}"]
+            H_cca = self.ccas[etype].transform(X2 =H)
             # gather representations
-            hu = self.summarized_graph.nodes[src_type].data[f"h{etype}"][src]  # [P, H]
-            hv = self.summarized_graph.nodes[src_type].data[f"h{etype}"][dst]  # [P, H]
+            hu_cca = H_cca[src]  # [P, H]
+            hv_cca = H_cca[dst]  # [P, H]
             # build a dense [num_src, hidden] tensor
             #H_tensor =  torch.tensor([v for k,v in  H_merged.items()] , device=device)
-            huv = H_merged                               # [P, H]
-            feat_u = self.summarized_graph.nodes[src_type].data["feat_pca"][src]
-            feat_v = self.summarized_graph.nodes[src_type].data["feat_pca"][dst]
+            huv_cca = H_merged                               # [P, H]
+            feat_cca =   self.ccas[etype].transform(X1 =self.summarized_graph.nodes[src_type].data["feat_pca"])  
+            feat_u = feat_cca[src]
+            feat_v = feat_cca[dst]
         
             cu = self.summarized_graph.nodes[src_type].data["node_size"][src]
 
             cv = self.summarized_graph.nodes[src_type].data["node_size"][dst]
             du = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][src]
             dv = self.summarized_graph.nodes[src_type].data[f"deg_{etype}"][dst]
-            feat = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv ).unsqueeze(1)
+            feat_uv = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv ).unsqueeze(1)
           #  print(src_type, etype)
-            feat_u,hu_cca = self.ccas[etype].transform(feat_u, hu)
-            feat_v,hv_cca = self.ccas[etype].transform(feat_v, hv)
-            feat_uv, huv_cca = self.ccas[etype].transform(feat, huv)
+            # feat_u,hu_cca = self.ccas[etype].transform(feat_u, hu)
+            # feat_v,hv_cca = self.ccas[etype].transform(feat_v, hv)
+            # feat_uv, huv_cca = self.ccas[etype].transform(feat, huv)
             
-            # feat_u,hu_cca = torch.from_numpy(feat_u).to(self.device), torch.from_numpy(hu_cca).to(self.device)
-            # feat_v,hv_cca = torch.from_numpy(feat_v).to(self.device), torch.from_numpy(hv_cca).to(self.device)
-            # feat_uv, huv_cca = torch.from_numpy(feat_uv).to(self.device), torch.from_numpy(huv_cca).to(self.device)
-          #  print("du hurensohn!!")
+         
             
             feat_uv =  feat_uv* (cu + cv ).unsqueeze(1) / (du +dv + cv+ cu ).unsqueeze(1) 
             feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
