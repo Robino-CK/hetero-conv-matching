@@ -156,7 +156,7 @@ class CCA:
         )
         return corr
 
-    def transform(self, X=None, Y=None):
+    def transform(self, X1=None, X2=None):
         """
         Project X and/or Y to the canonical components.
         
@@ -171,11 +171,12 @@ class CCA:
         """
         X_proj, Y_proj = None, None
         
-        if X is not None:
-            Xc = X - self.mean_x
+        if X1 is not None:
+            Xc = X1 - self.mean_x
             X_proj = Xc @ self.Wx
-        if Y is not None:
-            Yc = Y - self.mean_y
+            
+        if X2 is not None:
+            Yc = X2 - self.mean_y
             Y_proj = Yc @ self.Wy
         
         if X_proj is not None and Y_proj is not None:

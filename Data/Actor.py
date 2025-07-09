@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
-from dgl.data import CiteseerGraphDataset
+from dgl.data import Actor
 
 class Actor():
     def __init__(self):
@@ -27,7 +27,7 @@ class Actor():
             A DGL heterogeneous graph object with reduced and normalized node features.
         """
         # Load the Citeseer dataset graph
-        dataset = CiteseerGraphDataset()
+        dataset = Actor()
         g = dataset[0]
 
         # Original node features (e.g., word counts, embeddings, etc.)

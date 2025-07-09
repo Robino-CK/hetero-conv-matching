@@ -139,7 +139,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 feat_src =   self.summarized_graph.nodes[src_type].data['feat_pca']
                 h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                 
-                cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=feat_src.shape[1], device=self.device)
+                cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=256, device=self.device)
                 cca.fit(feat_src, h_src) 
                 self.ccas[etype] = cca
         # else:
@@ -504,7 +504,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 # feat_v,hv_cca = torch.from_numpy(feat_v).to(self.device), torch.from_numpy(hv_cca).to(self.device)
                 # feat_uv, huv_cca = torch.from_numpy(feat_uv).to(self.device), torch.from_numpy(huv_cca).to(self.device)
                 #  print("du hurensohn!!")
-                
+                feat_uv = (feat_u*cu.unsqueeze(1) + feat_v*cv.unsqueeze(1)) / (cu + cv ).unsqueeze(1)
                 feat_uv =  feat_uv* (cu + cv ).unsqueeze(1) / (du +dv + cv+ cu ).unsqueeze(1) 
                 feat_u = (feat_u * cu.unsqueeze(1)) / (du + cu).unsqueeze(1)
                 feat_v = (feat_v * cv.unsqueeze(1)) / (dv + cv).unsqueeze(1)

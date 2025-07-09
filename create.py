@@ -6,7 +6,7 @@ from Data.Citeseer import Citeseer
 from Data.DBLP import DBLP
 from Data.IMDB import IMDB
 from Data.ACM import ACM
-from Data.Actor import Actor
+#from Data.Actor import Actor
 from Projections.ContrastiveLearner import NonLinearContrastiveLearner, LinearContrastiveLearner
 from Projections.CCA import CCA
 from Projections.DeepCCA import DeepCCA
@@ -34,7 +34,7 @@ def get_proj(name):
     else:
         return None
 
-def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:2", n_components=30, zscore=False, num_neighbors_per_ntype=25,num_neighbors_per_etype=25, checkpoints=None, batch_size=None, run=0):
+def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=30, zscore=False, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, run=0):
     # Make sure we can use CUDA
     try: 
         torch.cuda.empty_cache()
@@ -100,5 +100,8 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:2", n_
 d = DBLP()
 
 coarsen_graph(d, proj_name="CLNL", n_components=None, run=0)
+d = Citeseer()
+coarsen_graph(d, proj_name="CLNL", n_components=None, run=0)
+
 
 #nohup python run.py > output.log 2>&1 &
