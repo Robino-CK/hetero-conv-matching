@@ -15,6 +15,7 @@ from Models.SimpleHeteroGCN import HeteroGCNCiteer
 from Models.ImprovedGCN import ImprovedGCN
 from Models.HeteroSage import HeteroSAGE
 from Models.HeteroSGC import HeteroSGCPaper
+from Models.Han import HAN
 
 from Experiments.model_helper import run_experiments
 from Projections.AutoEncoder import MultiviewAutoencoder
@@ -103,7 +104,7 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
 
 
 
-def eval( model=ImprovedGCN , device='cuda:0'): 
+def eval( model=HAN , device='cuda:0'): 
     files = get_all_files('results') #
     print(files)
     
@@ -168,7 +169,7 @@ def eval( model=ImprovedGCN , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_gcn_not_imdb.csv')      
+                df.to_csv('run_han_not_imdb.csv')      
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
