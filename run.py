@@ -115,7 +115,7 @@ def eval( model=ImprovedGCN , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if "pairs" not in f :
+        if "pairs" not in f or "imdb" in f.lower():
             print(f)
             continue
         try: 
@@ -168,7 +168,7 @@ def eval( model=ImprovedGCN , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_gcn.csv')      
+                df.to_csv('run_gcn_not_imdb.csv')      
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
