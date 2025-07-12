@@ -103,8 +103,8 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
 
 
 
-def eval( model=HeteroSGCPaper , device='cuda:0'): 
-    files = get_all_files('results_ugc/ugc_data') #
+def eval( model=ImprovedGCN , device='cuda:0'): 
+    files = get_all_files('results') #
     print(files)
     
     columns = set()
@@ -115,7 +115,7 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if "dblp" not in f :
+        if "pairs" not in f :
             print(f)
             continue
         try: 
@@ -168,7 +168,7 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('res_ugc_dblp.csv')      
+                df.to_csv('run_gcn.csv')      
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
