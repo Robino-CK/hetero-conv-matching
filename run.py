@@ -6,7 +6,7 @@ from Data.Citeseer import Citeseer
 from Data.DBLP import DBLP
 from Data.IMDB import IMDB
 from Data.ACM import ACM
-from Data.Actor import Actor
+#from Data.Actor import Actor
 from Projections.ContrastiveLearner import NonLinearContrastiveLearner, LinearContrastiveLearner
 from Projections.CCA import CCA
 from Projections.DeepCCA import DeepCCA
@@ -22,6 +22,42 @@ import os
 import pandas as pd
 
 import os
+def torch_to_dgl(data):
+    from torch_geometric.data import HeteroData
+
+
+    # ... your existing graph setup
+    edge_index_dict = {}
+    for edge_type in data.edge_types:
+        src_type, relation_type, dst_type = edge_type
+        edge_index = data[edge_type].edge_index
+        edge_index_dict[(src_type, relation_type, dst_type)] = edge_index
+    import dgl
+    import torch
+
+    # Compute number of nodes per node type
+    num_nodes_dict = {ntype: data[ntype].num_nodes for ntype in data.node_types}
+
+    # Convert edge_index_dict to DGL format
+    dgl_graph = dgl.heterograph({
+        (src, src +rel+dst , dst): (edge_index[0], edge_index[1])
+        for (src, rel, dst), edge_index in edge_index_dict.items()
+    }, num_nodes_dict=num_nodes_dict)
+    for ntype in data.node_types:
+        for key, value in data[ntype].items():
+            if key == 'x':
+                dgl_graph.nodes[ntype].data['feat'] = value
+            else:
+                dgl_graph.nodes[ntype].data[key] = value
+
+    for ntype in data.node_types:
+        for key, value in data[ntype].items():
+            # This includes x, y, train_mask, val_mask, test_mask, etc.
+            dgl_graph.nodes[ntype].data[key] = value
+    dgl_graph.nodes['author'].data['label'] = dgl_graph.nodes['author'].data['y']
+    dgl_graph.nodes['author'].data['test_mask'] = ~dgl_graph.nodes['author'].data['train_mask']
+    return dgl_graph
+#dgl_graph = dgl_graph.to(device)
 
 def get_all_files(root_folder):
     file_paths = []
@@ -35,11 +71,11 @@ def get_all_files(root_folder):
 def get_node_type(name):
     if 'Actor' in name:
         return 'paper'
-    elif 'IMDB' in name:
+    elif 'imdb' in name.lower():
         return "movie"
-    if 'ACM' in name:
+    if 'acm' in name.lower():
         return "paper"
-    elif 'DBLP' in name:
+    elif 'dblp' in name.lower():
         return 'author'
     elif "Cit" in name or 'cit' in name:
         return 'paper'
@@ -68,54 +104,72 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
 
 
 def eval( model=HeteroSGCPaper , device='cuda:0'): 
-    files = get_all_files('results/')
+    files = get_all_files('results_ugc/ugc_data') #
     print(files)
+    
     columns = set()
     columns.add('ratio')
     for f in files:
         columns.add(f.split('/')[1])
-        
+    
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if "pairs" not in f :
+        if "dblp" not in f :
+            print(f)
             continue
         try: 
           # torch.cuda.empty_cache()
             import pickle
             print(f)
-            
-            
-            with open(f, 'rb') as fh:
-                    
-                coarsener = pickle.load(fh) 
             node_target_type = get_node_type(f)
             if not node_target_type:
                 continue
-            original_graph = coarsener.original_graph.to(device)
-            coarsend_graph = coarsener.summarized_graph.to(device)
-
-            #coarsend_graph = coarsend_graph.cpu()
-            mapping = coarsener.get_mapping(node_target_type)
-            coarsener.make_mask(mapping, node_target_type)
-
-            labels = coarsener.get_labels(mapping, node_target_type)
-            coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
-            accur = []
-            for i in range(5):
-                _, coar, _, loss_coar ,_,_= run_experiments(original_graph, coarsend_graph,  model,
-                                                                model_param={"hidden_dim": 64,"num_layers":4},
-                                        optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
-                                        num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
-            #orig_short = [ o[-1] for o in orig ]
-                coar_short = [ o[-1] for o in coar ]
-                accur.append(max(coar_short))
-            ratio = f.split('/')[2]
-            column = f.split('/')[1]
             
-            df = update_row_by_ratio(df, columns, ratio, column,accur  )
-            df.to_csv('res_pairs.csv')      
-            del original_graph, coarsend_graph, coarsener, labels, mapping
+            with open(f, 'rb') as fh:
+                if "ugc" in f:
+                    dataset = DBLP() 
+                    print("asd")
+                    original_graph = dataset.load_graph(n_components=30)
+                    device= "cuda:0"
+                    original_graph = original_graph.to(device)
+                    
+                    #original_graph = Data.utils.create_random_mask(original_graph, device=device, target_ntype="paper") 
+                    data = torch.load(fh)
+                    #print(data)
+                    #print(data["author"]["y"])
+                    coarsend_graph = torch_to_dgl(data)
+                    coarsend_graph = coarsend_graph.to(device)
+                else:
+                    coarsener = pickle.load(fh) 
+                    
+                    original_graph = coarsener.original_graph.to(device)
+                    coarsend_graph = coarsener.summarized_graph.to(device)
+
+                    #coarsend_graph = coarsend_graph.cpu()
+                    mapping = coarsener.get_mapping(node_target_type)
+                    coarsener.make_mask(mapping, node_target_type)
+
+                    labels = coarsener.get_labels(mapping, node_target_type)
+                    coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
+                    
+                print("hi")
+                accur = []
+                for i in range(5):
+                    print(i)
+                    _, coar, _, loss_coar ,_,_= run_experiments(original_graph, coarsend_graph,  model,
+                                                                    model_param={"hidden_dim": 64,"num_layers":4},
+                                            optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
+                                            num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
+                #orig_short = [ o[-1] for o in orig ]
+                    coar_short = [ o[-1] for o in coar ]
+                    accur.append(max(coar_short))
+                ratio = f.split('/')[2]
+                column = f.split('/')[1]
+                
+                df = update_row_by_ratio(df, columns, ratio, column,accur  )
+                df.to_csv('res_ugc_dblp.csv')      
+                del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
             
