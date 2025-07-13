@@ -26,18 +26,13 @@ class HAN(nn.Module):
         self.lin.reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
-    def forward(self, g, x_dict, get_embeddings=False):
-        # Apply linear transformation and ReLU to each node type
+    def forward(self, x_dict, edge_index_dict):
         x_dict = {
             node_type: self.lin_dict[node_type](x).relu_()
             for node_type, x in x_dict.items()
         }
-
-        # Apply the sequence of convolutional layers
         for conv in self.convs:
-            x_dict = conv(x_dict, g.edge_index_dict)
+            x_dict = conv(x_dict, edge_index_dict)
 
-        # Return embeddings if requested, otherwise classification output
-        if get_embeddings:
-            return x_dict
         return self.lin(x_dict[self.target_node_type])
+

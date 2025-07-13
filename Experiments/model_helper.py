@@ -1,5 +1,7 @@
 import torch
 import torch.nn.functional as F
+import torch.nn as nn
+from torch_geometric.data import HeteroData
 def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
                     epochs=1, optimizer=torch.optim.Adam, target_node_type="movie",
                     model_param={"hidden_dim": 256},
@@ -98,3 +100,99 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
         coarsened_loss.append(coarsened_loss_per_run)
 
     return original_accuracies, coarsened_accuracies, original_loss, coarsened_loss, model_coarsened, model_original
+
+
+def dgl_to_pyg(g, target_node_type="author"):
+    x_dict = {ntype: g.nodes[ntype].data['feat'] for ntype in g.ntypes}
+      
+    pyg_data = HeteroData()
+
+    # Add node features
+    for ntype in g.ntypes:
+        #print(x_dict)
+        pyg_data[ntype].x = x_dict[ntype]
+        if ntype == target_node_type:
+            #print(g.nodes[ntype].data.keys())
+            pyg_data[ntype].y = g.nodes[ntype].data["label"]
+            pyg_data[ntype].train_mask = g.nodes[ntype].data["train_mask"]
+            pyg_data[ntype].test_mask = g.nodes[ntype].data["test_mask"]
+            pyg_data[ntype].val_mask = g.nodes[ntype].data["val_mask"]
+        
+
+    # Add edge index for each edge type
+    for canonical_etype in g.canonical_etypes:
+        src_type, etype, dst_type = canonical_etype
+        src, dst = g.edges(etype=canonical_etype)
+        edge_index = torch.stack([src, dst], dim=0)
+        pyg_data[(src_type, etype, dst_type)].edge_index = edge_index
+
+    return pyg_data
+
+
+def run_experiments_pyg(original_graph, coarsend_graph, model_class, num_runs=5,
+                    epochs=1, optimizer=torch.optim.Adam, target_node_type="movie",
+                    model_param={"hidden_dim": 256},
+                    optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
+                    device="cuda" if torch.cuda.is_available() else "cpu", eval_interval=10, run_orig=True):
+    
+
+
+    for run in range(num_runs):
+        train_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["train_mask"]).squeeze()
+        test_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["test_mask"]).squeeze()
+        val_idx_orig = torch.nonzero(original_graph.nodes[target_node_type].data["test_mask"]).squeeze()
+        labels_orig = original_graph.nodes[target_node_type].data['label']
+
+        train_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["train_mask"]).squeeze()
+        test_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["test_mask"]).squeeze()
+        val_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["test_mask"]).squeeze()
+        labels_coar = coarsend_graph.nodes[target_node_type].data['label']
+
+        pygorig = dgl_to_pyg(original_graph)
+        pygcoar = dgl_to_pyg(coarsend_graph)
+        node_types, edge_types = pygorig.metadata()
+      
+        
+        output_dim = len(torch.unique(labels_orig))
+        model_original = model_class( hidden_channels=64, out_channels=output_dim, num_layers=4, 
+                 edge_types=edge_types, node_types=node_types, target_node_type= target_node_type).to(device)
+        optimizer_original = optimizer(model_original.parameters(), **optimizer_param)
+        node_types, edge_types = pygcoar.metadata()
+        model_coarsened = model_class(hidden_channels=64, out_channels=output_dim, num_layers=4, 
+                 edge_types=edge_types, node_types=node_types, target_node_type= target_node_type).to(device)
+        optimizer_coarsened = optimizer(model_coarsened.parameters(), **optimizer_param)
+        criterion = nn.CrossEntropyLoss()
+        def train():
+            model_coarsened.train()
+            optimizer_coarsened.zero_grad()
+            out = model_coarsened(pygcoar.x_dict, pygcoar.edge_index_dict)
+            loss = criterion(out[pygcoar[target_node_type].train_mask],
+                            pygcoar[target_node_type].y[pygcoar[target_node_type].train_mask])
+            loss.backward()
+            optimizer_coarsened.step()
+            return loss.item()
+        def test_on(graph):
+            model_coarsened.eval()
+            with torch.no_grad():
+                out = model_coarsened(graph.x_dict, graph.edge_index_dict)
+                pred = out.argmax(dim=1)
+
+                accs = []
+                for split in ['train_mask', 'val_mask', 'test_mask']:
+                    mask = graph[target_node_type][split]
+                    acc = (pred[mask] == graph[target_node_type].y[mask]).sum().item() / mask.sum().item()
+                    accs.append(acc)
+                return accs  # train_acc, val_acc, test_acc
+            
+        best_val = 0
+        for epoch in range(1, epochs + 1):
+            loss = train()
+            train_acc, val_acc, test_acc = test_on(pygorig)
+            if epoch % 10 == 0 or epoch == 1:
+                print(f"Epoch {epoch:03d} | Loss: {loss:.4f} | Train: {train_acc:.4f} | "
+                    f"Val: {val_acc:.4f} | Test: {test_acc:.4f}")
+        
+                if val_acc > best_val:
+                    best_val = val_acc
+      
+        return [best_val]

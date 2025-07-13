@@ -17,11 +17,12 @@ from Models.HeteroSage import HeteroSAGE
 from Models.HeteroSGC import HeteroSGCPaper
 from Models.Han import HAN
 
-from Experiments.model_helper import run_experiments
+from Experiments.model_helper import run_experiments, run_experiments_pyg
 from Projections.AutoEncoder import MultiviewAutoencoder
 import os
 import pandas as pd
-
+import torch
+from torch_geometric.data import HeteroData
 import os
 def torch_to_dgl(data):
     from torch_geometric.data import HeteroData
@@ -103,10 +104,9 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
     return df
 
 
-
 def eval( model=HAN , device='cuda:0'): 
     files = get_all_files('results') #
-    print(files)
+    #print(files)
     
     columns = set()
     columns.add('ratio')
@@ -116,8 +116,8 @@ def eval( model=HAN , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if "pairs" not in f or "imdb" in f.lower():
-            print(f)
+        if not "pair" in f.lower():
+            print("no", f)
             continue
         try: 
           # torch.cuda.empty_cache()
@@ -154,22 +154,21 @@ def eval( model=HAN , device='cuda:0'):
                     labels = coarsener.get_labels(mapping, node_target_type)
                     coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
                     
-                print("hi")
                 accur = []
-                for i in range(5):
+                for i in range(1):
                     print(i)
-                    _, coar, _, loss_coar ,_,_= run_experiments(original_graph, coarsend_graph,  model,
+                    
+                    acc= run_experiments_pyg(original_graph, coarsend_graph,  model,
                                                                     model_param={"hidden_dim": 64,"num_layers":4},
                                             optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
                                             num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
                 #orig_short = [ o[-1] for o in orig ]
-                    coar_short = [ o[-1] for o in coar ]
-                    accur.append(max(coar_short))
+                    accur.append(max(acc))
                 ratio = f.split('/')[2]
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_han_not_imdb.csv')      
+                df.to_csv('run_han.csv')      
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
