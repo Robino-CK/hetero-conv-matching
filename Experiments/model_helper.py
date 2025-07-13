@@ -148,8 +148,8 @@ def run_experiments_pyg(original_graph, coarsend_graph, model_class, num_runs=5,
         val_idx_coar = torch.nonzero(coarsend_graph.nodes[target_node_type].data["test_mask"]).squeeze()
         labels_coar = coarsend_graph.nodes[target_node_type].data['label']
 
-        pygorig = dgl_to_pyg(original_graph)
-        pygcoar = dgl_to_pyg(coarsend_graph)
+        pygorig = dgl_to_pyg(original_graph, target_node_type=target_node_type)
+        pygcoar = dgl_to_pyg(coarsend_graph, target_node_type)
         node_types, edge_types = pygorig.metadata()
       
         
