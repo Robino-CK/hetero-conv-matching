@@ -155,7 +155,7 @@ def eval( model=HAN , device='cuda:0'):
                     coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
                     
                 accur = []
-                for i in range(1):
+                for i in range(5):
                     print(i)
                     
                     acc= run_experiments_pyg(original_graph, coarsend_graph,  model,
