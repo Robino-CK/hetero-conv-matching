@@ -116,7 +116,7 @@ def eval( model=HAN , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if not "pair" in f.lower():
+        if not "pair" in f.lower()  or not "ACM" in f.lower():
             print("no", f)
             continue
         try: 

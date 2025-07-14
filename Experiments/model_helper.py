@@ -116,7 +116,7 @@ def dgl_to_pyg(g, target_node_type="author"):
             pyg_data[ntype].y = g.nodes[ntype].data["label"]
             pyg_data[ntype].train_mask = g.nodes[ntype].data["train_mask"]
             pyg_data[ntype].test_mask = g.nodes[ntype].data["test_mask"]
-            pyg_data[ntype].val_mask = g.nodes[ntype].data["val_mask"]
+            pyg_data[ntype].val_mask = g.nodes[ntype].data["test_mask"]
         
 
     # Add edge index for each edge type
