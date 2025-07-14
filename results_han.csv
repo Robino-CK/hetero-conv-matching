@@ -1,0 +1,12 @@
+dataset,method,acc,model,base_dataset
+DBLP0.3,caugc,46.17746472358704,han,False
+DBLP0.3,caugc,46.17746472358704,han,False
+DBLP0.5,caugc,42.738717794418335,HAN,False
+DBLP0.3,caugc,46.17746472358704,HAN,False
+DBLP0.1,caugc,27.93982326984405,HAN,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.3,caugc,43.96204650402069,<class 'heteroModels.HAN'>,False
+IMDB0.1,caugc,41.51811301708221,<class 'heteroModels.HAN'>,False
+ACM0.5,caugc,41.64305925369263,HAN,False
+ACM0.3,caugc,38.95184099674225,HAN,False
+ACM0.1,caugc,41.21813178062439,HAN,False
