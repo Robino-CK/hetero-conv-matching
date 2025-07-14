@@ -1,0 +1,51 @@
+dataset,method,acc,model,base_dataset
+DBLP0.3,caugc,46.17746472358704,han,False
+DBLP0.3,caugc,46.17746472358704,han,False
+DBLP0.5,caugc,42.738717794418335,HAN,False
+DBLP0.3,caugc,46.17746472358704,HAN,False
+DBLP0.1,caugc,27.93982326984405,HAN,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.3,caugc,43.96204650402069,<class 'heteroModels.HAN'>,False
+IMDB0.1,caugc,41.51811301708221,<class 'heteroModels.HAN'>,False
+ACM0.5,caugc,41.64305925369263,HAN,False
+ACM0.3,caugc,38.95184099674225,HAN,False
+ACM0.1,caugc,41.21813178062439,HAN,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.3,caugc,43.96204650402069,<class 'heteroModels.HAN'>,False
+IMDB0.1,caugc,41.51811301708221,<class 'heteroModels.HAN'>,False
+ACM0.5,caugc,41.4542019367218,HAN,False
+ACM0.3,caugc,45.70349454879761,HAN,False
+ACM0.1,caugc,41.21813178062439,HAN,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.3,caugc,43.96204650402069,<class 'heteroModels.HAN'>,False
+IMDB0.1,caugc,41.51811301708221,<class 'heteroModels.HAN'>,False
+ACM0.5,caugc,41.64305925369263,HAN,False
+ACM0.3,caugc,36.307838559150696,HAN,False
+ACM0.1,caugc,41.21813178062439,HAN,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.5,caugc,37.6653254032135,<class 'heteroModels.HAN'>,False
+IMDB0.5,caugc,42.84071326255798,<class 'heteroModels.HeteroSGC'>,False
+IMDB0.5,caugc,42.15066134929657,<class 'heteroModels.HeteroGCN'>,False
+IMDB0.5,caugc,41.80563688278198,<class 'heteroModels.HeteroGCN2'>,False
+IMDB0.3,caugc,43.96204650402069,<class 'heteroModels.HAN'>,False
+IMDB0.3,caugc,39.99424874782562,<class 'heteroModels.HeteroSGC'>,False
+IMDB0.3,caugc,41.05807840824127,<class 'heteroModels.HeteroGCN'>,False
+IMDB0.3,caugc,40.79931080341339,<class 'heteroModels.HeteroGCN2'>,False
+IMDB0.1,caugc,41.51811301708221,<class 'heteroModels.HAN'>,False
+IMDB0.1,caugc,38.35537731647492,<class 'heteroModels.HeteroSGC'>,False
+IMDB0.1,caugc,40.42553305625916,<class 'heteroModels.HeteroGCN'>,False
+IMDB0.1,caugc,39.677974581718445,<class 'heteroModels.HeteroGCN2'>,False
+ACM0.5,caugc,41.64305925369263,HAN,False
+ACM0.5,caugc,77.43154168128967,HeteroSGC,False
+ACM0.5,caugc,91.6902720928192,HeteroGCN,False
+ACM0.5,caugc,91.2181317806244,HeteroGCN2,False
+ACM0.3,caugc,35.74126660823822,HAN,False
+ACM0.3,caugc,47.780925035476685,HeteroSGC,False
+ACM0.3,caugc,84.84418988227844,HeteroGCN,False
+ACM0.3,caugc,85.26912331581116,HeteroGCN2,False
+ACM0.1,caugc,41.21813178062439,HAN,False
+ACM0.1,caugc,46.22285068035126,HeteroSGC,False
+ACM0.1,caugc,58.5457980632782,HeteroGCN,False
+ACM0.1,caugc,38.24362754821777,HeteroGCN2,False
