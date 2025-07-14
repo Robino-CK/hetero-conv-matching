@@ -99,7 +99,7 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
 
         coarsened_loss.append(coarsened_loss_per_run)
 
-    return original_accuracies, coarsened_accuracies, original_loss, coarsened_loss, model_coarsened, model_original
+    return coarsened_accuracies
 
 
 def dgl_to_pyg(g, target_node_type="author"):
