@@ -20,12 +20,14 @@ class HAN(nn.Module):
                                 dropout=0.5, metadata=(node_types,edge_types))
             self.convs.append(conv)
         self.lin = nn.Linear(hidden_channels, out_channels)
+    
     def reset_parameters(self):
         for node_type in self.node_types:
             self.lin_dict[node_type].reset_parameters()
         self.lin.reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
+    
     def forward(self, x_dict, edge_index_dict):
         x_dict = {
             node_type: self.lin_dict[node_type](x).relu_()
