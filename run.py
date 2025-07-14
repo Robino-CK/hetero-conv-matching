@@ -104,7 +104,7 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
     return df
 
 
-def eval( model=HAN , device='cuda:0'): 
+def eval( model=ImprovedGCN , device='cuda:0'): 
     files = get_all_files('results') #
     #print(files)
     
@@ -116,7 +116,7 @@ def eval( model=HAN , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if not "pair" in f.lower()  or not "acm" in f.lower():
+        if not "pair" in f.lower()  or not "dblp" in f.lower():
             print("no", f)
             continue
         try: 
@@ -158,7 +158,7 @@ def eval( model=HAN , device='cuda:0'):
                 for i in range(5):
                     print(i)
                     
-                    acc= run_experiments_pyg(original_graph, coarsend_graph,  model,
+                    acc= run_experiments(original_graph, coarsend_graph,  model,
                                                                     model_param={"hidden_dim": 64,"num_layers":4},
                                             optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
                                             num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
@@ -168,7 +168,7 @@ def eval( model=HAN , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_acm_han.csv')      
+                df.to_csv('run_gcn_dblp.csv')      
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
