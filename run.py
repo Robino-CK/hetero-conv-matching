@@ -107,7 +107,7 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
     return df
 
 
-def eval( model=ImprovedGCN , device='cuda:0'): 
+def eval( model=HeteroSGCPaper , device='cuda:0'): 
     files = get_all_files('results') #
     #print(files)
     
@@ -173,8 +173,8 @@ def eval( model=ImprovedGCN , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_gcn_cora.csv')      
-                
+                df.to_csv('run_sgc_cora.csv')      
+
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()

@@ -35,7 +35,7 @@ def get_proj(name):
     else:
         return None
 
-def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=64, zscore=False, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, run=0):
+def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=64, zscore=False,add_feat=True, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, run=0):
     # Make sure we can use CUDA
     try: 
         torch.cuda.empty_cache()
