@@ -6,6 +6,7 @@ from Data.Citeseer import Citeseer
 from Data.DBLP import DBLP
 from Data.IMDB import IMDB
 from Data.ACM import ACM
+from Data.Cora import Cora
 #from Data.Actor import Actor
 from Projections.ContrastiveLearner import NonLinearContrastiveLearner, LinearContrastiveLearner
 from Projections.CCA import CCA
@@ -34,7 +35,7 @@ def get_proj(name):
     else:
         return None
 
-def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=30, zscore=False, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, run=0):
+def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=64, zscore=False, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, run=0):
     # Make sure we can use CUDA
     try: 
         torch.cuda.empty_cache()
@@ -77,7 +78,7 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_
             cca_cls=proj,
             checkpoints=checkpoints,
             folder_name=folder_name,
-            batch_size=4096,
+            batch_size=batch_size,
             pairs_per_level=pairs_per_level,
             norm_p=1,
             approx_neigh=True,
@@ -97,11 +98,13 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_
 
 # for i in range(5):
    
-d = DBLP()
+d = Cora()
 
-coarsen_graph(d, proj_name="CLNL", n_components=None, run=0)
-d = Citeseer()
-coarsen_graph(d, proj_name="CLNL", n_components=None, run=0)
+coarsen_graph(d, proj_name="CLNL", n_components=64, run=0)
+coarsen_graph(d, proj_name="CLL", n_components=30   , run=0)
+coarsen_graph(d, proj_name="AUTO", n_components=30, run=0)
+coarsen_graph(d, proj_name="CCA", n_components=30, run=0)
+
 
 
 #nohup python run.py > output.log 2>&1 &

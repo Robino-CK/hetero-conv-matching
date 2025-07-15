@@ -6,6 +6,7 @@ from Data.Citeseer import Citeseer
 from Data.DBLP import DBLP
 from Data.IMDB import IMDB
 from Data.ACM import ACM
+from Data.Cora import Cora
 #from Data.Actor import Actor
 from Projections.ContrastiveLearner import NonLinearContrastiveLearner, LinearContrastiveLearner
 from Projections.CCA import CCA
@@ -81,6 +82,8 @@ def get_node_type(name):
         return 'author'
     elif "Cit" in name or 'cit' in name:
         return 'paper'
+    elif "cora" in name.lower():
+        return "paper"
     elif 'Actor' in name:
         return 'paper'
     else:
@@ -116,7 +119,7 @@ def eval( model=ImprovedGCN , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if not "pair" in f.lower()  or not "dblp" in f.lower():
+        if not "pair" in f.lower()  or not "cora" in f.lower():
             print("no", f)
             continue
         try: 
@@ -168,7 +171,7 @@ def eval( model=ImprovedGCN , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_gcn_dblp.csv')      
+                df.to_csv('run_gcn_cora.csv')      
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()

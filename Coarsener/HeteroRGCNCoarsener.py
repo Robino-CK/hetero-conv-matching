@@ -139,7 +139,7 @@ class HeteroRGCNCoarsener(HeteroCoarsener):
                 feat_src =   self.summarized_graph.nodes[src_type].data['feat_pca']
                 h_src = self.summarized_graph.nodes[src_type].data[f'h{etype}']
                 
-                cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=256, device=self.device)
+                cca = self.cca_cls(feat_src.shape[1], h_src.shape[1], n_components=h_src.shape[1], device=self.device)
                 cca.fit(feat_src, h_src) 
                 self.ccas[etype] = cca
         # else:
