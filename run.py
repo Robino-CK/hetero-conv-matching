@@ -166,12 +166,15 @@ def eval( model=ImprovedGCN , device='cuda:0'):
                                             optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
                                             num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
                 #orig_short = [ o[-1] for o in orig ]
-                    accur.append(max(acc))  
+
+                    accur.append(max(acc[0]))  
+                    #print(max(acc[0]))
                 ratio = f.split('/')[2]
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
                 df.to_csv('run_gcn_cora.csv')      
+                
                 del original_graph, coarsend_graph, labels, mapping
             
          #   torch.cuda.empty_cache()
