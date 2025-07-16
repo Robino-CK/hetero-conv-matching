@@ -35,7 +35,7 @@ def get_proj(name):
     else:
         return None
 
-def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_components=64, zscore=False,add_feat=True, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, run=0):
+def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n_components=32, zscore=False,add_feat=True, num_neighbors_per_ntype=40,num_neighbors_per_etype=40, checkpoints=None, batch_size=None, name=0):
     # Make sure we can use CUDA
     try: 
         torch.cuda.empty_cache()
@@ -69,7 +69,7 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_
         pca_name = ""
         if n_components != None:
             pca_name = f'pca_{n_components}'
-        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}_5_pairs_{run}' 
+        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}{name}' 
         coarsener = HeteroRGCNCoarsener(
             original_graph, 
             num_nearest_init_neighbors_per_type=num_neighbors, 
@@ -82,7 +82,7 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_
             pairs_per_level=pairs_per_level,
             norm_p=1,
             approx_neigh=True,
-            add_feat=not zscore,
+            add_feat=add_feat,
             use_out_degree=False
         )
 
@@ -97,13 +97,42 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=5, device="cuda:0", n_
 
 
 # for i in range(5):
-   
-d = Cora()
+# d = ACM()
+#coarsen_graph(d, proj_name=None,zscore=False, n_components=64, add_feat=True, name='CONV', batch_size=4096)
+# coarsen_graph(d, proj_name=None,zscore=True, n_components=32, add_feat=False, name='zscore', batch_size=None)
 
-coarsen_graph(d, proj_name="CLNL", n_components=64, run=0)
-coarsen_graph(d, proj_name="CLL", n_components=30   , run=0)
-coarsen_graph(d, proj_name="AUTO", n_components=30, run=0)
-coarsen_graph(d, proj_name="CCA", n_components=30, run=0)
+# coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
+# d = DBLP()
+#coarsen_graph(d, proj_name=None,zscore=False, n_components=64, add_feat=True, name='CONV', batch_size=4096)
+# coarsen_graph(d, proj_name=None,zscore=True, n_components=32, add_feat=False, name='zscore', batch_size=None)
+
+# coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
+
+d = IMDB()
+#coarsen_graph(d, proj_name=None,zscore=False, n_components=64, add_feat=True, name='CONV', batch_size=4096)
+coarsen_graph(d, proj_name=None,zscore=True, n_components=32, add_feat=False, name='zscore', batch_size=None)
+
+coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
+
+
+# d = Citeseer()
+# coarsen_graph(d, proj_name="CCA", n_components=None)
+# coarsen_graph(d, proj_name=None,zscore=False, n_components=None, add_feat=True, name='CONV')
+# coarsen_graph(d, proj_name=None,zscore=True, n_components=None, add_feat=False, name='zscore')
+
+# coarsen_graph(d, proj_name=None,zscore=False, n_components=None, add_feat=False, name='TRI')
+
+# coarsen_graph(d, proj_name="CLNL", n_components=None)
+# coarsen_graph(d, proj_name="CLL", n_components=None )
+# coarsen_graph(d, proj_name="AUTO", n_components=None)
+# coarsen_graph(d, proj_name="CCA", n_components=None)
+
+
+# d = ACM()
+# coarsen_graph(d, proj_name=None,zscore=False, n_components=None, add_feat=True, name='CONV')
+# coarsen_graph(d, proj_name=None,zscore=True, n_components=None, add_feat=False, name='zscore')
+
+# coarsen_graph(d, proj_name=None,zscore=False, n_components=None, add_feat=False, name='TRI')
 
 
 

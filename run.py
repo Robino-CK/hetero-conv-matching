@@ -107,7 +107,7 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
     return df
 
 
-def eval( model=HeteroSGCPaper , device='cuda:0'): 
+def eval( model=ImprovedGCN , device='cuda:0'): 
     files = get_all_files('results') #
     #print(files)
     
@@ -119,8 +119,11 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
     df = pd.DataFrame(columns=list(columns))
 
     for f in files:
-        if not "pair" in f.lower()  or not "cora" in f.lower():
+        #if "pair" in f.lower()  or not "cora" in f.lower():
+        if not "acm" in f.lower() and not "dblp" in f.lower() and not "imdb" in f.lower() :
             print("no", f)
+            continue
+        if not "TRI" in f and not 'zscore' in f:
             continue
         try: 
           # torch.cuda.empty_cache()
@@ -158,7 +161,7 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
                     coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
                     
                 accur = []
-                for i in range(5):
+                for i in range(3):
                     print(i)
                     
                     acc= run_experiments(original_graph, coarsend_graph,  model,
@@ -173,7 +176,7 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('run_sgc_cora.csv')      
+                df.to_csv('hetero_zscore_and_traingle.csv')      
 
                 del original_graph, coarsend_graph, labels, mapping
             

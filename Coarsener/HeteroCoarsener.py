@@ -42,6 +42,8 @@ class HeteroCoarsener(ABC):
         self.pairs_per_level = pairs_per_level
         self.inner_product = inner_product
         self.cca_cls = cca_cls
+        if not self.cca_cls:
+            self.ccas = None
         self.init_time = time.time()
         self.times = []
         self.memory_allocated = []
