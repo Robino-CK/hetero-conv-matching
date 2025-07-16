@@ -107,7 +107,7 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
     return df
 
 
-def eval( model=ImprovedGCN , device='cuda:0'): 
+def eval( model=HeteroSGCPaper , device='cuda:0'): 
     files = get_all_files('results') #
     #print(files)
     
@@ -176,7 +176,7 @@ def eval( model=ImprovedGCN , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('hetero_zscore_and_traingle.csv')      
+                df.to_csv('hetero_sgcn_zscore_and_traingle.csv')      
 
                 del original_graph, coarsend_graph, labels, mapping
             
