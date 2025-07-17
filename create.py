@@ -6,6 +6,8 @@ from Data.Citeseer import Citeseer
 from Data.DBLP import DBLP
 from Data.IMDB import IMDB
 from Data.ACM import ACM
+
+from Data.OGB import MAG
 from Data.Cora import Cora
 #from Data.Actor import Actor
 from Projections.ContrastiveLearner import NonLinearContrastiveLearner, LinearContrastiveLearner
@@ -108,7 +110,12 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n
 
 # coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
 
-d = IMDB()
+d = MAG()
+coarsen_graph(d, proj_name="CLNL", n_components=None)
+coarsen_graph(d, proj_name="CLL", n_components=None )
+coarsen_graph(d, proj_name="AUTO", n_components=None)
+coarsen_graph(d, proj_name="CCA", n_components=None)
+
 #coarsen_graph(d, proj_name=None,zscore=False, n_components=64, add_feat=True, name='CONV', batch_size=4096)
 coarsen_graph(d, proj_name=None,zscore=True, n_components=32, add_feat=False, name='zscore', batch_size=None)
 
@@ -122,10 +129,6 @@ coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, n
 
 # coarsen_graph(d, proj_name=None,zscore=False, n_components=None, add_feat=False, name='TRI')
 
-# coarsen_graph(d, proj_name="CLNL", n_components=None)
-# coarsen_graph(d, proj_name="CLL", n_components=None )
-# coarsen_graph(d, proj_name="AUTO", n_components=None)
-# coarsen_graph(d, proj_name="CCA", n_components=None)
 
 
 # d = ACM()
