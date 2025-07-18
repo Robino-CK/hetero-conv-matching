@@ -105,12 +105,17 @@ def update_row_by_ratio(df, columns, ratio, column_name, value):
         new_row[column_name] = value  # Can be a list
         df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
     return df
-
-
-def eval( model=HeteroSGCPaper , device='cuda:0'): 
+def get_model(name):
+    if name == 'SGCN':
+        return HeteroSGCPaper
+    if name == 'HAN':
+        return HAN
+    if name == "GCN":
+        return ImprovedGCN
+def eval( model_name='SGCN' , device='cuda:0'): 
     files = get_all_files('results') #
     #print(files)
-    
+    model = get_model(model_name)
     columns = set()
     columns.add('ratio')
     for f in files:
@@ -120,11 +125,11 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
 
     for f in files:
         #if "pair" in f.lower()  or not "cora" in f.lower():
-        if not "acm" in f.lower() and not "dblp" in f.lower() and not "imdb" in f.lower() :
-            print("no", f)
-            continue
-        if not "TRI" in f and not 'zscore' in f:
-            continue
+        # if not "acm" in f.lower() and not "dblp" in f.lower() and not "imdb" in f.lower() :
+        #     print("no", f)
+        #     continue
+        # if not "TRI" in f and not 'zscore' in f:
+        #     continue
         try: 
           # torch.cuda.empty_cache()
             import pickle
@@ -161,22 +166,27 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
                     coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
                     
                 accur = []
-                for i in range(3):
+                for i in range(5):
                     print(i)
-                    
-                    acc= run_experiments(original_graph, coarsend_graph,  model,
-                                                                    model_param={"hidden_dim": 64,"num_layers":4},
-                                            optimizer_param={"lr": 0.01, "weight_decay": 5e-4}, device=device,
-                                            num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False)
+                    if model_name == "HAN":
+                        acc = run_experiments_pyg(original_graph, coarsend_graph,  model,
+                                                                        model_param={"hidden_dim": 64,"num_layers":4},
+                                                optimizer_param={"lr": 0.003, "weight_decay": 5e-4}, device=device,
+                                                num_runs=1, epochs=1000,eval_interval=1, target_node_type=node_target_type, run_orig=False)
+                    else:
+                        acc= run_experiments(original_graph, coarsend_graph,  model,
+                                                                        model_param={"hidden_dim": 64,"num_layers":4},
+                                                optimizer_param={"lr": 0.003, "weight_decay": 5e-4}, device=device,
+                                                num_runs=1, epochs=1000,eval_interval=1, target_node_type=node_target_type, run_orig=False)
                 #orig_short = [ o[-1] for o in orig ]
 
-                    accur.append(max(acc[0]))  
+                    accur.append(acc[0][-1])  
                     #print(max(acc[0]))
                 ratio = f.split('/')[2]
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv('hetero_sgcn_zscore_and_traingle.csv')      
+                df.to_csv(f'master_table_{model_name}.csv')      
 
                 del original_graph, coarsend_graph, labels, mapping
             
@@ -189,6 +199,8 @@ def eval( model=HeteroSGCPaper , device='cuda:0'):
 
 
 eval()
+eval("HAN")
+eval("GCN")
 
 
 #nohup python run.py > output.log 2>&1 &

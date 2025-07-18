@@ -2,15 +2,21 @@ import torch
 import torch.nn.functional as F
 import torch.nn as nn
 from torch_geometric.data import HeteroData
+import torch
+import torch.nn.functional as F
+import torch.nn as nn
+from torch_geometric.data import HeteroData
+
 def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
-                    epochs=1, optimizer=torch.optim.Adam, target_node_type="movie",
+                    epochs=100, optimizer=torch.optim.Adam, target_node_type="movie",
                     model_param={"hidden_dim": 256},
                     optimizer_param={"lr": 0.01, "weight_decay": 5e-4},
-                    device="cuda" if torch.cuda.is_available() else "cpu", eval_interval=10, run_orig=True):
-    
+                    device="cuda" if torch.cuda.is_available() else "cpu",
+                    eval_interval=10, run_orig=True,
+                    early_stopping_patience=10):
+
     original_accuracies = []
     coarsened_accuracies = []
-    
     original_loss = []
     coarsened_loss = []
 
@@ -35,14 +41,14 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
         model_original = model_class(metadata=metadata_orig,
                                      x_dict=feat_orig,
                                      target_feat=target_node_type,
-                                     out_dim= output_dim,
+                                     out_dim=output_dim,
                                      **model_param).to(device)
         optimizer_original = optimizer(model_original.parameters(), **optimizer_param)
 
         model_coarsened = model_class(metadata=metadata_coar,
                                       x_dict=feat_coar,
                                       target_feat=target_node_type,
-                                      out_dim= output_dim,   
+                                      out_dim=output_dim,
                                       **model_param).to(device)
         optimizer_coarsened = optimizer(model_coarsened.parameters(), **optimizer_param)
 
@@ -51,7 +57,6 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
             optimizer.zero_grad()
             logits = model(graph, feats)[target_node_type]
             loss = F.cross_entropy(logits[train_idx], labels[train_idx])
-            
             loss.backward()
             optimizer.step()
             return loss
@@ -63,43 +68,74 @@ def run_experiments(original_graph, coarsend_graph, model_class, num_runs=5,
                 preds = logits.argmax(dim=1)
                 correct = (preds[val_idx] == labels[val_idx]).sum().item()
                 return correct / val_idx.shape[0], preds
+
         original_acc_per_run = []
         coarsened_acc_per_run = []
-        
-        
         original_loss_per_run = []
         coarsened_loss_per_run = []
-        
+
+        best_val_acc_orig = 0
+        best_val_acc_coar = 0
+        patience_counter_orig = 0
+        patience_counter_coar = 0
+        stop_orig = False
+        stop_coar = False
+
         for epoch in range(epochs):
-            if run_orig: 
+            # Training only if not early-stopped
+            if run_orig and not stop_orig:
                 loss_orig = train(model_original, original_graph, feat_orig, labels_orig, train_idx_orig, optimizer_original)
-            loss_coar = train(model_coarsened, coarsend_graph, feat_coar, labels_coar, train_idx_coar, optimizer_coarsened)
+            elif run_orig:
+                loss_orig = torch.tensor(0.0)  # Dummy loss for shape consistency
+
+            if not stop_coar:
+                loss_coar = train(model_coarsened, coarsend_graph, feat_coar, labels_coar, train_idx_coar, optimizer_coarsened)
+            else:
+                loss_coar = torch.tensor(0.0)  # Dummy loss
+
+            # Evaluate every eval_interval
             if epoch % eval_interval == 0:
                 if run_orig:
-                    original_acc, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
-                    original_acc_per_run.append(original_acc)
+                    val_acc_orig, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
+                    original_acc_per_run.append(val_acc_orig)
                     original_loss_per_run.append(loss_orig.item())
-                
-                coarsened_acc, _ = test(model_coarsened, original_graph, feat_orig, labels_orig, val_idx_orig)
-                coarsened_acc_per_run.append(coarsened_acc)
 
+                    if not stop_orig:
+                        if val_acc_orig > best_val_acc_orig:
+                            best_val_acc_orig = val_acc_orig
+                            patience_counter_orig = 0
+                        else:
+                            patience_counter_orig += 1
+                            if patience_counter_orig >= early_stopping_patience:
+                                stop_orig = True
+
+                val_acc_coar, _ = test(model_coarsened, original_graph, feat_orig, labels_orig, val_idx_orig)
+                coarsened_acc_per_run.append(val_acc_coar)
                 coarsened_loss_per_run.append(loss_coar.item())
-        
-                
+
+                if not stop_coar:
+                    if val_acc_coar > best_val_acc_coar:
+                        best_val_acc_coar = val_acc_coar
+                        patience_counter_coar = 0
+                    else:
+                        patience_counter_coar += 1
+                        if patience_counter_coar >= early_stopping_patience:
+                            stop_coar = True
+
+        # Final evaluation
         if run_orig:
-            original_acc, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
-            original_acc_per_run.append(original_acc)
+            final_acc_orig, _ = test(model_original, original_graph, feat_orig, labels_orig, val_idx_orig)
+            original_acc_per_run.append(final_acc_orig)
             original_accuracies.append(original_acc_per_run)
             original_loss.append(original_loss_per_run)
-        
-        coarsened_acc, _ = test(model_coarsened, original_graph, feat_orig, labels_orig, val_idx_orig)
-        coarsened_acc_per_run.append(coarsened_acc)
-        
-        coarsened_accuracies.append(coarsened_acc_per_run)
 
+        final_acc_coar, _ = test(model_coarsened, original_graph, feat_orig, labels_orig, val_idx_orig)
+        coarsened_acc_per_run.append(final_acc_coar)
+        coarsened_accuracies.append(coarsened_acc_per_run)
         coarsened_loss.append(coarsened_loss_per_run)
 
-    return coarsened_accuracies
+    return original_accuracies
+
 
 
 def dgl_to_pyg(g, target_node_type="author"):
