@@ -4,50 +4,64 @@ import dgl
 import os
 import sys
 from sklearn.decomposition import PCA
-from ogb.lsc import MAG240MDataset
+from sklearn.preprocessing import MinMaxScaler
+from torch_geometric.datasets import HGBDataset
+from torch_geometric.data import HeteroData
+from torch_geometric.data.graph_store import EdgeAttr
+from torch_geometric.data.storage import NodeStorage, BaseStorage, EdgeStorage
+import torch_geometric
+#THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+#sys.path.append(os.path.join(THIS_DIR, "../../"))
 
-THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(THIS_DIR, "../../"))
 
-
-class MAG:
+class Mag():
     def __init__(self):
         pass
 
-    def load_graph(self, n_components=None) -> dgl.DGLGraph:
-        dataset = MAG240MDataset(root='./mag240m')
-        g = dataset.load_dgl_graph()
+    def load_graph(self, n_components) -> dgl.DGLGraph:
+        path = './acm'
+        dataset = torch_geometric.datasets.ogb_mag.OGB_MAG('./mag240m2')
+        data = dataset[0]  # Only one HeteroData object
 
-        num_nodes_dict = {ntype: g.num_nodes(ntype) for ntype in g.ntypes}
+        num_nodes_dict = {
+            'author': data['author']["num_nodes"],
+            'paper': data.x_dict['paper'].shape[0],
+            'institution': data['institution']["num_nodes"],
+            'field_of_study': data["field_of_study"]["num_nodes"]
+        }
 
-        # Feature assignment (only paper has features)
+        # Convert edge_index_dict from PyG to DGL
+        edge_index_dict = data.edge_index_dict
+        edge_tuples = {}
+        for (src_type, rel_type, dst_type), edge_index in edge_index_dict.items():
+            src_nodes = edge_index[0].numpy()
+            dst_nodes = edge_index[1].numpy()
+            edge_tuples[(src_type, f"{src_type}to{dst_type}", dst_type)] = (src_nodes, dst_nodes)
+
+        g = heterograph(edge_tuples, num_nodes_dict=num_nodes_dict)
+
+        # Feature assignment with optional PCA
         for ntype in g.ntypes:
-            if ntype == "paper":
-                features = torch.from_numpy(dataset.paper_feat).float()
-                g.nodes[ntype].data['feat'] = features
+            if not ntype == "paper":
+                g.nodes[ntype].data['feat'] = torch.ones(num_nodes_dict[ntype],1)
+                g.nodes[ntype].data['feat_pca'] = torch.ones(num_nodes_dict[ntype],1)    
+                continue
+            features = data.x_dict[ntype]
 
-                if n_components is not None:
-                    pca = PCA(n_components=n_components)
-                    pca_feat = pca.fit_transform((features - features.mean(dim=0)) / (features.std(dim=0) + 1e-4))
-                    g.nodes[ntype].data['feat_pca'] = torch.from_numpy(pca_feat).float()
-                else:
-                    g.nodes[ntype].data['feat_pca'] = features
+            if n_components is None:
+                g.nodes[ntype].data['feat_pca'] = features
             else:
-                g.nodes[ntype].data['feat'] = torch.ones(num_nodes_dict[ntype], 1)
-                g.nodes[ntype].data['feat_pca'] = torch.ones(num_nodes_dict[ntype], 1)
+                pca = PCA(n_components=n_components)
+                pca_feat = pca.fit_transform((features - features.mean(dim=0)) / (features.std(dim=0) + 1e-4))
+                g.nodes[ntype].data['feat_pca'] = torch.from_numpy(pca_feat).float()
 
-        # Labels and masks (only paper has labels and masks)
-        g.nodes['paper'].data['label'] = torch.from_numpy(dataset.paper_label).long()
+            g.nodes[ntype].data['feat'] = features
 
-        split_dict = dataset.get_idx_split()
-        g.nodes['paper'].data['train_mask'] = torch.zeros(num_nodes_dict['paper'], dtype=torch.bool)
-        g.nodes['paper'].data['valid_mask'] = torch.zeros(num_nodes_dict['paper'], dtype=torch.bool)
-        g.nodes['paper'].data['test_mask']  = torch.zeros(num_nodes_dict['paper'], dtype=torch.bool)
+        # Labels and masks (only author has labels in this dataset)
+        g.nodes["paper"].data['label'] = data["paper"].y
+        for mask_name in ['train_mask',  'test_mask']:
+            g.nodes['paper'].data[mask_name] = data['paper'][mask_name]
 
-        g.nodes['paper'].data['train_mask'][split_dict['train']] = True
-        g.nodes['paper'].data['valid_mask'][split_dict['valid']] = True
-        g.nodes['paper'].data['test_mask'][split_dict['test']] = True
-
-        self.features = {'paper': torch.from_numpy(dataset.paper_feat).float()}
-        self.dataset = dataset
+        self.features = data.x_dict
+        self.dataset = data
         return g
