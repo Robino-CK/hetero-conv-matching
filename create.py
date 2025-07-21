@@ -7,7 +7,7 @@ from Data.DBLP import DBLP
 from Data.IMDB import IMDB
 from Data.ACM import ACM
 
-from Data.OGB import MAG
+#from Data.OGB import MAG
 from Data.Cora import Cora
 #from Data.Actor import Actor
 from Projections.ContrastiveLearner import NonLinearContrastiveLearner, LinearContrastiveLearner
@@ -19,7 +19,6 @@ from Models.ImprovedGCN import ImprovedGCN
 from Models.HeteroSage import HeteroSAGE
 from Models.HeteroSGC import HeteroSGCPaper
 
-from Experiments.model_helper import run_experiments
 from Projections.AutoEncoder import MultiviewAutoencoder
 import os
 import pandas as pd
@@ -71,7 +70,7 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n
         pca_name = ""
         if n_components != None:
             pca_name = f'pca_{n_components}'
-        folder_name = f'{type(dataset).__name__}_{proj_name}_{pca_name}{name}' 
+        folder_name = f'{type(dataset).__name__}_{proj_name}_new_{pca_name}{name}' 
         coarsener = HeteroRGCNCoarsener(
             original_graph, 
             num_nearest_init_neighbors_per_type=num_neighbors, 
@@ -110,16 +109,20 @@ def coarsen_graph(dataset,proj_name=None, pairs_per_level=20, device="cuda:0", n
 
 # coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
 
-d = MAG()
-coarsen_graph(d, proj_name="CLNL", n_components=None)
-coarsen_graph(d, proj_name="CLL", n_components=None )
-coarsen_graph(d, proj_name="AUTO", n_components=None)
-coarsen_graph(d, proj_name="CCA", n_components=None)
+d = DBLP()
+#coarsen_graph(d, proj_name="CLNL", n_components=None)
+#coarsen_graph(d, proj_name="CLL", n_components=None )
+coarsen_graph(d, proj_name="AUTO", n_components=30)
+#coarsen_graph(d, proj_name="CCA", n_components=None)
+d = ACM()
+coarsen_graph(d, proj_name="AUTO", n_components=30)
 
+d = IMDB()
+coarsen_graph(d, proj_name="AUTO", n_components=30)
 #coarsen_graph(d, proj_name=None,zscore=False, n_components=64, add_feat=True, name='CONV', batch_size=4096)
-coarsen_graph(d, proj_name=None,zscore=True, n_components=32, add_feat=False, name='zscore', batch_size=None)
+#coarsen_graph(d, proj_name=None,zscore=True, n_components=32, add_feat=False, name='zscore', batch_size=None)
 
-coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
+#coarsen_graph(d, proj_name=None,zscore=False, n_components=32, add_feat=False, name='TRI', batch_size=None)
 
 
 # d = Citeseer()

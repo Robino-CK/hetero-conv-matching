@@ -209,8 +209,8 @@ def eval( model_name='SGCN' , device='cuda:0', lr=0.001):
         # if not "acm" in f.lower() and not "dblp" in f.lower() and not "imdb" in f.lower() :
         #     print("no", f)
         #     continue
-        if not "ACM" in f:
-            continue
+        # if not "TRI" in f and not 'zscore' in f:
+        #     continue
         target = ["0.1", "0.3", "0.5", "1.0"]
         if not any(x in f for x in target):
             continue
@@ -259,18 +259,18 @@ def eval( model_name='SGCN' , device='cuda:0', lr=0.001):
                     #coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
                     
                 accur = []
-                for i in range(5):
+                for i in range(10):
                     print(i)
                     if model_name == "HAN":
                         _,acc,_,_ = run_experiments_unified(original_graph, coarsend_graph,  model,
                                                                         model_param={"hidden_dim": 64,"num_layers":4},
                                                 optimizer_param={"lr": lr, "weight_decay": 5e-4}, device=device,
-                                                num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False, framework="pyg", early_stopping_patience=100)
+                                                num_runs=1, epochs=100,eval_interval=1, target_node_type=node_target_type, run_orig=False, framework="pyg")
                     else:
                         _,acc,_,_ = run_experiments_unified(original_graph, coarsend_graph,  model,
                                                                         model_param={"hidden_dim": 64,"num_layers":4},
                                                 optimizer_param={"lr": lr, "weight_decay": 5e-4}, device=device,
-                                                num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False, early_stopping_patience=100)
+                                                num_runs=1, epochs=100,eval_interval=1, target_node_type=node_target_type, run_orig=False)
                 #orig_short = [ o[-1] for o in orig ]
 
                     accur.append(acc[0][-1])  
@@ -279,7 +279,7 @@ def eval( model_name='SGCN' , device='cuda:0', lr=0.001):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv(f'master_acm_table_{model_name}.csv')      
+                df.to_csv(f'master_table_{model_name}.csv')      
 
                 del original_graph, coarsend_graph, labels, mapping
             
@@ -293,9 +293,9 @@ def eval( model_name='SGCN' , device='cuda:0', lr=0.001):
 
 #eval("GCN", lr=0.01)
 #eval("GCN", lr=0.005)
-# eval("GCN", lr=0.001)
-eval("HAN")
-#eval("SGCN")
+eval("GCN", lr=0.001)
+#eval("HAN")
+eval("SGCN")
 
 
 #nohup python run.py > output.log 2>&1 &
