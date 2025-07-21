@@ -18,13 +18,94 @@ from Models.HeteroSage import HeteroSAGE
 from Models.HeteroSGC import HeteroSGCPaper
 from Models.Han import HAN
 
-from Experiments.model_helper import run_experiments, run_experiments_pyg
+from Experiments.model_helper import run_experiments_unified
 from Projections.AutoEncoder import MultiviewAutoencoder
 import os
 import pandas as pd
 import torch
 from torch_geometric.data import HeteroData
 import os
+
+import pickle
+
+def make_mask(self, mapping, ntype, is_acm =False):
+    labels_dict = dict()
+    inverse_mapping = dict()
+    if is_acm:
+        # Original test mask
+        test_mask = self.original_graph.nodes[ntype].data["test_mask"]
+        
+        # Get indices where test_mask is True
+        test_indices = torch.nonzero(test_mask, as_tuple=True)[0]
+        
+        # Shuffle and select 20% of them
+        num_val = int(0.2 * len(test_indices))
+        perm = torch.randperm(len(test_indices))
+        val_indices = test_indices[perm[:num_val]]
+        
+        # Initialize val_mask with False and set selected indices to True
+        val_mask = torch.zeros_like(test_mask, dtype=torch.bool)
+        val_mask[val_indices] = True
+        
+        # Set the selected indices to False in test_mask
+        test_mask[val_indices] = False
+        
+        # Save the updated masks back
+        self.original_graph.nodes[ntype].data["test_mask"] = test_mask
+        self.original_graph.nodes[ntype].data["val_mask"] = val_mask
+        self.summarized_graph.nodes[ntype].data["val_mask"] = torch.zeros_like(self.summarized_graph.nodes[ntype].data["test_mask"], dtype=torch.bool)
+        self.summarized_graph.nodes[ntype].data["test_mask"] = torch.zeros_like(self.summarized_graph.nodes[ntype].data["test_mask"], dtype=torch.bool)
+    for ori_node, coar_node in mapping.items():
+        if coar_node in inverse_mapping:
+            inverse_mapping[coar_node].append(ori_node)
+        else:
+            inverse_mapping[coar_node] = [ori_node]
+            
+    for coar_node, ori_list in inverse_mapping.items():
+        label_list = []
+        for ori_node in ori_list:
+            label_list.append(self.original_graph.nodes[ntype].data["train_mask"][ori_node].item())
+        is_train = torch.any(torch.tensor(label_list, device=self.device))    
+        
+        is_val = False
+        for ori_node in ori_list:
+            
+            is_val = (self.original_graph.nodes[ntype].data["val_mask"][ori_node] or is_val ) and not is_train
+         
+    # print(coar_node)
+        self.summarized_graph.nodes[ntype].data["train_mask"][coar_node] = is_train
+        is_test =  (not is_val and not is_train)
+        # print(is_val, is_train, is_test)
+        self.summarized_graph.nodes[ntype].data["test_mask"][coar_node] =is_test
+
+        
+        
+        self.summarized_graph.nodes[ntype].data["val_mask"][coar_node] = is_val
+from collections import Counter
+def get_labels(self, mapping, ntype):
+    #self.make_mask(mapping, ntype)
+    labels_dict = dict()
+    inverse_mapping = dict()
+    for ori_node, coar_node in mapping.items():
+        if coar_node in inverse_mapping:
+            inverse_mapping[coar_node].append(ori_node)
+        else:
+            inverse_mapping[coar_node] = [ori_node]
+    for coar_node, ori_list in inverse_mapping.items():
+        label_list = []
+        # if not self.summarized_graph.nodes[ntype].data["train_mask"][coar_node]:
+        #     label_list.append(-1)
+        # else:
+        for ori_node in ori_list:
+            if self.original_graph.nodes[ntype].data["train_mask"][ori_node] or not self.summarized_graph.nodes[ntype].data["train_mask"][coar_node]:
+                label_list.append(self.original_graph.nodes[ntype].data["label"][ori_node].item())
+
+        counter = Counter(label_list)
+        
+        labels_dict[coar_node],_ = counter.most_common()[0]
+    
+    return labels_dict
+
 def torch_to_dgl(data):
     from torch_geometric.data import HeteroData
 
@@ -112,7 +193,7 @@ def get_model(name):
         return HAN
     if name == "GCN":
         return ImprovedGCN
-def eval( model_name='SGCN' , device='cuda:0'): 
+def eval( model_name='SGCN' , device='cuda:0', lr=0.001): 
     files = get_all_files('results') #
     #print(files)
     model = get_model(model_name)
@@ -128,8 +209,12 @@ def eval( model_name='SGCN' , device='cuda:0'):
         # if not "acm" in f.lower() and not "dblp" in f.lower() and not "imdb" in f.lower() :
         #     print("no", f)
         #     continue
-        # if not "TRI" in f and not 'zscore' in f:
-        #     continue
+        if not "ACM" in f:
+            continue
+        target = ["0.1", "0.3", "0.5", "1.0"]
+        if not any(x in f for x in target):
+            continue
+
         try: 
           # torch.cuda.empty_cache()
             import pickle
@@ -137,7 +222,6 @@ def eval( model_name='SGCN' , device='cuda:0'):
             node_target_type = get_node_type(f)
             if not node_target_type:
                 continue
-            
             with open(f, 'rb') as fh:
                 if "ugc" in f:
                     dataset = DBLP() 
@@ -155,29 +239,38 @@ def eval( model_name='SGCN' , device='cuda:0'):
                 else:
                     coarsener = pickle.load(fh) 
                     
-                    original_graph = coarsener.original_graph.to(device)
-                    coarsend_graph = coarsener.summarized_graph.to(device)
 
                     #coarsend_graph = coarsend_graph.cpu()
                     mapping = coarsener.get_mapping(node_target_type)
-                    coarsener.make_mask(mapping, node_target_type)
+                    make_mask(coarsener, mapping, node_target_type, "ACM" in f)
+                    
+                    labels = get_labels(coarsener, mapping, node_target_type)
+                    original_graph = coarsener.original_graph.to(device)
+                    coarsend_graph = coarsener.summarized_graph.to(device)
 
-                    labels = coarsener.get_labels(mapping, node_target_type)
                     coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
+                    # print("ratio", coarsend_graph.num_nodes()/ original_graph.num_nodes() ) 
+
+                    
+                   # mapping = coarsener.get_mapping(node_target_type)
+                    #coarsener.make_mask(mapping, node_target_type)
+
+                    #labels = coarsener.get_labels(mapping, node_target_type)
+                    #coarsend_graph.nodes[node_target_type].data["label"] = torch.tensor([labels[i] for i in range(len(labels)) ],  device=coarsend_graph.device) #,
                     
                 accur = []
                 for i in range(5):
                     print(i)
                     if model_name == "HAN":
-                        acc = run_experiments_pyg(original_graph, coarsend_graph,  model,
+                        _,acc,_,_ = run_experiments_unified(original_graph, coarsend_graph,  model,
                                                                         model_param={"hidden_dim": 64,"num_layers":4},
-                                                optimizer_param={"lr": 0.003, "weight_decay": 5e-4}, device=device,
-                                                num_runs=1, epochs=1000,eval_interval=1, target_node_type=node_target_type, run_orig=False)
+                                                optimizer_param={"lr": lr, "weight_decay": 5e-4}, device=device,
+                                                num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False, framework="pyg", early_stopping_patience=100)
                     else:
-                        acc= run_experiments(original_graph, coarsend_graph,  model,
+                        _,acc,_,_ = run_experiments_unified(original_graph, coarsend_graph,  model,
                                                                         model_param={"hidden_dim": 64,"num_layers":4},
-                                                optimizer_param={"lr": 0.003, "weight_decay": 5e-4}, device=device,
-                                                num_runs=1, epochs=1000,eval_interval=1, target_node_type=node_target_type, run_orig=False)
+                                                optimizer_param={"lr": lr, "weight_decay": 5e-4}, device=device,
+                                                num_runs=1, epochs=400,eval_interval=1, target_node_type=node_target_type, run_orig=False, early_stopping_patience=100)
                 #orig_short = [ o[-1] for o in orig ]
 
                     accur.append(acc[0][-1])  
@@ -186,7 +279,7 @@ def eval( model_name='SGCN' , device='cuda:0'):
                 column = f.split('/')[1]
                 
                 df = update_row_by_ratio(df, columns, ratio, column,accur  )
-                df.to_csv(f'master_table_{model_name}.csv')      
+                df.to_csv(f'master_acm_table_{model_name}.csv')      
 
                 del original_graph, coarsend_graph, labels, mapping
             
@@ -198,9 +291,11 @@ def eval( model_name='SGCN' , device='cuda:0'):
             print('error' , e)
 
 
-eval()
+#eval("GCN", lr=0.01)
+#eval("GCN", lr=0.005)
+# eval("GCN", lr=0.001)
 eval("HAN")
-eval("GCN")
+#eval("SGCN")
 
 
 #nohup python run.py > output.log 2>&1 &
